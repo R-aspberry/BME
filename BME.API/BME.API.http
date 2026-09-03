@@ -1,0 +1,48 @@
+@BME_API_HostAddress = http://localhost:5000
+
+### Get all Resource Planners
+GET {{BME_API_HostAddress}}/api/ResourcePlanner
+Accept: application/json
+
+###
+
+### Get Resource Planner by ID
+GET {{BME_API_HostAddress}}/api/ResourcePlanner/1
+Accept: application/json
+
+###
+
+### Create a new Resource Planner
+POST {{BME_API_HostAddress}}/api/ResourcePlanner
+Content-Type: application/json
+
+{
+  "plannerId": 3,
+  "name": "Test Planner",
+  "email": "test.planner@company.com",
+  "phone": "555-0303"
+}
+
+###
+
+### Update Resource Planner
+PUT {{BME_API_HostAddress}}/api/ResourcePlanner/3
+Content-Type: application/json
+
+{
+  "plannerId": 3,
+  "name": "Test Planner Updated",
+  "email": "updated.planner@company.com",
+  "phone": "555-0399"
+}
+
+###
+
+### Verify updated Resource Planner
+GET {{BME_API_HostAddress}}/api/ResourcePlanner/3
+Accept: application/json
+
+###
+
+### Delete Resource Planner
+DELETE {{BME_API_HostAddress}}/api/ResourcePlanner/3
