@@ -2,6 +2,7 @@
 -- SAFE DROP SEQUENCE
 -- ==========================================
 DROP TABLE IF EXISTS OXEXE;
+DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Works_ON;
 DROP TABLE IF EXISTS OSE;
 DROP TABLE IF EXISTS Projects;
@@ -45,6 +46,15 @@ CREATE TABLE Employees (
     FOREIGN KEY (Manager_ID) REFERENCES Employees(ID),
     FOREIGN KEY (D_ID) REFERENCES Department(D_ID),
     FOREIGN KEY (Type_of_contract_ID) REFERENCES Type_of_contract(C_ID)
+);
+
+CREATE TABLE Users (
+    User_ID INT IDENTITY(1,1) PRIMARY KEY,
+    Employee_ID INT NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Role VARCHAR(50) NOT NULL,
+
+    FOREIGN KEY (Employee_ID) REFERENCES Employees(ID)
 );
 
 CREATE TABLE BO (
@@ -176,3 +186,8 @@ INSERT INTO OXEXE (OSE_ID, EMP_ID) VALUES
 (1, 8), 
 (2, 12);
 
+INSERT INTO Users (Employee_ID, PasswordHash, Role)
+VALUES
+(1, 'TEMP_HASH', 'Manager'),
+(7, 'TEMP_HASH', 'Employee'),
+(16, 'TEMP_HASH', 'Admin');
