@@ -25,9 +25,9 @@ public class OSEController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetOSE(int oseId)
+    public async Task<ActionResult> GetOSE(int id)
     {
-        var oseDto = await _oseService.GetByIdAsync(oseId);
+        var oseDto = await _oseService.GetByIdAsync(id);
         if (oseDto == null)
         {
             return NotFound();

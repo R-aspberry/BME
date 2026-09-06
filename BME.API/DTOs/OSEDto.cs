@@ -18,4 +18,10 @@ public class OSEDto
     
     public int Interviewer_ID { get; set;}
 
+    public int? User_ID { get; set; }
+
+    public int EMP_ID { get; set; }
+
+    public string? Phone { get; set; }
+
 }

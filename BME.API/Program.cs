@@ -12,6 +12,8 @@ builder.Services.AddDbContext<BMEDbContext>(options =>
 
 builder.Services.AddScoped<EmployeeService>();
 
+builder.Services.AddScoped<OSEService>();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();

@@ -32,6 +32,9 @@ public class BMEDbContext : DbContext
     modelBuilder.Entity<OSE>()
             .HasKey(e => e.OSE_ID);
 
+    modelBuilder.Entity<ResourcePlanner>()
+            .HasKey(e => e.Planner_ID);
+
     modelBuilder.Entity<Employee>()
         .HasOne(e => e.Department)
         .WithMany(d => d.Employees)
@@ -46,6 +49,16 @@ public class BMEDbContext : DbContext
         .HasOne(e => e.Interviewer)
         .WithOne()
         .HasForeignKey<OSE>(e => e.Interviewer_ID);
+
+    modelBuilder.Entity<OSE>()
+        .HasOne(e => e.User)
+        .WithOne()
+        .HasForeignKey<OSE>(e => e.User_ID);
+
+    modelBuilder.Entity<OSE>()
+        .HasOne(e => e.Employee)
+        .WithOne()
+        .HasForeignKey<OSE>(e => e.EMP_ID);
 
         }
 }

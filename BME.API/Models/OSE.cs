@@ -26,4 +26,10 @@ public class OSE
 
     public User? User { get; set; }
 
+    public int EMP_ID { get; set; }
+
+    public string? Phone { get; set; }
+
+    public Employee? Employee { get; set; }
+
 }
