@@ -29,12 +29,15 @@ namespace BME.API.Services
         public async Task<ResourcePlanner> CreateAsync(ResourcePlanner planner)
         {
             _context.ResourcePlanners.Add(planner);
+
             await _context.SaveChangesAsync();
 
             return planner;
         }
 
-        public async Task<bool> UpdateAsync(int id, ResourcePlanner planner)
+        public async Task<bool> UpdateAsync(
+            int id,
+            ResourcePlanner planner)
         {
             var existingPlanner = await _context.ResourcePlanners
                 .FirstOrDefaultAsync(p => p.PlannerId == id);
@@ -47,6 +50,7 @@ namespace BME.API.Services
             existingPlanner.Name = planner.Name;
             existingPlanner.Email = planner.Email;
             existingPlanner.Phone = planner.Phone;
+            existingPlanner.UserId = planner.UserId;
 
             await _context.SaveChangesAsync();
 
@@ -64,6 +68,7 @@ namespace BME.API.Services
             }
 
             _context.ResourcePlanners.Remove(planner);
+
             await _context.SaveChangesAsync();
 
             return true;
