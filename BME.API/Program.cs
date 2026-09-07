@@ -5,16 +5,18 @@ using BME.API.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Connect to SQL Server
-builder.Services.AddDbContext<ResourceAllocationDbContext>(options =>
+// Add controllers
+builder.Services.AddControllers();
+
+builder.Services.AddDbContext<BMEDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Register Resource Planner service
-builder.Services.AddScoped<IResourcePlannerService, ResourcePlannerService>();
+builder.Services.AddScoped<EmployeeService>();
 
-// Add controllers
-builder.Services.AddControllers();
+builder.Services.AddScoped<OSEService>();
+
+builder.Services.AddScoped<IResourcePlannerService, ResourcePlannerService>();
 
 var app = builder.Build();
 

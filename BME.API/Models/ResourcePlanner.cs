@@ -11,5 +11,7 @@ namespace BME.API.Models
         public string Phone { get; set; } = string.Empty;
 
         public int? UserId { get; set; }
+
+        public User? User { get; set; }
     }
 }
