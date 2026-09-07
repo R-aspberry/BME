@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MERL.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0e9d19a8f120cd92fa63d0dc1c5a78905d3a34e3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7d06ad3893affda979d3aa65f4301aa10c28a135")]
 [assembly: System.Reflection.AssemblyProductAttribute("MERL.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MERL.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
