@@ -32,8 +32,11 @@ public class BMEDbContext : DbContext
         // =========================
         // Department
         // =========================
-        modelBuilder.Entity<Department>()
-            .HasKey(d => d.D_ID);
+        modelBuilder.Entity<Department>(entity =>
+        {
+            entity.ToTable("Department");
+            entity.HasKey(d => d.D_ID);
+        });
 
 
         // =========================
