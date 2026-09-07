@@ -3,30 +3,23 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using MERL.API.Data;
-using MERL.API.Models;
-using MERL.API.Services;
-using MERL.API.Services.Interfaces;
+using BME.API.Data;
+using BME.API.Models;
+using BME.API.Services;
+using BME.API.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-	options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-	{
-		Name = "Authorization", Type = SecuritySchemeType.Http, Scheme = "bearer", BearerFormat = "JWT",
-		In = ParameterLocation.Header
-	});
-	options.AddSecurityRequirement(new OpenApiSecurityRequirement
-	{
-		[new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }] = []
-	});
-});
-builder.Services.AddDbContext<ResourceAllocationDbContext>(options =>
+builder.Services.AddDbContext<BMEDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<OSEService>();
+builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<BOService>();
+builder.Services.AddScoped<DepartmentService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IResourcePlannerService, ResourcePlannerService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -48,11 +41,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

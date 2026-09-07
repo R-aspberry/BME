@@ -1,8 +1,7 @@
 namespace BME.API.DTOs;
 
-public class DepartmentDto
+public class UpdateDepartmentDto
 {
-    public int D_ID { get; set; }
     public string? D_Name { get; set; }
     public int? Availability { get; set; }
 }

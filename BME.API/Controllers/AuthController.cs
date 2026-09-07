@@ -1,16 +1,14 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MERL.API.Data;
-using MERL.API.DTOs;
-using MERL.API.Services.Interfaces;
+using BME.API.DTOs;
+using BME.API.Services.Interfaces;
 
-namespace MERL.API.Controllers;
+namespace BME.API.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public sealed class AuthController(IAuthService authService, ResourceAllocationDbContext dbContext) : ControllerBase
+public sealed class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
     [AllowAnonymous]
@@ -38,18 +36,13 @@ public sealed class AuthController(IAuthService authService, ResourceAllocationD
 
     [HttpGet("me")]
     [Authorize]
-    public async Task<ActionResult<MeResponse>> Me(CancellationToken cancellationToken)
+    public ActionResult<MeResponse> Me()
     {
         var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!int.TryParse(userIdValue, out var userId)) return Unauthorized();
 
-        var user = await dbContext.Users
-            .Include(item => item.Employees)
-            .SingleOrDefaultAsync(item => item.UserId == userId, cancellationToken);
-        if (user is null) return Unauthorized();
-
-        var employee = user.Employees.FirstOrDefault();
-        return Ok(new MeResponse(user.UserId, employee?.Id, employee?.Email,
-            User.FindFirstValue(ClaimTypes.Role) ?? "Employee", employee?.FirstName, employee?.LastName));
+        return Ok(new MeResponse(userId,
+            User.FindFirstValue(ClaimTypes.Name) ?? string.Empty,
+            User.FindFirstValue(ClaimTypes.Role) ?? "Employee"));
     }
 }

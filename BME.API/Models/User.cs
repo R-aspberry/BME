@@ -1,11 +1,9 @@
-namespace MERL.API.Models;
+namespace BME.API.Models;
 
 public class User
 {
-    public int UserId { get; set; }
-    public string UserName { get; set; } = string.Empty;
+    public int User_ID { get; set; }
+    public string? User_Name { get; set; }
     public string PasswordHash { get; set; } = string.Empty;
-    public ICollection<Employee> Employees { get; set; } = new List<Employee>();
-    public ICollection<BusinessOwner> BusinessOwners { get; set; } = new List<BusinessOwner>();
     public ICollection<ResourcePlanner> ResourcePlanners { get; set; } = new List<ResourcePlanner>();
 }

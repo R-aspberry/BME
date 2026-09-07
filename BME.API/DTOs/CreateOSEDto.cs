@@ -1,6 +1,6 @@
-namespace BME.API.Models;
+namespace BME.API.DTOs;
 
-public class OSE 
+public class CreateOSEDto
 {
     public int OSE_ID { get; set; }
 
@@ -15,21 +15,12 @@ public class OSE
     public string? Status { get; set; }
 
     public int Planner_ID { get; set;}
-
+    
     public int Interviewer_ID { get; set;}
 
-    public ResourcePlanner? Planner { get; set; }
-
-    public Employee? Interviewer { get; set; }
-
     public int? User_ID { get; set; }
-
-    public User? User { get; set; }
 
     public int EMP_ID { get; set; }
 
     public string? Phone { get; set; }
-
-    public Employee? Employee { get; set; }
-
 }

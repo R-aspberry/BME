@@ -1,6 +1,6 @@
-using MERL.API.DTOs;
+using BME.API.DTOs;
 
-namespace MERL.API.Services.Interfaces;
+namespace BME.API.Services.Interfaces;
 
 public interface IAuthService
 {
