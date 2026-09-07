@@ -1,0 +1,6 @@
+@BME.Backend_HostAddress = http://localhost:5160
+
+GET {{BME.Backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

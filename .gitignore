@@ -1,1 +1,73 @@
+# ==============================
+# .NET / Visual Studio
+# ==============================
+
+bin/
+obj/
+.vs/
+
+# Visual Studio Code
+.vscode/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ==============================
+# .NET build output
+# ==============================
+
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+
+# ==============================
+# NuGet
+# ==============================
+
+*.nupkg
+*.snupkg
+packages/
+
+# ==============================
+# ASP.NET secrets / configuration
+# ==============================
+
+appsettings.Local.json
+appsettings.*.local.json
+
+# User Secrets
+secrets.json
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# ==============================
+# Logs
+# ==============================
+
+*.log
+logs/
+
+# ==============================
+# OS files
+# ==============================
+
 .DS_Store
+Thumbs.db
+
+# ==============================
+# Temporary files
+# ==============================
+
+*.tmp
+*.temp
+*.swp
+*.swo
