@@ -136,9 +136,10 @@ modelBuilder.Entity<BO>()
             entity.Property(e => e.User_ID)
                 .HasColumnName("User_ID");
 
-            // explicit FK mapping to avoid EF creating a shadow FK (e.g. User_ID1)
+            // explicit FK mapping using the `User.ResourcePlanners` navigation
+            // to avoid EF creating a shadow FK column (e.g. User_ID1)
             entity.HasOne(r => r.User)
-                .WithMany()
+                .WithMany(u => u.ResourcePlanners)
                 .HasForeignKey(r => r.User_ID)
                 .OnDelete(DeleteBehavior.NoAction);
         });
