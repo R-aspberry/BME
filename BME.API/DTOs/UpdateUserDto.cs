@@ -1,8 +1,7 @@
-namespace BME.API.Models;
+namespace BME.API.DTOs;
 
-public class User
+public class UpdateUserDto
 {
-    public int User_ID { get; set; }
     public string? User_Name { get; set; }
     public string PasswordHash { get; set; } = string.Empty;
 }

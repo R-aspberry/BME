@@ -7,28 +7,28 @@ namespace BME.API.Services
 {
     public class ResourcePlannerService : IResourcePlannerService
     {
-        private readonly ResourceAllocationDbContext _context;
-
-        public ResourcePlannerService(ResourceAllocationDbContext context)
+        private readonly BMEDbContext _context;
+        
+        public ResourcePlannerService(BMEDbContext context)
         {
             _context = context;
         }
 
         public async Task<List<ResourcePlanner>> GetAllAsync()
         {
-            return await _context.ResourcePlanners
+            return await _context.Resource_Planner
                 .ToListAsync();
         }
 
         public async Task<ResourcePlanner?> GetByIdAsync(int id)
         {
-            return await _context.ResourcePlanners
-                .FirstOrDefaultAsync(p => p.PlannerId == id);
+            return await _context.Resource_Planner
+                .FirstOrDefaultAsync(p => p.Planner_ID == id);
         }
 
         public async Task<ResourcePlanner> CreateAsync(ResourcePlanner planner)
         {
-            _context.ResourcePlanners.Add(planner);
+            _context.Resource_Planner.Add(planner);
 
             await _context.SaveChangesAsync();
 
@@ -39,8 +39,8 @@ namespace BME.API.Services
             int id,
             ResourcePlanner planner)
         {
-            var existingPlanner = await _context.ResourcePlanners
-                .FirstOrDefaultAsync(p => p.PlannerId == id);
+            var existingPlanner = await _context.Resource_Planner
+                .FirstOrDefaultAsync(p => p.Planner_ID == id);
 
             if (existingPlanner == null)
             {
@@ -50,7 +50,7 @@ namespace BME.API.Services
             existingPlanner.Name = planner.Name;
             existingPlanner.Email = planner.Email;
             existingPlanner.Phone = planner.Phone;
-            existingPlanner.UserId = planner.UserId;
+            existingPlanner.User_ID = planner.User_ID;
 
             await _context.SaveChangesAsync();
 
@@ -59,15 +59,15 @@ namespace BME.API.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var planner = await _context.ResourcePlanners
-                .FirstOrDefaultAsync(p => p.PlannerId == id);
+            var planner = await _context.Resource_Planner
+                .FirstOrDefaultAsync(p => p.Planner_ID == id);
 
             if (planner == null)
             {
                 return false;
             }
 
-            _context.ResourcePlanners.Remove(planner);
+            _context.Resource_Planner.Remove(planner);
 
             await _context.SaveChangesAsync();
 

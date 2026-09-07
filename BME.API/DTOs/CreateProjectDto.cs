@@ -1,6 +1,6 @@
-namespace BME.API.Models;
+namespace BME.API.DTOs;
 
-public class Project
+public class CreateProjectDto
 {
     public int Prj_ID { get; set; }
 
@@ -23,9 +23,4 @@ public class Project
     public DateTime? End_date { get; set; }
 
     public int? BO_ID { get; set; }
-
-    public BO? BO { get; set; }
-
-    public ICollection<Employee> Employees { get; set; }
-    = new List<Employee>();
 }

@@ -24,11 +24,11 @@ namespace BME.API.Controllers
 
             var result = planners.Select(p => new ResourcePlannerDto
             {
-                PlannerId = p.PlannerId,
+                Planner_ID = p.Planner_ID,
                 Name = p.Name,
                 Email = p.Email,
                 Phone = p.Phone,
-                UserId = p.UserId
+                User_ID = p.User_ID
             }).ToList();
 
             return Ok(result);
@@ -47,11 +47,11 @@ namespace BME.API.Controllers
 
             var result = new ResourcePlannerDto
             {
-                PlannerId = planner.PlannerId,
+                Planner_ID = planner.Planner_ID,
                 Name = planner.Name,
                 Email = planner.Email,
                 Phone = planner.Phone,
-                UserId = planner.UserId
+                User_ID = planner.User_ID
             };
 
             return Ok(result);
@@ -64,27 +64,27 @@ namespace BME.API.Controllers
         {
             var planner = new ResourcePlanner
             {
-                PlannerId = dto.PlannerId,
+                Planner_ID = dto.Planner_ID,
                 Name = dto.Name,
                 Email = dto.Email,
                 Phone = dto.Phone,
-                UserId = dto.UserId
+                User_ID = dto.User_ID
             };
 
             var createdPlanner = await _service.CreateAsync(planner);
 
             var result = new ResourcePlannerDto
             {
-                PlannerId = createdPlanner.PlannerId,
+                Planner_ID = createdPlanner.Planner_ID,
                 Name = createdPlanner.Name,
                 Email = createdPlanner.Email,
                 Phone = createdPlanner.Phone,
-                UserId = createdPlanner.UserId
+                User_ID = createdPlanner.User_ID
             };
 
             return CreatedAtAction(
                 nameof(GetById),
-                new { id = result.PlannerId },
+                new { id = result.Planner_ID },
                 result);
         }
 
@@ -96,11 +96,11 @@ namespace BME.API.Controllers
         {
             var planner = new ResourcePlanner
             {
-                PlannerId = dto.PlannerId,
+                Planner_ID = id,
                 Name = dto.Name,
                 Email = dto.Email,
                 Phone = dto.Phone,
-                UserId = dto.UserId
+                User_ID = dto.User_ID
             };
 
             var updated = await _service.UpdateAsync(id, planner);

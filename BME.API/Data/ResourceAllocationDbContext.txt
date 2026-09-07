@@ -21,9 +21,9 @@ namespace BME.API.Data
             {
                 entity.ToTable("Resource_Planner");
 
-                entity.HasKey(e => e.PlannerId);
+                entity.HasKey(e => e.Planner_ID);
 
-                entity.Property(e => e.PlannerId)
+                entity.Property(e => e.Planner_ID)
                     .HasColumnName("Planner_ID");
 
                 entity.Property(e => e.Name)
@@ -38,7 +38,7 @@ namespace BME.API.Data
                     .HasColumnName("Phone")
                     .HasMaxLength(20);
 
-                entity.Property(e => e.UserId)
+                entity.Property(e => e.User_ID)
                     .HasColumnName("User_ID");
             });
         }

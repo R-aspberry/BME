@@ -37,4 +37,7 @@ public class Employee
     public Department? Department { get; set; }
 
     public User? User { get; set; }
+
+    public ICollection<Project> Projects { get; set; }
+    = new List<Project>();
 }

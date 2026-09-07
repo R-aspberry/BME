@@ -16,6 +16,14 @@ builder.Services.AddScoped<EmployeeService>();
 
 builder.Services.AddScoped<OSEService>();
 
+builder.Services.AddScoped<ProjectService>();
+
+builder.Services.AddScoped<BOService>();
+
+builder.Services.AddScoped<DepartmentService>();
+
+builder.Services.AddScoped<UserService>();
+
 builder.Services.AddScoped<IResourcePlannerService, ResourcePlannerService>();
 
 var app = builder.Build();
