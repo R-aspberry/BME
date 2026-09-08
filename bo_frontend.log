@@ -1,0 +1,14 @@
+
+> bo-frontend@0.1.0 dev
+> vite
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vite.config.js:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+Port 5173 is in use, trying another one...
+Port 5174 is in use, trying another one...
+
+  VITE v8.2.2  ready in 193 ms
+
+  ➜  Local:   http://localhost:5175/
+  ➜  Network: use --host to expose
