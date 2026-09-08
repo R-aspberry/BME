@@ -42,13 +42,27 @@ public class BMEDbContext : DbContext
         // =========================
         // Employee
         // =========================
-        modelBuilder.Entity<Employee>()
-            .HasKey(e => e.ID);
+        modelBuilder.Entity<Employee>(entity =>
+        {
+            entity.HasKey(e => e.ID);
+            entity.ToTable("Employees");
 
-        modelBuilder.Entity<Employee>()
-            .HasOne(e => e.Department)
-            .WithMany(d => d.Employees)
-            .HasForeignKey(e => e.D_ID);
+            entity.Property(e => e.ID).HasColumnName("ID");
+            entity.Property(e => e.User_ID).HasColumnName("User_ID");
+            entity.Property(e => e.FN).HasColumnName("FN");
+            entity.Property(e => e.LN).HasColumnName("LN");
+            entity.Property(e => e.Email).HasColumnName("Email");
+
+            entity.HasOne(e => e.Department)
+                .WithMany(d => d.Employees)
+                .HasForeignKey(e => e.D_ID);
+
+            // Explicit mapping for User navigation to avoid EF creating a shadow FK (User_ID1)
+            entity.HasOne(e => e.User)
+                .WithMany(u => u.Employees)
+                .HasForeignKey(e => e.User_ID)
+                .OnDelete(DeleteBehavior.NoAction);
+        });
 
 
         modelBuilder.Entity<Employee>()
@@ -109,11 +123,22 @@ public class BMEDbContext : DbContext
     
 modelBuilder.Entity<BO>()
     .HasKey(b => b.BO_ID);
+    modelBuilder.Entity<BO>(entity =>
+    {
+        entity.ToTable("BO");
+        entity.HasKey(b => b.BO_ID);
+        entity.Property(b => b.BO_ID).HasColumnName("BO_ID");
+        entity.Property(b => b.Name).HasColumnName("Name");
+        entity.Property(b => b.Business_Area).HasColumnName("Business_Area");
+        entity.Property(b => b.Email).HasColumnName("Email");
+        entity.Property(b => b.Phone).HasColumnName("Phone");
+        entity.Property(b => b.User_ID).HasColumnName("User_ID");
 
-    modelBuilder.Entity<BO>()
-    .HasOne(b => b.User)
-    .WithMany()
-    .HasForeignKey(b => b.User_ID);
+        entity.HasOne(b => b.User)
+            .WithMany(u => u.BusinessOwners)
+            .HasForeignKey(b => b.User_ID)
+            .OnDelete(DeleteBehavior.NoAction);
+    });
 
         // =========================
         // Resource Planner

@@ -11,6 +11,16 @@ using BME.API.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+// Allow local frontend origins during development
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: "LocalDev",
+		policy => policy
+			.WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:5176")
+			.AllowAnyHeader()
+			.AllowAnyMethod()
+			.AllowCredentials());
+});
 builder.Services.AddDbContext<BMEDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<EmployeeService>();
@@ -44,5 +54,6 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("LocalDev");
 app.MapControllers();
 app.Run();
