@@ -30,10 +30,10 @@ export default function Login() {
 
       switch (res.role) {
         case 'BO':
-          navigate('/bo-dashboard');
+          navigate('/bo/dashboard');
           break;
         case 'Employee':
-          navigate('/employee-dashboard');
+          navigate('/employee/dashboard');
           break;
         case 'ResourcePlanner':
           navigate('/planner-dashboard');

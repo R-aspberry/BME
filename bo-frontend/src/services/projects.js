@@ -4,6 +4,10 @@ export function getProjects() {
   return fetchJson('/api/projects')
 }
 
+export function getMyProjects() {
+  return fetchJson('/api/projects/mine')
+}
+
 export function getProject(id) {
   return fetchJson(`/api/projects/${id}`)
 }

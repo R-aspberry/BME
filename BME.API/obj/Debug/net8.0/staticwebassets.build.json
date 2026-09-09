@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "xkq+8I1n9RVkVHQfdG9fj4o+mHc+4LFMF43O5VMfEuI=",
-  "Source": "MERL.API",
-  "BasePath": "_content/MERL.API",
+  "Hash": "TQ444KPmVISqjKEDm5dFWPtBnCXbSnggyjt/lgQdDmA=",
+  "Source": "BME.API",
+  "BasePath": "_content/BME.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

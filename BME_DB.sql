@@ -51,7 +51,7 @@ CREATE TABLE Employees (
     Manager_ID INT,
     D_ID INT,
     Type_of_contract_ID INT,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Manager_ID) REFERENCES Employees(ID),
     FOREIGN KEY (D_ID) REFERENCES Department(D_ID),
     FOREIGN KEY (Type_of_contract_ID) REFERENCES Type_of_contract(C_ID)
@@ -96,8 +96,7 @@ CREATE TABLE Resource_Planner (
     Email VARCHAR(100),
     Phone VARCHAR(20),
     User_ID INT,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
-
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
 );
 
 CREATE TABLE OSE (

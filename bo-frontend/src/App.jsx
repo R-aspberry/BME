@@ -11,6 +11,13 @@ import Header from './components/Header'
 import BOLayout from './pages/BusinessOwner/BOLayout'
 import BODashboard from './pages/BusinessOwner/Dashboard/BODashboard'
 import BOProjectList from './pages/BusinessOwner/Projects/BOProjectList'
+import EmployeeLayout from './pages/Employee/EmployeeLayout'
+import EmployeeDashboard from './pages/Employee/EmployeeDashboard'
+import EmployeeProjects from './pages/Employee/EmployeeProjects'
+import EmployeePortfolios from './pages/Employee/EmployeePortfolios'
+import EmployeeCalendar from './pages/Employee/EmployeeCalendar'
+import EmployeeNotifications from './pages/Employee/EmployeeNotifications'
+import EmployeeProfile from './pages/Employee/EmployeeProfile'
 
 // 1. Update RequireAuth to act as a layout guard using <Outlet />
 function RequireAuth() {
@@ -66,6 +73,25 @@ export default function App() {
           <Route path="/bo/profile" element={<Profile />} />
         </Route>
       </Route>
+
+      <Route element={<RequireEmployee />}>
+        <Route element={<EmployeeLayout />}>
+          <Route path="/employee" element={<Navigate to="/employee/dashboard" replace />} />
+          <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
+          <Route path="/employee/projects" element={<EmployeeProjects />} />
+          <Route path="/employee/projects/:id" element={<ProjectDetail />} />
+          <Route path="/employee/portfolios" element={<EmployeePortfolios />} />
+          <Route path="/employee/calendar" element={<EmployeeCalendar />} />
+          <Route path="/employee/notifications" element={<EmployeeNotifications />} />
+          <Route path="/employee/profile" element={<EmployeeProfile />} />
+        </Route>
+      </Route>
     </Routes>
   )
+}
+
+function RequireEmployee() {
+  const token = localStorage.getItem('token')
+  const role = localStorage.getItem('role')
+  return token && role === 'Employee' ? <Outlet /> : <Navigate to="/login" replace />
 }

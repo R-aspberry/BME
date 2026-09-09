@@ -30,8 +30,8 @@ public sealed class AuthService(
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync(cancellationToken);
         
-        // Newly registered users won't have a role/department mapped yet
-        return CreateResponse(user, "Unknown", null);
+        // Standalone accounts use the default employee role until linked to another role record.
+        return CreateResponse(user, "Employee", null);
     }
 
     public async Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
@@ -44,7 +44,7 @@ public sealed class AuthService(
             throw new UnauthorizedAccessException("Invalid username or password.");
 
         // 2. Determine Role and fetch Department if applicable
-        string role = "Unknown";
+        string role = "Employee";
         string? departmentName = null;
 
         // Note: Replace the generic Set<T> types with your exact C# Model class names if they differ slightly
