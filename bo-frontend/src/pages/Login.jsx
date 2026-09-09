@@ -6,22 +6,28 @@ export default function Login() {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError(null); // Clear any previous errors
+    setError(null);
+
+    // Explicit check for empty fields
+    if (!userName.trim() || !password.trim()) {
+      setError('Username and password cannot be left empty.');
+      return;
+    }
+
+    setIsLoading(true);
     
     try {
       const res = await login(userName, password);
       
-      // Store standard auth data. 
-      // Note: ASP.NET Core serializes C# properties to camelCase by default (token, userName, role)
       localStorage.setItem('token', res.token);
       localStorage.setItem('userName', res.userName);
       localStorage.setItem('role', res.role);
 
-      // Route the user based on their specific role in the system
       switch (res.role) {
         case 'BO':
           navigate('/bo-dashboard');
@@ -36,37 +42,93 @@ export default function Login() {
           navigate('/ose-dashboard');
           break;
         default:
-          navigate('/'); // Fallback if no specific role matches
+          navigate('/'); 
       }
     } catch (err) {
-      setError('Invalid credentials. Please try again.');
+      // Explicit error message for invalid credentials
+      setError('Invalid credentials. Please check your username and password and try again.');
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h2>BME Portal Login</h2>
-        <form onSubmit={handleSubmit}>
-          <label>Username</label>
+        
+        {/* Branding Header: Clean green text logo */}
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <div style={{ 
+            color: 'var(--aaib-primary)', 
+            fontWeight: '800', 
+            fontSize: '36px', 
+            letterSpacing: '2px',
+            marginBottom: '16px'
+          }}>
+            BME
+          </div>
+          <h2 className="aaib-title" style={{ marginBottom: '4px' }}>Welcome back</h2>
+          <p className="aaib-subtitle">Sign in to your enterprise resource portal</p>
+        </div>
+
+        <form className="form" onSubmit={handleSubmit} noValidate>
+          
+          {/* Error Banner */}
+          {error && (
+            <div className="error" style={{ 
+              background: 'var(--aaib-danger-soft)', 
+              color: 'var(--aaib-danger)',
+              padding: '12px', 
+              borderRadius: '10px', 
+              marginBottom: '16px',
+              fontSize: '14px',
+              border: '1px solid var(--aaib-danger)'
+            }}>
+              {error}
+            </div>
+          )}
+
+          {/* Username Field with Red Asterisk */}
+          <label>
+            Username <span style={{ color: 'var(--aaib-danger)' }}>*</span>
+          </label>
           <input 
             type="text"
             value={userName} 
             onChange={e => setUserName(e.target.value)} 
-            required 
+            disabled={isLoading}
+            placeholder="Enter your username"
+            className="aaib-input"
           />
           
-          <label>Password</label>
+          {/* Password Field with Red Asterisk */}
+          <label>
+            Password <span style={{ color: 'var(--aaib-danger)' }}>*</span>
+          </label>
           <input 
             type="password" 
             value={password} 
             onChange={e => setPassword(e.target.value)} 
-            required 
+            disabled={isLoading}
+            placeholder="••••••••"
+            className="aaib-input"
           />
           
-          <button className="btn primary" type="submit">Sign in</button>
-          
-          {error && <div className="error" style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+          <div className="actions">
+            <button 
+              className="btn primary" 
+              type="submit" 
+              disabled={isLoading}
+              style={{ 
+                width: '100%', 
+                marginTop: '12px', 
+                opacity: isLoading ? 0.7 : 1, 
+                cursor: isLoading ? 'not-allowed' : 'pointer' 
+              }}
+            >
+              {isLoading ? 'Signing in...' : 'Sign in'}
+            </button>
+          </div>
         </form>
       </div>
     </div>
