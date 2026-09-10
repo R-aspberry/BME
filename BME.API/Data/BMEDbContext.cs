@@ -114,9 +114,13 @@ public class BMEDbContext : DbContext
 
         modelBuilder.Entity<Project>()
     .HasKey(p => p.Prj_ID);
+        modelBuilder.Entity<Project>()
+            .Property(p => p.Prj_ID)
+            .HasColumnName("Prj_ID")
+            .ValueGeneratedOnAdd();
 
-    modelBuilder.Entity<Project>()
-    .HasOne(p => p.BO)
+        modelBuilder.Entity<Project>()
+            .HasOne(p => p.BO)
     .WithMany()
     .HasForeignKey(p => p.BO_ID);
 

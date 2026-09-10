@@ -59,7 +59,6 @@ public class ProjectService
     {
         var project = new Project
         {
-            Prj_ID = dto.Prj_ID,
             Project_Name = dto.Project_Name,
             Flag = dto.Flag,
             Status = dto.Status,
