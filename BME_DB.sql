@@ -151,7 +151,7 @@ INSERT INTO Users (User_ID, User_Name, PasswordHash) VALUES
 (14, 'ethan.clark', 'hash14'),
 (15, 'charlotte.lewis', 'hash15'),
 (16, 'omar.khatab', 'hash16'),
-(17, 'karen.adams', 'hash17'),
+(17, 'karen.adams', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
 (18, 'peter.nguyen', 'hash18');
 
 

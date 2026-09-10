@@ -1,0 +1,1 @@
+// ProfilePicture component
