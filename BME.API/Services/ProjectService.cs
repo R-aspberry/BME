@@ -71,6 +71,13 @@ public class ProjectService
             BO_ID = dto.BO_ID
         };
 
+        // If database column is not configured as IDENTITY, generate an ID here to avoid NULL insert.
+        if (project.Prj_ID == 0)
+        {
+            var maxId = await _context.Projects.MaxAsync(p => (int?)p.Prj_ID) ?? 0;
+            project.Prj_ID = maxId + 1;
+        }
+
         _context.Projects.Add(project);
 
         await _context.SaveChangesAsync();
