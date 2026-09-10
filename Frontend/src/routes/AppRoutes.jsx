@@ -1,39 +1,213 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Header from '../components/layout/Header'
-import Sidebar from '../components/layout/Sidebar'
+
 import Login from '../pages/auth/Login'
+
+// Dashboards
 import BODashboard from '../pages/bo/BODashboard'
-import BOCalendar from '../pages/bo/Calendar'
-import BOCreateProject from '../pages/bo/CreateProject'
-import BOMyProjects from '../pages/bo/MyProjects'
-import BONotifications from '../pages/bo/Notifications'
-import BOProfile from '../pages/bo/Profile'
-import BOProjectDetails from '../pages/bo/ProjectDetails'
+import EmployeeDashboard from '../pages/employee/EmployeeDashboard'
+import PlannerDashboard from '../pages/resourcePlanner/PlannerDashboard'
+import PODashboard from '../pages/po/PODashboard'
+import VerticalHeadDashboard from '../pages/verticalHead/VerticalHeadDashboard'
+
 import ProtectedRoute from './ProtectedRoute'
 import RoleRoute from './RoleRoute'
 
-function BOFrame({ children }) {
-  return <div className="app-root"><Header /><div className="layout"><Sidebar /><main className="main">{children}</main></div></div>
+
+function NotFound() {
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center'
+      }}
+    >
+      <h1>404</h1>
+      <h2>Page Not Found</h2>
+      <p>
+        The page you are looking for does not exist
+        or has not been implemented yet.
+      </p>
+    </div>
+  )
 }
+
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+
+      {/* =========================
+          PUBLIC
+      ========================== */}
+
+      <Route
+        path="/login"
+        element={<Login />}
+      />
+
+      <Route
+        path="/404"
+        element={<NotFound />}
+      />
+
+
+      {/* =========================
+          AUTHENTICATED USERS
+      ========================== */}
+
       <Route element={<ProtectedRoute />}>
+
+
+        {/* =====================
+            BUSINESS OWNER
+        ====================== */}
+
         <Route element={<RoleRoute roles={['BO']} />}>
-          <Route path="/bo" element={<Navigate to="/bo/dashboard" replace />} />
-          <Route path="/bo/dashboard" element={<BOFrame><BODashboard /></BOFrame>} />
-          <Route path="/bo/projects" element={<BOFrame><BOMyProjects /></BOFrame>} />
-          <Route path="/bo/projects/create" element={<BOFrame><BOCreateProject /></BOFrame>} />
-          <Route path="/bo/projects/:id" element={<BOFrame><BOProjectDetails /></BOFrame>} />
-          <Route path="/bo/notifications" element={<BOFrame><BONotifications /></BOFrame>} />
-          <Route path="/bo/calendar" element={<BOFrame><BOCalendar /></BOFrame>} />
-          <Route path="/bo/profile" element={<BOFrame><BOProfile /></BOFrame>} />
+
+          <Route
+            path="/bo"
+            element={
+              <Navigate
+                to="/bo/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="/bo/dashboard"
+            element={<BODashboard />}
+          />
+
         </Route>
+
+
+        {/* =====================
+            RESOURCE PLANNER
+        ====================== */}
+
+        <Route element={<RoleRoute roles={['ResourcePlanner']} />}>
+
+          <Route
+            path="/resource-planner"
+            element={
+              <Navigate
+                to="/resource-planner/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="/resource-planner/dashboard"
+            element={<PlannerDashboard />}
+          />
+
+        </Route>
+
+
+        {/* =====================
+            EMPLOYEE
+        ====================== */}
+
+        <Route element={<RoleRoute roles={['Employee']} />}>
+
+          <Route
+            path="/employee"
+            element={
+              <Navigate
+                to="/employee/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="/employee/dashboard"
+            element={<EmployeeDashboard />}
+          />
+
+        </Route>
+
+
+        {/* =====================
+            HEAD OF PO
+        ====================== */}
+
+        <Route element={<RoleRoute roles={['HeadOfPO']} />}>
+
+          <Route
+            path="/po"
+            element={
+              <Navigate
+                to="/po/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="/po/dashboard"
+            element={<PODashboard />}
+          />
+
+        </Route>
+
+
+        {/* =====================
+            VERTICAL HEAD
+        ====================== */}
+
+        <Route element={<RoleRoute roles={['Head']} />}>
+
+          <Route
+            path="/vertical-head"
+            element={
+              <Navigate
+                to="/vertical-head/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="/vertical-head/dashboard"
+            element={<VerticalHeadDashboard />}
+          />
+
+        </Route>
+
       </Route>
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+
+
+      {/* =========================
+          DEFAULT
+      ========================== */}
+
+      <Route
+        path="/"
+        element={
+          <Navigate
+            to="/login"
+            replace
+          />
+        }
+      />
+
+      <Route
+        path="*"
+        element={
+          <Navigate
+            to="/404"
+            replace
+          />
+        }
+      />
+
     </Routes>
   )
 }

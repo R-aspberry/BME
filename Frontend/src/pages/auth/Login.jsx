@@ -28,22 +28,34 @@ export default function Login() {
       localStorage.setItem('userName', res.userName);
       localStorage.setItem('role', res.role);
 
+
       switch (res.role) {
-        case 'BO':
-          navigate('/bo/dashboard');
-          break;
-        case 'Employee':
-          navigate('/employee/dashboard');
-          break;
-        case 'ResourcePlanner':
-          navigate('/po/dashboard');
-          break;
-        case 'OSE':
-          navigate('/vertical-head/dashboard');
-          break;
-        default:
-          navigate('/'); 
-      }
+  case 'BO':
+    navigate('/bo/dashboard')
+    break
+
+  case 'ResourcePlanner':
+    navigate('/resource-planner/dashboard')
+    break
+
+  case 'Employee':
+    navigate('/employee/dashboard')
+    break
+
+  case 'Head':
+    navigate('/vertical-head/dashboard')
+    break
+
+  case 'HeadOfPO':
+    navigate('/po/dashboard')
+    break
+
+  default:
+    navigate('/404')
+    break
+}
+
+
     } catch (err) {
       // Explicit error message for invalid credentials
       setError('Invalid credentials. Please check your username and password and try again.');
