@@ -150,3 +150,29 @@ public class ProjectService
         return true;
     }
 }
+
+    public async Task<List<ProjectDto>> GetMineAsync(int userId)
+    {
+        // find the BO for this user
+        var bo = await _context.BOs.FirstOrDefaultAsync(b => b.User_ID == userId);
+        if (bo == null)
+            return new List<ProjectDto>();
+
+        return await _context.Projects
+            .Where(p => p.BO_ID == bo.BO_ID)
+            .Select(p => new ProjectDto
+            {
+                Prj_ID = p.Prj_ID,
+                Project_Name = p.Project_Name,
+                Flag = p.Flag,
+                Status = p.Status,
+                Description = p.Description,
+                Budget = p.Budget,
+                MVP = p.MVP,
+                BRD = p.BRD,
+                Start_date = p.Start_date,
+                End_date = p.End_date,
+                BO_ID = p.BO_ID
+            })
+            .ToListAsync();
+    }

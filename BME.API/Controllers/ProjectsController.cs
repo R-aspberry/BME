@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BME.API.DTOs;
 using BME.API.Services;
+using System.Security.Claims;
 
 namespace BME.API.Controllers;
 
@@ -21,6 +22,17 @@ public class ProjectsController : ControllerBase
         var projectDtos = await _projectService.GetAllAsync();
 
         return Ok(projectDtos);
+    }
+
+    [HttpGet("mine")]
+    public async Task<ActionResult> GetMyProjects()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+            return Unauthorized();
+
+        var projects = await _projectService.GetMineAsync(userId);
+        return Ok(projects);
     }
 
     [HttpGet("{id}")]
