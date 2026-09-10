@@ -1,6 +1,4 @@
-// In development, use Vite's existing /api proxy so the browser makes a
-// same-origin request and is not blocked by the backend CORS policy.
-const API_BASE = import.meta.env.VITE_API_BASE || ''
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000'
 
 export async function fetchJson(path, options = {}) {
   const token = localStorage.getItem('token')

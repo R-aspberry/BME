@@ -62,3 +62,58 @@ Other files
 
 ---
 Migration snapshot location: `Frontend/src/migration/bo-frontend`
+
+## Actions performed
+
+- Copied all files from `Frontend/src/migration/bo-frontend` into `Frontend/src` for files that did not already exist (non-destructive). New files added directly into their target locations.
+- For files that already existed in `Frontend/src`, created incoming copies with the `.incoming` suffix (e.g. `Frontend/src/services/api.js.incoming`) so nothing was overwritten.
+- Committed these changes in a single commit `chore(migration): import bo-frontend snapshot (non-destructive), add incoming copies for conflicts`.
+
+## Conflicts (incoming copies created)
+
+The following files existed in `Frontend/src` and therefore were preserved; the incoming copies were placed alongside for manual review and merge:
+
+<listed below>
+
+styles.css
+image_99c163.png
+components/Header.jsx
+components/Sidebar.jsx
+main.jsx
+App.jsx
+image_99c1c0.png
+pages/Profile.jsx
+pages/ProjectCreate.jsx
+pages/Dashboard.jsx
+pages/Login.jsx
+pages/Projects.jsx
+pages/ResourcePlanner/PlannerRequests.jsx
+pages/ResourcePlanner/PlannerPortfolio.jsx
+pages/ResourcePlanner/PlannerSidebar.jsx
+pages/ResourcePlanner/PlannerEmployees.jsx
+pages/ResourcePlanner/PlannerHeader.jsx
+pages/ResourcePlanner/PlannerDashboard.jsx
+pages/ResourcePlanner/PlannerLayout.jsx
+pages/Employee/EmployeePortfolios.jsx
+pages/Employee/EmployeeDashboard.jsx
+pages/Employee/EmployeeCalendar.jsx
+pages/Employee/EmployeeSidebar.jsx
+pages/Employee/EmployeeHeader.jsx
+pages/Employee/EmployeeLayout.jsx
+pages/Employee/EmployeeNotifications.jsx
+pages/Employee/EmployeeProjects.jsx
+pages/Employee/EmployeeProfile.jsx
+pages/ProjectDetail.jsx
+pages/BusinessOwner/Projects/BOProjectList.jsx
+pages/BusinessOwner/Dashboard/BODashboard.jsx
+pages/BusinessOwner/components/bo/BOHeader.jsx
+pages/BusinessOwner/components/bo/BOSidebar.jsx
+pages/BusinessOwner/BOLayout.jsx
+services/auth.js
+services/staffingRequests.js
+services/projects.js
+services/resourcePlanner.js
+services/employees.js
+services/ose.js
+services/api.js
+services/bo.js

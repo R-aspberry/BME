@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getOSEmployees } from '../../services/ose'
-import { getResourcePlanners } from '../../services/resourcePlanner'
+import { getOSEmployees } from '../../services/oseService'
+import { getResourcePlanners } from '../../services/resourcePlannerService'
 
 const statusClass = status => ({ Hired: 'aaib-badge-success', Selected: 'aaib-badge-warning', 'In Interview': 'aaib-badge-neutral', Rejected: 'aaib-badge-danger' }[status] || 'aaib-badge-neutral')
 

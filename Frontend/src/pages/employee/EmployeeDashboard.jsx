@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getMyProjects } from '../../services/projectService'
-import { me } from '../../services/authService'
+import { getMyProjects } from '../../services/projects'
+import { me } from '../../services/auth'
 
 function statusClass(status) {
   const value = (status || 'Open').toLowerCase()

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { createOSE, getOSEmployees, updateOSE } from '../../services/oseService'
-import { getResourcePlanners } from '../../services/resourcePlannerService'
+import { createOSE, getOSEmployees, updateOSE } from '../../services/ose'
+import { getResourcePlanners } from '../../services/resourcePlanner'
 
 const emptyForm = { OSE_ID: '', FN: '', LN: '', Vendor: '', Email: '', Phone: '', Status: 'Selected', Planner_ID: '', Interviewer_ID: 1, User_ID: '', EMP_ID: 1, age: '', skills: '', title: '' }
 const statuses = ['Selected', 'In Interview', 'Hired', 'Rejected']

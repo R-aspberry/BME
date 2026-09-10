@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { getOSEmployees } from '../../services/oseService'
-import { getResourcePlanners } from '../../services/resourcePlannerService'
+import { getOSEmployees } from '../../services/ose'
+import { getResourcePlanners } from '../../services/resourcePlanner'
 
 export default function PlannerPortfolio() {
   const [planner, setPlanner] = useState(null)

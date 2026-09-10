@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { createPlannerRequest, getPlannerRequests, getPORequests } from '../../services/staffingRequests'
+import { createPlannerRequest, getPlannerRequests, getPORequests } from '../../services/resourceService'
 
 export default function PlannerRequests() {
   const [incoming, setIncoming] = useState([])
