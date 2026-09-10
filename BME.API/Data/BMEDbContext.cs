@@ -17,6 +17,8 @@ public class BMEDbContext : DbContext
     public DbSet<ResourcePlanner> Resource_Planner { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<BO> BOs { get; set; }
+    public DbSet<PORequest> PORequests { get; set; }
+    public DbSet<PlannerRequest> PlannerRequests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -90,6 +92,13 @@ public class BMEDbContext : DbContext
         // =========================
         modelBuilder.Entity<OSE>()
             .HasKey(e => e.OSE_ID);
+
+        modelBuilder.Entity<OSE>(entity =>
+        {
+            entity.Property(e => e.Age).HasColumnName("Age");
+            entity.Property(e => e.Skills).HasColumnName("Skills").HasMaxLength(500);
+            entity.Property(e => e.Title).HasColumnName("Title").HasMaxLength(100);
+        });
 
         modelBuilder.Entity<OSE>()
             .HasOne(e => e.Planner)
@@ -170,6 +179,24 @@ modelBuilder.Entity<BO>()
                 .WithMany(u => u.ResourcePlanners)
                 .HasForeignKey(r => r.User_ID)
                 .OnDelete(DeleteBehavior.NoAction);
+        });
+
+        modelBuilder.Entity<PORequest>(entity =>
+        {
+            entity.ToTable("PO_Requests");
+            entity.HasKey(request => request.Request_ID);
+            entity.Property(request => request.Department).HasMaxLength(100).IsRequired();
+            entity.Property(request => request.Details).HasMaxLength(1000);
+            entity.Property(request => request.Status).HasMaxLength(30).IsRequired();
+        });
+
+        modelBuilder.Entity<PlannerRequest>(entity =>
+        {
+            entity.ToTable("Planner_Requests");
+            entity.HasKey(request => request.Request_ID);
+            entity.Property(request => request.Department).HasMaxLength(100).IsRequired();
+            entity.Property(request => request.Details).HasMaxLength(1000);
+            entity.Property(request => request.Status).HasMaxLength(30).IsRequired();
         });
     }
 }

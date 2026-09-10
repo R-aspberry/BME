@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function BOHeader() {
   const userName = localStorage.getItem('userName') || 'Business Owner'
@@ -24,7 +25,9 @@ export default function BOHeader() {
         color: '#374151',
         fontWeight: 600
       }}>
-        <span>Welcome, {userName}</span>
+        <Link to="/bo/profile" title="Open your profile" style={{ color: 'inherit', textDecoration: 'none' }}>
+          Welcome, {userName}
+        </Link>
       </div>
     </header>
   )

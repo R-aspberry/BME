@@ -8,6 +8,12 @@ public class OSEDto
 
     public string? LN { get; set; }
 
+    public int? Age { get; set; }
+
+    public string? Skills { get; set; }
+
+    public string? Title { get; set; }
+
     public string? Vendor { get; set; }
 
     public string? Email { get; set; }

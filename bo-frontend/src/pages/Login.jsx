@@ -26,6 +26,7 @@ export default function Login() {
       
       localStorage.setItem('token', res.token);
       localStorage.setItem('userName', res.userName);
+      localStorage.setItem('userId', res.userId);
       localStorage.setItem('role', res.role);
 
       switch (res.role) {
@@ -36,7 +37,7 @@ export default function Login() {
           navigate('/employee/dashboard');
           break;
         case 'ResourcePlanner':
-          navigate('/planner-dashboard');
+          navigate('/planner/dashboard');
           break;
         case 'OSE':
           navigate('/ose-dashboard');

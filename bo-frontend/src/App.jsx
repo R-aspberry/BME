@@ -18,6 +18,11 @@ import EmployeePortfolios from './pages/Employee/EmployeePortfolios'
 import EmployeeCalendar from './pages/Employee/EmployeeCalendar'
 import EmployeeNotifications from './pages/Employee/EmployeeNotifications'
 import EmployeeProfile from './pages/Employee/EmployeeProfile'
+import PlannerLayout from './pages/ResourcePlanner/PlannerLayout'
+import PlannerDashboard from './pages/ResourcePlanner/PlannerDashboard'
+import PlannerPortfolio from './pages/ResourcePlanner/PlannerPortfolio'
+import PlannerEmployees from './pages/ResourcePlanner/PlannerEmployees'
+import PlannerRequests from './pages/ResourcePlanner/PlannerRequests'
 
 // 1. Update RequireAuth to act as a layout guard using <Outlet />
 function RequireAuth() {
@@ -86,6 +91,16 @@ export default function App() {
           <Route path="/employee/profile" element={<EmployeeProfile />} />
         </Route>
       </Route>
+
+      <Route element={<RequirePlanner />}>
+        <Route element={<PlannerLayout />}>
+          <Route path="/planner" element={<Navigate to="/planner/dashboard" replace />} />
+          <Route path="/planner/dashboard" element={<PlannerDashboard />} />
+          <Route path="/planner/portfolio" element={<PlannerPortfolio />} />
+          <Route path="/planner/employees" element={<PlannerEmployees />} />
+          <Route path="/planner/requests" element={<PlannerRequests />} />
+        </Route>
+      </Route>
     </Routes>
   )
 }
@@ -94,4 +109,10 @@ function RequireEmployee() {
   const token = localStorage.getItem('token')
   const role = localStorage.getItem('role')
   return token && role === 'Employee' ? <Outlet /> : <Navigate to="/login" replace />
+}
+
+function RequirePlanner() {
+  const token = localStorage.getItem('token')
+  const role = localStorage.getItem('role')
+  return token && role === 'ResourcePlanner' ? <Outlet /> : <Navigate to="/login" replace />
 }

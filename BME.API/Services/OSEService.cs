@@ -21,6 +21,9 @@ public class OSEService
             OSE_ID = ose.OSE_ID,
             FN = ose.FN,
             LN = ose.LN,
+            Age = ose.Age,
+            Skills = ose.Skills,
+            Title = ose.Title,
             Vendor = ose.Vendor,
             Email = ose.Email,
             Status = ose.Status,
@@ -41,6 +44,9 @@ public class OSEService
                 OSE_ID = ose.OSE_ID,
                 FN = ose.FN,
                 LN = ose.LN,
+                Age = ose.Age,
+                Skills = ose.Skills,
+                Title = ose.Title,
                 Vendor = ose.Vendor,
                 Email = ose.Email,
                 Status = ose.Status,
@@ -60,6 +66,9 @@ public class OSEService
             OSE_ID = createOSEDto.OSE_ID,
             FN = createOSEDto.FN,
             LN = createOSEDto.LN,
+            Age = createOSEDto.Age,
+            Skills = createOSEDto.Skills,
+            Title = createOSEDto.Title,
             Vendor = createOSEDto.Vendor,
             Email = createOSEDto.Email,
             Status = createOSEDto.Status,
@@ -77,6 +86,9 @@ public class OSEService
             OSE_ID = ose.OSE_ID,
             FN = ose.FN,
             LN = ose.LN,
+            Age = ose.Age,
+            Skills = ose.Skills,
+            Title = ose.Title,
             Vendor = ose.Vendor,
             Email = ose.Email,
             Status = ose.Status,
@@ -101,6 +113,9 @@ public class OSEService
         ose.OSE_ID = dto.OSE_ID;
         ose.FN = dto.FN;
         ose.LN = dto.LN;
+        ose.Age = dto.Age;
+        ose.Skills = dto.Skills;
+        ose.Title = dto.Title;
         ose.Vendor = dto.Vendor;
         ose.Email = dto.Email;
         ose.Status = dto.Status;
@@ -117,6 +132,9 @@ public class OSEService
             OSE_ID = ose.OSE_ID,
             FN = ose.FN,
             LN = ose.LN,
+            Age = ose.Age,
+            Skills = ose.Skills,
+            Title = ose.Title,
             Vendor = ose.Vendor,
             Email = ose.Email,
             Status = ose.Status,
