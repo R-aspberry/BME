@@ -14,5 +14,6 @@ export function me() {
 export function logout() {
   localStorage.removeItem('token')
   localStorage.removeItem('userName')
+  localStorage.removeItem('userId')
   localStorage.removeItem('role')
 }

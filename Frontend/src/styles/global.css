@@ -83,6 +83,57 @@ img {
   margin: 0 auto;
 }
 
+/* ---------- New AAIB Images for BO Pages ---------- */
+.aaib-image-full {
+  background-image: url('../assets/images/aaib.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+.aaib-image-no-bg {
+  background-image: url('../assets/images/aaib no background.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+/* BO hero background with new images */
+.bo-hero {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(27,40,30,0.85) 0%,
+      rgba(36,61,44,0.85) 100%
+    ),
+    url('../assets/images/aaib.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: overlay;
+}
+
+/* BO hero with no background version */
+.bo-hero-no-bg {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(27,40,30,0.85) 0%,
+      rgba(36,61,44,0.85) 100%
+    ),
+    url('../assets/images/aaib no background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: overlay;
+}
+
 /* ---------- Utility shells ---------- */
 .aaib-shell {
   min-height: 100vh;

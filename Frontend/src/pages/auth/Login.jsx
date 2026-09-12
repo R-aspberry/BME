@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/authService';
+import aaibLogoNoBackground from '../../assets/images/aaib no background.png';
+import aaibLogo from '../../assets/images/aaib.png';
 
 export default function Login() {
   const [userName, setUserName] = useState('');
@@ -65,20 +67,28 @@ export default function Login() {
   }
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
+  <div className="auth-page">
+    <div className="auth-brand">
+      <img
+        src={aaibLogo}
+        alt="AAIB"
+      />
+    </div>
+
+    <div className="auth-card">
         
         {/* Branding Header: Clean green text logo */}
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div style={{ 
-            color: 'var(--aaib-primary)', 
-            fontWeight: '800', 
-            fontSize: '36px', 
-            letterSpacing: '2px',
-            marginBottom: '16px'
-          }}>
-            BME
-          </div>
+          <img
+  src={aaibLogo}
+  alt="AAIB"
+  style={{
+    width: '170px',
+    height: 'auto',
+    margin: '0 auto 18px',
+    objectFit: 'contain'
+  }}
+/>
           <h2 className="aaib-title" style={{ marginBottom: '4px' }}>Welcome back</h2>
           <p className="aaib-subtitle">Sign in to your enterprise resource portal</p>
         </div>

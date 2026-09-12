@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { getProjects } from '../../services/projectService';
+import { getEmployees } from '../../services/employeeService';
 import aaibLogo from '../../assets/images/aaib.png';
 
 /* =========================================================
@@ -84,12 +84,48 @@ function Icon({ name, size = 18 }) {
 
     chevron: <path d="M9 18l6-6-6-6" />,
 
-    chevronDown: <path d="m7 10 5 5 5-5" />,
-
     search: (
       <>
         <circle cx="10.8" cy="10.8" r="6.5" />
         <path d="m16 16 4.5 4.5" />
+      </>
+    ),
+
+    building: (
+      <>
+        <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+        <path d="M3 21h18M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2" />
+      </>
+    ),
+
+    mail: (
+      <>
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m4 7 8 6 8-6" />
+      </>
+    ),
+
+    chevronDown: <path d="m7 10 5 5 5-5" />,
+
+    eye: (
+      <>
+        <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+        <circle cx="12" cy="12" r="2.5" />
+      </>
+    ),
+
+    users: (
+      <>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+        <circle cx="9.5" cy="7" r="3.5" />
+        <path d="M16 11a3.5 3.5 0 1 0 0-7M21 21v-2a4 4 0 0 0-3-3.87" />
+      </>
+    ),
+
+    alert: (
+      <>
+        <path d="M12 4 21 20H3L12 4Z" />
+        <path d="M12 9v5M12 17h.01" />
       </>
     ),
 
@@ -101,70 +137,6 @@ function Icon({ name, size = 18 }) {
         <path d="M20 20v-5h-5" />
       </>
     ),
-
-    briefcase: (
-      <>
-        <rect x="3" y="7" width="18" height="13" rx="2" />
-        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18" />
-      </>
-    ),
-
-    flag: (
-      <>
-        <path d="M5 21V4" />
-        <path d="M5 5c4-3 8 3 14 0v9c-6 3-10-3-14 0" />
-      </>
-    ),
-
-    calendarSmall: (
-      <>
-        <rect x="4" y="5" width="16" height="15" rx="2" />
-        <path d="M16 3v4M8 3v4M4 10h16" />
-      </>
-    ),
-
-    money: (
-      <>
-        <rect x="3" y="6" width="18" height="12" rx="2" />
-        <circle cx="12" cy="12" r="2.5" />
-        <path d="M7 9h.01M17 15h.01" />
-      </>
-    ),
-
-    eye: (
-      <>
-        <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
-        <circle cx="12" cy="12" r="2.5" />
-      </>
-    ),
-
-    arrowRight: (
-      <>
-        <path d="M5 12h14" />
-        <path d="M13 6l6 6-6 6" />
-      </>
-    ),
-
-    check: (
-      <>
-        <circle cx="12" cy="12" r="9" />
-        <path d="M8 12l2.7 2.7L16 9" />
-      </>
-    ),
-
-    clock: (
-      <>
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 7v5l3 2" />
-      </>
-    ),
-
-    alert: (
-      <>
-        <path d="M12 4 21 20H3L12 4Z" />
-        <path d="M12 9v5M12 17h.01" />
-      </>
-    ),
   };
 
   return <svg {...common}>{paths[name]}</svg>;
@@ -174,152 +146,34 @@ function Icon({ name, size = 18 }) {
    HELPERS
 ========================================================= */
 
-const getProjectId = (project) =>
-  project?.prj_ID ?? project?.projectId ?? project?.id ?? null;
+const getEmployeeId = (employee) =>
+  employee?.id ?? employee?.employeeId ?? employee?.ID ?? null;
 
-const getProjectName = (project) =>
-  project?.project_Name ?? project?.projectName ?? project?.name ?? 'Unnamed Project';
+const getFullName = (employee) =>
+  [employee?.fn, employee?.ln].filter(Boolean).join(' ').trim() ||
+  employee?.name ||
+  'Unnamed Employee';
 
-const getStatus = (project) =>
-  project?.status ?? project?.Status ?? 'Unknown';
+const getTitle = (employee) => employee?.title || '—';
 
-const getFlag = (project) =>
-  project?.flag ?? project?.Flag ?? '—';
+const getEmail = (employee) => employee?.email || '—';
 
-const getDescription = (project) =>
-  project?.description ?? project?.Description ?? '';
-
-const getMvp = (project) =>
-  project?.mvp ?? project?.MVP ?? '—';
-
-const getBudget = (project) =>
-  project?.budget ?? project?.Budget ?? null;
-
-const getStartDate = (project) =>
-  project?.start_date ?? project?.startDate ?? project?.Start_date ?? null;
-
-const getEndDate = (project) =>
-  project?.end_date ??
-  project?.endDate ??
-  project?.expectedDeliveryDate ??
-  project?.End_date ??
-  null;
-
-const getBusinessOwnerId = (project) =>
-  project?.bO_ID ?? project?.bo_ID ?? project?.BO_ID ?? project?.boId ?? null;
-
-const formatDate = (value) => {
-  if (!value) return '—';
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) return '—';
-
-  return new Intl.DateTimeFormat('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }).format(date);
-};
-
-const formatBudget = (value) => {
-  if (value === null || value === undefined || value === '') return '—';
-
-  const amount = Number(value);
-
-  if (Number.isNaN(amount)) return String(value);
-
-  return new Intl.NumberFormat('en-EG', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(amount);
-};
-
-const isAwaitingPOReview = (project) => {
-  const status = getStatus(project).trim().toLowerCase();
-
-  return (
-    status === 'pending po review' ||
-    status === 'pending review'
-  );
-};
-
-const getStatusClass = (status) => {
-  const normalized = String(status).trim().toLowerCase();
-
-  if (
-    normalized === 'completed' ||
-    normalized === 'done' ||
-    normalized === 'approved'
-  ) {
-    return 'success';
-  }
-
-  if (
-    normalized === 'in progress' ||
-    normalized === 'active'
-  ) {
-    return 'progress';
-  }
-
-  if (
-    normalized === 'pending po review' ||
-    normalized === 'pending review' ||
-    normalized === 'pending' ||
-    normalized === 'submitted' ||
-    normalized === 'new'
-  ) {
-    return 'pending';
-  }
-
-  if (
-    normalized === 'rejected' ||
-    normalized === 'requires attention' ||
-    normalized === 'changes requested'
-  ) {
-    return 'danger';
-  }
-
-  return 'neutral';
-};
-
-const getFlagClass = (flag) => {
-  const normalized = String(flag).trim().toLowerCase();
-
-  if (
-    normalized.includes('high') ||
-    normalized.includes('critical') ||
-    normalized.includes('urgent')
-  ) {
-    return 'high';
-  }
-
-  if (normalized.includes('medium')) {
-    return 'medium';
-  }
-
-  if (normalized.includes('low')) {
-    return 'low';
-  }
-
-  return 'default';
-};
+const getDepartment = (employee) =>
+  employee?.departmentName || employee?.department || 'Unassigned';
 
 /* =========================================================
    COMPONENT
 ========================================================= */
 
-export default function MyProjects() {
+export default function EmployeeDirectory() {
   const navigate = useNavigate();
 
-  const [projects, setProjects] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [activeTab, setActiveTab] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All Statuses');
-  const [flagFilter, setFlagFilter] = useState('All Flags');
+  const [departmentFilter, setDepartmentFilter] = useState('All Departments');
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -335,22 +189,22 @@ export default function MyProjects() {
     .toUpperCase();
 
   /* =======================================================
-     LOAD PROJECTS
+     LOAD EMPLOYEES
   ======================================================== */
 
-  const loadProjects = () => {
+  const loadEmployees = () => {
     setIsLoading(true);
     setErrorMessage('');
 
-    getProjects()
+    getEmployees()
       .then((data) => {
-        setProjects(Array.isArray(data) ? data : []);
+        setEmployees(Array.isArray(data) ? data : []);
       })
       .catch((error) => {
-        console.error('Failed to load projects:', error);
-        setProjects([]);
+        console.error('Failed to load employees:', error);
+        setEmployees([]);
         setErrorMessage(
-          'We could not load the project list right now. Please try again.'
+          'We could not load the employee directory right now. Please try again.'
         );
       })
       .finally(() => {
@@ -359,99 +213,62 @@ export default function MyProjects() {
   };
 
   useEffect(() => {
-    loadProjects();
+    loadEmployees();
   }, []);
 
   /* =======================================================
-     FILTER OPTIONS
+     DEPARTMENTS
   ======================================================== */
 
-  const statuses = useMemo(() => {
-    const values = new Set();
+  const departments = useMemo(() => {
+    const uniqueDepartments = new Set();
 
-    projects.forEach((project) => {
-      const status = getStatus(project);
+    employees.forEach((employee) => {
+      const department = getDepartment(employee);
 
-      if (status && status !== 'Unknown') {
-        values.add(status);
+      if (department && department !== 'Unassigned' && department !== '—') {
+        uniqueDepartments.add(department);
       }
     });
 
-    return ['All Statuses', ...Array.from(values).sort()];
-  }, [projects]);
-
-  const flags = useMemo(() => {
-    const values = new Set();
-
-    projects.forEach((project) => {
-      const flag = getFlag(project);
-
-      if (flag && flag !== '—') {
-        values.add(flag);
-      }
-    });
-
-    return ['All Flags', ...Array.from(values).sort()];
-  }, [projects]);
+    return ['All Departments', ...Array.from(uniqueDepartments).sort()];
+  }, [employees]);
 
   /* =======================================================
-     PROJECT COUNTS
+     FILTERED EMPLOYEES
   ======================================================== */
 
-  const awaitingReviewCount = useMemo(
-    () => projects.filter(isAwaitingPOReview).length,
-    [projects]
-  );
-
-  /* =======================================================
-     FILTERED PROJECTS
-  ======================================================== */
-
-  const displayedProjects = useMemo(() => {
+  const filteredEmployees = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
-    return projects.filter((project) => {
-      const inActiveTab =
-        activeTab === 'all' || isAwaitingPOReview(project);
-
-      const name = getProjectName(project).toLowerCase();
-      const id = String(getProjectId(project) ?? '').toLowerCase();
-      const description = getDescription(project).toLowerCase();
-      const businessOwnerId = String(
-        getBusinessOwnerId(project) ?? ''
-      ).toLowerCase();
-      const status = getStatus(project);
-      const flag = getFlag(project);
+    return employees.filter((employee) => {
+      const fullName = getFullName(employee).toLowerCase();
+      const title = getTitle(employee).toLowerCase();
+      const email = getEmail(employee).toLowerCase();
+      const department = getDepartment(employee).toLowerCase();
+      const employeeId = String(getEmployeeId(employee) ?? '').toLowerCase();
 
       const matchesSearch =
         !normalizedSearch ||
-        name.includes(normalizedSearch) ||
-        id.includes(normalizedSearch) ||
-        description.includes(normalizedSearch) ||
-        businessOwnerId.includes(normalizedSearch);
+        fullName.includes(normalizedSearch) ||
+        title.includes(normalizedSearch) ||
+        email.includes(normalizedSearch) ||
+        department.includes(normalizedSearch) ||
+        employeeId.includes(normalizedSearch);
 
-      const matchesStatus =
-        statusFilter === 'All Statuses' ||
-        status === statusFilter;
+      const matchesDepartment =
+        departmentFilter === 'All Departments' ||
+        getDepartment(employee) === departmentFilter;
 
-      const matchesFlag =
-        flagFilter === 'All Flags' ||
-        flag === flagFilter;
-
-      return (
-        inActiveTab &&
-        matchesSearch &&
-        matchesStatus &&
-        matchesFlag
-      );
+      return matchesSearch && matchesDepartment;
     });
-  }, [
-    projects,
-    activeTab,
-    searchTerm,
-    statusFilter,
-    flagFilter,
-  ]);
+  }, [employees, searchTerm, departmentFilter]);
+
+  /* =======================================================
+     SUMMARY
+  ======================================================== */
+
+  const departmentCount = departments.length - 1;
 
   /* =======================================================
      NAVIGATION
@@ -466,18 +283,12 @@ export default function MyProjects() {
     navigate('/login');
   };
 
-  const openProject = (project) => {
-    const id = getProjectId(project);
+  const openEmployee = (employee) => {
+    const id = getEmployeeId(employee);
 
     if (id === null || id === undefined) return;
 
-    navigate(`/po/projects/${id}`);
-  };
-
-  const clearFilters = () => {
-    setSearchTerm('');
-    setStatusFilter('All Statuses');
-    setFlagFilter('All Flags');
+    navigate(`/po/employees/${id}`);
   };
 
   return (
@@ -694,128 +505,101 @@ export default function MyProjects() {
           <div className="po-content">
             {/* PAGE HEADER */}
 
-            <div className="po-projects-page-header">
+            <div className="po-directory-page-header">
               <div>
-                <div className="po-page-eyebrow">PROJECTS</div>
+                <div className="po-page-eyebrow">EMPLOYEES</div>
 
-                <h1>Projects</h1>
+                <h1>Employee Directory</h1>
 
                 <p>
-                  Browse all projects in the system and review projects
-                  awaiting Product Owner action.
+                  Browse employees across the organisation and view their
+                  details.
                 </p>
               </div>
             </div>
 
-            {/* PROJECT SUMMARY */}
+            {/* SUMMARY STRIP */}
 
-            <section className="po-project-summary">
-              <div className="po-project-summary-item">
-                <div className="po-project-summary-icon">
-                  <Icon name="briefcase" size={18} />
+            <section className="po-directory-summary">
+              <div className="po-directory-summary-item">
+                <div className="po-directory-summary-icon">
+                  <Icon name="users" size={18} />
                 </div>
 
                 <div>
-                  <span>ALL PROJECTS</span>
-                  <strong>{isLoading ? '—' : projects.length}</strong>
+                  <span>TOTAL EMPLOYEES</span>
+                  <strong>{isLoading ? '—' : employees.length}</strong>
                 </div>
               </div>
 
-              <div className="po-project-summary-divider" />
+              <div className="po-directory-summary-divider" />
 
-              <div className="po-project-summary-item">
-                <div className="po-project-summary-icon review">
-                  <Icon name="clock" size={18} />
+              <div className="po-directory-summary-item">
+                <div className="po-directory-summary-icon department">
+                  <Icon name="building" size={18} />
                 </div>
 
                 <div>
-                  <span>AWAITING PO REVIEW</span>
-                  <strong>
-                    {isLoading ? '—' : awaitingReviewCount}
-                  </strong>
+                  <span>DEPARTMENTS</span>
+                  <strong>{isLoading ? '—' : departmentCount}</strong>
                 </div>
               </div>
 
-              <div className="po-project-summary-divider" />
+              <div className="po-directory-summary-divider" />
 
-              <div className="po-project-summary-item">
-                <div className="po-project-summary-icon progress">
-                  <Icon name="check" size={18} />
+              <div className="po-directory-summary-item">
+                <div className="po-directory-summary-icon filtered">
+                  <Icon name="search" size={18} />
                 </div>
 
                 <div>
-                  <span>IN CURRENT VIEW</span>
+                  <span>SHOWING</span>
                   <strong>
-                    {isLoading ? '—' : displayedProjects.length}
+                    {isLoading ? '—' : filteredEmployees.length}
                   </strong>
                 </div>
               </div>
             </section>
 
-            {/* PROJECT LIST CARD */}
+            {/* DIRECTORY CARD */}
 
-            <section className="po-projects-card">
-              <div className="po-projects-card-header">
-                <div>
-                  <span>PROJECT DIRECTORY</span>
-                  <h2>All Projects</h2>
+            <section className="po-directory-card">
+              <div className="po-directory-toolbar">
+                <div className="po-directory-toolbar-heading">
+                  <span>ALL EMPLOYEES</span>
+                  <h2>Employee List</h2>
                 </div>
 
                 <button
                   type="button"
                   className="po-refresh-button"
-                  onClick={loadProjects}
+                  onClick={loadEmployees}
                   disabled={isLoading}
+                  title="Refresh employee list"
                 >
                   <Icon name="refresh" size={15} />
                   Refresh
                 </button>
               </div>
 
-              {/* TABS */}
-
-              <div className="po-project-tabs">
-                <button
-                  type="button"
-                  className={`po-project-tab ${
-                    activeTab === 'all' ? 'active' : ''
-                  }`}
-                  onClick={() => setActiveTab('all')}
-                >
-                  <span>All Projects</span>
-                  <strong>{projects.length}</strong>
-                </button>
-
-                <button
-                  type="button"
-                  className={`po-project-tab ${
-                    activeTab === 'review' ? 'active' : ''
-                  }`}
-                  onClick={() => setActiveTab('review')}
-                >
-                  <span>Awaiting PO Review</span>
-                  <strong>{awaitingReviewCount}</strong>
-                </button>
-              </div>
-
               {/* FILTERS */}
 
-              <div className="po-project-filters">
-                <div className="po-project-search">
+              <div className="po-directory-filters">
+                <div className="po-search-box">
                   <Icon name="search" size={16} />
 
                   <input
                     type="text"
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
-                    placeholder="Search by project name, ID, description or BO ID..."
-                    aria-label="Search projects"
+                    placeholder="Search by name, title, email or employee ID..."
+                    aria-label="Search employees"
                   />
 
                   {searchTerm && (
                     <button
                       type="button"
-                      className="po-project-search-clear"
+                      className="po-search-clear"
                       onClick={() => setSearchTerm('')}
                       aria-label="Clear search"
                     >
@@ -824,31 +608,17 @@ export default function MyProjects() {
                   )}
                 </div>
 
-                <div className="po-project-select">
+                <div className="po-department-filter">
                   <select
-                    value={statusFilter}
-                    onChange={(event) => setStatusFilter(event.target.value)}
-                    aria-label="Filter by project status"
+                    value={departmentFilter}
+                    onChange={(event) =>
+                      setDepartmentFilter(event.target.value)
+                    }
+                    aria-label="Filter by department"
                   >
-                    {statuses.map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
-                  </select>
-
-                  <Icon name="chevronDown" size={14} />
-                </div>
-
-                <div className="po-project-select">
-                  <select
-                    value={flagFilter}
-                    onChange={(event) => setFlagFilter(event.target.value)}
-                    aria-label="Filter by project flag"
-                  >
-                    {flags.map((flag) => (
-                      <option key={flag} value={flag}>
-                        {flag}
+                    {departments.map((department) => (
+                      <option key={department} value={department}>
+                        {department}
                       </option>
                     ))}
                   </select>
@@ -857,203 +627,171 @@ export default function MyProjects() {
                 </div>
               </div>
 
-              {!isLoading && !errorMessage && projects.length > 0 && (
-                <div className="po-project-result-meta">
+              {/* RESULT META */}
+
+              {!isLoading && !errorMessage && employees.length > 0 && (
+                <div className="po-directory-result-meta">
                   <span>
-                    Showing <strong>{displayedProjects.length}</strong> of{' '}
-                    <strong>
-                      {activeTab === 'review'
-                        ? awaitingReviewCount
-                        : projects.length}
-                    </strong>{' '}
-                    projects
+                    Showing <strong>{filteredEmployees.length}</strong> of{' '}
+                    <strong>{employees.length}</strong> employees
                   </span>
 
-                  {(searchTerm ||
-                    statusFilter !== 'All Statuses' ||
-                    flagFilter !== 'All Flags') && (
-                    <button type="button" onClick={clearFilters}>
+                  {(searchTerm || departmentFilter !== 'All Departments') && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchTerm('');
+                        setDepartmentFilter('All Departments');
+                      }}
+                    >
                       Clear filters
                     </button>
                   )}
                 </div>
               )}
 
-              {/* STATES */}
+              {/* TABLE */}
 
               {isLoading ? (
-                <div className="po-project-state">
+                <div className="po-directory-state">
                   <div className="po-state-loader" aria-hidden="true" />
-                  <h3>Loading projects</h3>
+                  <h3>Loading employees</h3>
                   <p>
-                    Retrieving the project directory from the system.
+                    Retrieving the employee directory from the system.
                   </p>
                 </div>
               ) : errorMessage ? (
-                <div className="po-project-state">
+                <div className="po-directory-state">
                   <div className="po-state-icon error">
                     <Icon name="alert" size={22} />
                   </div>
-
-                  <h3>Unable to load projects</h3>
+                  <h3>Unable to load employee directory</h3>
                   <p>{errorMessage}</p>
 
                   <button
                     type="button"
                     className="aaib-btn aaib-btn-primary"
-                    onClick={loadProjects}
+                    onClick={loadEmployees}
                   >
                     <Icon name="refresh" size={15} />
                     Try Again
                   </button>
                 </div>
-              ) : projects.length === 0 ? (
-                <div className="po-project-state">
+              ) : employees.length === 0 ? (
+                <div className="po-directory-state">
                   <div className="po-state-icon">
-                    <Icon name="briefcase" size={22} />
+                    <Icon name="users" size={22} />
                   </div>
-
-                  <h3>No projects found</h3>
+                  <h3>No employees found</h3>
                   <p>
-                    There are currently no projects available in the system.
+                    There are currently no employees available in the system.
                   </p>
                 </div>
-              ) : displayedProjects.length === 0 ? (
-                <div className="po-project-state compact">
+              ) : filteredEmployees.length === 0 ? (
+                <div className="po-directory-state compact">
                   <div className="po-state-icon">
                     <Icon name="search" size={22} />
                   </div>
-
-                  <h3>No matching projects</h3>
+                  <h3>No matching employees</h3>
                   <p>
-                    Try changing your search, tab or project filters.
+                    Try changing your search or department filter.
                   </p>
 
                   <button
                     type="button"
                     className="aaib-btn aaib-btn-secondary"
-                    onClick={clearFilters}
+                    onClick={() => {
+                      setSearchTerm('');
+                      setDepartmentFilter('All Departments');
+                    }}
                   >
                     Clear Filters
                   </button>
                 </div>
               ) : (
-                <div className="po-project-table-wrap">
-                  <table className="po-project-table">
+                <div className="po-employee-table-wrap">
+                  <table className="po-employee-table">
                     <thead>
                       <tr>
-                        <th>Project</th>
-                        <th>Status</th>
-                        <th>Flag</th>
-                        <th>Timeline</th>
-                        <th>Budget</th>
-                        <th>MVP</th>
-                        <th>BO ID</th>
+                        <th>Employee</th>
+                        <th>Employee ID</th>
+                        <th>Title</th>
+                        <th>Department</th>
+                        <th>Email</th>
                         <th aria-label="Action" />
                       </tr>
                     </thead>
 
                     <tbody>
-                      {displayedProjects.map((project) => {
-                        const id = getProjectId(project);
-                        const name = getProjectName(project);
-                        const status = getStatus(project);
-                        const flag = getFlag(project);
-                        const budget = getBudget(project);
-                        const mvp = getMvp(project);
-                        const boId = getBusinessOwnerId(project);
-                        const startDate = getStartDate(project);
-                        const endDate = getEndDate(project);
+                      {filteredEmployees.map((employee) => {
+                        const employeeId = getEmployeeId(employee);
+                        const fullName = getFullName(employee);
+                        const title = getTitle(employee);
+                        const department = getDepartment(employee);
+                        const email = getEmail(employee);
+
+                        const employeeInitials = fullName
+                          .split(' ')
+                          .filter(Boolean)
+                          .map((word) => word[0])
+                          .join('')
+                          .slice(0, 2)
+                          .toUpperCase();
 
                         return (
                           <tr
-                            key={id}
-                            className="po-project-row"
-                            onClick={() => openProject(project)}
+                            key={employeeId}
+                            className="po-employee-row"
+                            onClick={() => openEmployee(employee)}
                           >
                             <td>
-                              <div className="po-table-project">
-                                <div className="po-table-project-icon">
-                                  <Icon name="briefcase" size={15} />
+                              <div className="po-table-employee">
+                                <div className="po-table-avatar">
+                                  {employeeInitials}
                                 </div>
 
                                 <div>
-                                  <strong>{name}</strong>
-
-                                  <span>
-                                    Project ID: {id}
-                                  </span>
+                                  <strong>{fullName}</strong>
+                                  <span>{email}</span>
                                 </div>
                               </div>
                             </td>
 
                             <td>
-                              <span
-                                className={`po-status-badge ${getStatusClass(
-                                  status
-                                )}`}
-                              >
-                                {status}
+                              <span className="po-employee-id">
+                                #{employeeId}
                               </span>
                             </td>
 
                             <td>
-                              <span
-                                className={`po-flag-badge ${getFlagClass(
-                                  flag
-                                )}`}
-                              >
-                                <Icon name="flag" size={11} />
-                                {flag}
+                              <span className="po-employee-title">
+                                {title}
                               </span>
                             </td>
 
                             <td>
-                              <div className="po-project-timeline">
-                                <span>{formatDate(startDate)}</span>
-                                <span className="po-timeline-arrow">→</span>
-                                <span>{formatDate(endDate)}</span>
-                              </div>
-                            </td>
-
-                            <td>
-                              <span className="po-project-budget">
-                                {budget === null || budget === undefined
-                                  ? '—'
-                                  : `${formatBudget(budget)} EGP`}
+                              <span className="po-department-badge">
+                                <Icon name="building" size={12} />
+                                {department}
                               </span>
                             </td>
 
                             <td>
-                              <span
-                                className={`po-mvp-badge ${
-                                  String(mvp).toLowerCase() === 'approved'
-                                    ? 'approved'
-                                    : ''
-                                }`}
-                              >
-                                {mvp}
-                              </span>
-                            </td>
-
-                            <td>
-                              <span className="po-bo-id">
-                                {boId === null || boId === undefined
-                                  ? '—'
-                                  : `#${boId}`}
+                              <span className="po-table-email">
+                                {email}
                               </span>
                             </td>
 
                             <td>
                               <button
                                 type="button"
-                                className="po-view-project"
+                                className="po-view-employee"
                                 onClick={(event) => {
                                   event.stopPropagation();
-                                  openProject(project);
+                                  openEmployee(employee);
                                 }}
-                                aria-label={`View ${name}`}
-                                title="View project details"
+                                aria-label={`View ${fullName}`}
+                                title="View employee details"
                               >
                                 <Icon name="eye" size={15} />
                                 <Icon name="chevron" size={14} />
@@ -1073,7 +811,7 @@ export default function MyProjects() {
 
       <style>
         {`
-          .po-projects-page-header {
+          .po-directory-page-header {
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
@@ -1088,7 +826,7 @@ export default function MyProjects() {
             letter-spacing: .15em;
           }
 
-          .po-projects-page-header h1 {
+          .po-directory-page-header h1 {
             margin: 4px 0 5px;
             color: var(--aaib-primary);
             font-size: 28px;
@@ -1096,14 +834,13 @@ export default function MyProjects() {
             letter-spacing: -.03em;
           }
 
-          .po-projects-page-header p {
-            max-width: 650px;
+          .po-directory-page-header p {
             margin: 0;
             color: var(--aaib-text-muted);
             font-size: 12px;
           }
 
-          .po-project-summary {
+          .po-directory-summary {
             display: grid;
             grid-template-columns: 1fr auto 1fr auto 1fr;
             align-items: center;
@@ -1116,14 +853,14 @@ export default function MyProjects() {
             box-shadow: var(--aaib-shadow-card);
           }
 
-          .po-project-summary-item {
+          .po-directory-summary-item {
             display: flex;
             align-items: center;
             gap: 11px;
             min-width: 0;
           }
 
-          .po-project-summary-icon {
+          .po-directory-summary-icon {
             width: 37px;
             height: 37px;
             flex: 0 0 auto;
@@ -1134,17 +871,17 @@ export default function MyProjects() {
             color: var(--aaib-primary);
           }
 
-          .po-project-summary-icon.review {
-            background: var(--aaib-accent-soft);
-            color: #96721d;
-          }
-
-          .po-project-summary-icon.progress {
+          .po-directory-summary-icon.department {
             background: var(--aaib-success-soft);
             color: var(--aaib-success);
           }
 
-          .po-project-summary-item span {
+          .po-directory-summary-icon.filtered {
+            background: var(--aaib-accent-soft);
+            color: #96721d;
+          }
+
+          .po-directory-summary-item span {
             display: block;
             margin-bottom: 2px;
             color: var(--aaib-text-muted);
@@ -1153,20 +890,20 @@ export default function MyProjects() {
             letter-spacing: .08em;
           }
 
-          .po-project-summary-item strong {
+          .po-directory-summary-item strong {
             display: block;
             color: var(--aaib-primary);
             font-size: 17px;
             line-height: 1.1;
           }
 
-          .po-project-summary-divider {
+          .po-directory-summary-divider {
             width: 1px;
             height: 32px;
             background: var(--aaib-border);
           }
 
-          .po-projects-card {
+          .po-directory-card {
             overflow: hidden;
             background: var(--aaib-surface);
             border: 1px solid var(--aaib-border);
@@ -1174,15 +911,15 @@ export default function MyProjects() {
             box-shadow: var(--aaib-shadow-card);
           }
 
-          .po-projects-card-header {
+          .po-directory-toolbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 14px;
-            padding: 21px 23px 15px;
+            padding: 21px 23px 17px;
           }
 
-          .po-projects-card-header > div > span {
+          .po-directory-toolbar-heading > span {
             display: block;
             margin-bottom: 4px;
             color: var(--aaib-accent);
@@ -1191,7 +928,7 @@ export default function MyProjects() {
             letter-spacing: .13em;
           }
 
-          .po-projects-card-header h2 {
+          .po-directory-toolbar-heading h2 {
             margin: 0;
             color: var(--aaib-primary);
             font-size: 18px;
@@ -1225,74 +962,15 @@ export default function MyProjects() {
             cursor: not-allowed;
           }
 
-          .po-project-tabs {
-            display: flex;
-            align-items: flex-end;
-            gap: 4px;
-            padding: 0 23px;
-            border-bottom: 1px solid var(--aaib-border);
-          }
-
-          .po-project-tab {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            min-height: 40px;
-            padding: 0 11px;
-            border: 0;
-            background: transparent;
-            color: var(--aaib-text-muted);
-            font-size: 9px;
-            font-weight: 700;
-            cursor: pointer;
-          }
-
-          .po-project-tab strong {
-            min-width: 20px;
-            height: 18px;
-            display: inline-grid;
-            place-items: center;
-            padding: 0 5px;
-            border-radius: 9px;
-            background: var(--aaib-surface-alt);
-            color: var(--aaib-text-muted);
-            font-size: 8px;
-          }
-
-          .po-project-tab::after {
-            content: '';
-            position: absolute;
-            right: 9px;
-            bottom: -1px;
-            left: 9px;
-            height: 2px;
-            background: transparent;
-            border-radius: 2px 2px 0 0;
-          }
-
-          .po-project-tab.active {
-            color: var(--aaib-primary);
-          }
-
-          .po-project-tab.active strong {
-            background: var(--aaib-primary);
-            color: var(--aaib-accent);
-          }
-
-          .po-project-tab.active::after {
-            background: var(--aaib-accent);
-          }
-
-          .po-project-filters {
+          .po-directory-filters {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 180px 170px;
+            grid-template-columns: minmax(0, 1fr) 210px;
             gap: 10px;
-            padding: 16px 23px 13px;
+            padding: 0 23px 16px;
           }
 
-          .po-project-search,
-          .po-project-select {
+          .po-search-box,
+          .po-department-filter {
             position: relative;
             display: flex;
             align-items: center;
@@ -1302,17 +980,17 @@ export default function MyProjects() {
             background: #fff;
           }
 
-          .po-project-search {
+          .po-search-box {
             padding: 0 11px;
             gap: 8px;
           }
 
-          .po-project-search > svg {
+          .po-search-box > svg {
             flex: 0 0 auto;
             color: var(--aaib-text-muted);
           }
 
-          .po-project-search input {
+          .po-search-box input {
             min-width: 0;
             flex: 1;
             border: 0;
@@ -1323,16 +1001,16 @@ export default function MyProjects() {
             font-size: 10px;
           }
 
-          .po-project-search input::placeholder {
+          .po-search-box input::placeholder {
             color: #9aa39e;
           }
 
-          .po-project-search:focus-within {
+          .po-search-box:focus-within {
             border-color: rgba(27,40,30,.2);
             box-shadow: 0 0 0 3px var(--aaib-primary-soft);
           }
 
-          .po-project-search-clear {
+          .po-search-clear {
             width: 22px;
             height: 22px;
             flex: 0 0 auto;
@@ -1346,14 +1024,14 @@ export default function MyProjects() {
             cursor: pointer;
           }
 
-          .po-project-select {
+          .po-department-filter {
             padding: 0 10px;
           }
 
-          .po-project-select select {
+          .po-department-filter select {
             width: 100%;
             height: 36px;
-            padding: 0 23px 0 0;
+            padding: 0 25px 0 0;
             border: 0;
             outline: 0;
             appearance: none;
@@ -1364,14 +1042,14 @@ export default function MyProjects() {
             cursor: pointer;
           }
 
-          .po-project-select > svg {
+          .po-department-filter > svg {
             position: absolute;
             right: 9px;
             pointer-events: none;
             color: var(--aaib-text-muted);
           }
 
-          .po-project-result-meta {
+          .po-directory-result-meta {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -1381,11 +1059,11 @@ export default function MyProjects() {
             font-size: 9px;
           }
 
-          .po-project-result-meta strong {
+          .po-directory-result-meta strong {
             color: var(--aaib-primary);
           }
 
-          .po-project-result-meta button {
+          .po-directory-result-meta button {
             border: 0;
             padding: 0;
             background: transparent;
@@ -1395,20 +1073,21 @@ export default function MyProjects() {
             cursor: pointer;
           }
 
-          .po-project-table-wrap {
+          .po-employee-table-wrap {
             width: 100%;
             overflow-x: auto;
             border-top: 1px solid var(--aaib-border);
           }
 
-          .po-project-table {
+          .po-employee-table {
             width: 100%;
-            min-width: 1120px;
+            min-width: 840px;
             border-collapse: collapse;
+            table-layout: auto;
           }
 
-          .po-project-table thead th {
-            padding: 11px 13px;
+          .po-employee-table thead th {
+            padding: 11px 15px;
             border-bottom: 1px solid var(--aaib-border);
             background: var(--aaib-surface-alt);
             color: #7b8780;
@@ -1420,67 +1099,68 @@ export default function MyProjects() {
             white-space: nowrap;
           }
 
-          .po-project-table thead th:first-child {
+          .po-employee-table thead th:first-child {
             padding-left: 23px;
           }
 
-          .po-project-table thead th:last-child {
-            width: 65px;
+          .po-employee-table thead th:last-child {
+            width: 72px;
             padding-right: 23px;
           }
 
-          .po-project-table tbody td {
-            padding: 14px 13px;
+          .po-employee-table tbody td {
+            padding: 14px 15px;
             border-bottom: 1px solid var(--aaib-border);
             vertical-align: middle;
           }
 
-          .po-project-table tbody tr:last-child td {
+          .po-employee-table tbody tr:last-child td {
             border-bottom: 0;
           }
 
-          .po-project-row {
+          .po-employee-row {
             cursor: pointer;
             transition: background .16s ease;
           }
 
-          .po-project-row:hover {
+          .po-employee-row:hover {
             background: var(--aaib-primary-soft);
           }
 
-          .po-project-table tbody td:first-child {
+          .po-employee-table tbody td:first-child {
             padding-left: 23px;
           }
 
-          .po-project-table tbody td:last-child {
+          .po-employee-table tbody td:last-child {
             padding-right: 23px;
           }
 
-          .po-table-project {
+          .po-table-employee {
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 220px;
+            min-width: 205px;
           }
 
-          .po-table-project-icon {
+          .po-table-avatar {
             width: 35px;
             height: 35px;
             flex: 0 0 auto;
             display: grid;
             place-items: center;
             border-radius: 9px;
-            background: var(--aaib-primary-soft);
-            color: var(--aaib-primary);
+            background: var(--aaib-primary);
+            color: var(--aaib-accent);
+            font-size: 10px;
+            font-weight: 800;
           }
 
-          .po-table-project > div:last-child {
+          .po-table-employee > div:last-child {
             min-width: 0;
           }
 
-          .po-table-project strong {
+          .po-table-employee strong {
             display: block;
-            max-width: 240px;
             overflow: hidden;
             color: var(--aaib-primary);
             font-size: 10px;
@@ -1489,117 +1169,64 @@ export default function MyProjects() {
             white-space: nowrap;
           }
 
-          .po-table-project span {
+          .po-table-employee span {
             display: block;
+            max-width: 190px;
             margin-top: 3px;
+            overflow: hidden;
             color: var(--aaib-text-muted);
             font-size: 8px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
 
-          .po-status-badge,
-          .po-flag-badge,
-          .po-mvp-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            min-height: 23px;
-            padding: 0 7px;
-            border-radius: 6px;
-            font-size: 8px;
+          .po-employee-id {
+            color: var(--aaib-text-muted);
+            font-size: 9px;
             font-weight: 700;
-            white-space: nowrap;
           }
 
-          .po-status-badge.success {
-            background: var(--aaib-success-soft);
-            color: var(--aaib-success);
-          }
-
-          .po-status-badge.progress {
-            background: var(--aaib-primary-soft);
-            color: var(--aaib-primary);
-          }
-
-          .po-status-badge.pending {
-            background: var(--aaib-accent-soft);
-            color: #8a6a1b;
-          }
-
-          .po-status-badge.danger {
-            background: var(--aaib-danger-soft);
-            color: var(--aaib-danger);
-          }
-
-          .po-status-badge.neutral {
-            background: var(--aaib-surface-alt);
-            color: var(--aaib-text-muted);
-          }
-
-          .po-flag-badge {
-            background: var(--aaib-surface-alt);
-            color: var(--aaib-text-muted);
-          }
-
-          .po-flag-badge svg {
-            color: currentColor;
-          }
-
-          .po-flag-badge.high {
-            background: var(--aaib-danger-soft);
-            color: var(--aaib-danger);
-          }
-
-          .po-flag-badge.medium {
-            background: var(--aaib-accent-soft);
-            color: #8a6a1b;
-          }
-
-          .po-flag-badge.low {
-            background: var(--aaib-success-soft);
-            color: var(--aaib-success);
-          }
-
-          .po-project-timeline {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--aaib-text-muted);
-            font-size: 8px;
-            white-space: nowrap;
-          }
-
-          .po-timeline-arrow {
-            color: #9da6a1;
-          }
-
-          .po-project-budget {
+          .po-employee-title {
+            display: block;
+            max-width: 190px;
             color: var(--aaib-text);
             font-size: 9px;
+            font-weight: 600;
+            line-height: 1.4;
+          }
+
+          .po-department-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 7px;
+            border-radius: 6px;
+            background: var(--aaib-primary-soft);
+            color: var(--aaib-primary);
+            font-size: 8px;
             font-weight: 700;
             white-space: nowrap;
           }
 
-          .po-mvp-badge {
-            background: var(--aaib-surface-alt);
-            color: var(--aaib-text-muted);
+          .po-department-badge svg {
+            color: var(--aaib-accent);
           }
 
-          .po-mvp-badge.approved {
-            background: var(--aaib-success-soft);
-            color: var(--aaib-success);
-          }
-
-          .po-bo-id {
+          .po-table-email {
+            display: block;
+            max-width: 230px;
+            overflow: hidden;
             color: var(--aaib-text-muted);
             font-size: 9px;
-            font-weight: 700;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
 
-          .po-view-project {
+          .po-view-employee {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 3px;
+            gap: 4px;
             width: 40px;
             height: 32px;
             border: 1px solid var(--aaib-border);
@@ -1610,13 +1237,13 @@ export default function MyProjects() {
             transition: background .16s ease, border-color .16s ease;
           }
 
-          .po-view-project:hover {
+          .po-view-employee:hover {
             background: var(--aaib-primary);
             border-color: var(--aaib-primary);
             color: #fff;
           }
 
-          .po-project-state {
+          .po-directory-state {
             min-height: 320px;
             display: flex;
             flex-direction: column;
@@ -1627,17 +1254,17 @@ export default function MyProjects() {
             text-align: center;
           }
 
-          .po-project-state.compact {
+          .po-directory-state.compact {
             min-height: 250px;
           }
 
-          .po-project-state h3 {
+          .po-directory-state h3 {
             margin: 15px 0 6px;
             color: var(--aaib-primary);
             font-size: 17px;
           }
 
-          .po-project-state p {
+          .po-directory-state p {
             max-width: 430px;
             margin: 0 0 18px;
             color: var(--aaib-text-muted);
@@ -1666,57 +1293,39 @@ export default function MyProjects() {
             border: 3px solid rgba(27,40,30,.1);
             border-top-color: var(--aaib-accent);
             border-radius: 50%;
-            animation: poProjectsSpin .8s linear infinite;
+            animation: poDirectorySpin .8s linear infinite;
           }
 
-          @keyframes poProjectsSpin {
+          @keyframes poDirectorySpin {
             to {
               transform: rotate(360deg);
             }
           }
 
-          @media (max-width: 1050px) {
-            .po-project-filters {
-              grid-template-columns: minmax(0, 1fr) 170px;
-            }
-
-            .po-project-select:last-child {
-              grid-column: 2;
-            }
-
-            .po-project-search {
-              grid-column: 1 / -1;
-            }
-          }
-
-          @media (max-width: 820px) {
-            .po-project-summary {
+          @media (max-width: 900px) {
+            .po-directory-summary {
               grid-template-columns: 1fr 1fr 1fr;
             }
 
-            .po-project-summary-divider {
+            .po-directory-summary-divider {
               display: none;
             }
 
-            .po-project-filters {
-              grid-template-columns: 1fr 1fr;
-            }
-
-            .po-project-search {
-              grid-column: 1 / -1;
-            }
-
-            .po-project-select:last-child {
-              grid-column: auto;
+            .po-directory-filters {
+              grid-template-columns: 1fr;
             }
           }
 
-          @media (max-width: 600px) {
-            .po-project-summary {
+          @media (max-width: 650px) {
+            .po-directory-summary {
               grid-template-columns: 1fr;
             }
 
-            .po-projects-card-header {
+            .po-directory-summary-item {
+              padding: 2px 0;
+            }
+
+            .po-directory-toolbar {
               align-items: flex-start;
               flex-direction: column;
             }
@@ -1726,24 +1335,7 @@ export default function MyProjects() {
               justify-content: center;
             }
 
-            .po-project-tabs {
-              overflow-x: auto;
-            }
-
-            .po-project-tab {
-              flex: 0 0 auto;
-            }
-
-            .po-project-filters {
-              grid-template-columns: 1fr;
-            }
-
-            .po-project-search,
-            .po-project-select:last-child {
-              grid-column: auto;
-            }
-
-            .po-project-result-meta {
+            .po-directory-result-meta {
               align-items: flex-start;
               flex-direction: column;
             }
