@@ -5,7 +5,13 @@ import Login from '../pages/auth/Login'
 // Dashboards
 import BODashboard from '../pages/bo/BODashboard'
 import EmployeeDashboard from '../pages/employee/EmployeeDashboard'
+
+import PlannerLayout from '../pages/resourcePlanner/PlannerLayout'
 import PlannerDashboard from '../pages/resourcePlanner/PlannerDashboard'
+import PlannerEmployees from '../pages/resourcePlanner/PlannerEmployees'
+import PlannerPortfolio from '../pages/resourcePlanner/PlannerPortfolio'
+import PlannerRequests from '../pages/resourcePlanner/PlannerRequests'
+
 import PODashboard from '../pages/po/PODashboard'
 import VerticalHeadDashboard from '../pages/verticalHead/VerticalHeadDashboard'
 
@@ -87,28 +93,48 @@ export default function AppRoutes() {
 
 
         {/* =====================
-            RESOURCE PLANNER
-        ====================== */}
+    RESOURCE PLANNER
+====================== */}
 
-        <Route element={<RoleRoute roles={['ResourcePlanner']} />}>
+<Route element={<RoleRoute roles={['ResourcePlanner']} />}>
 
-          <Route
-            path="/resource-planner"
-            element={
-              <Navigate
-                to="/resource-planner/dashboard"
-                replace
-              />
-            }
-          />
+  <Route
+    path="/resource-planner"
+    element={<PlannerLayout />}
+  >
+    <Route
+      index
+      element={
+        <Navigate
+          to="dashboard"
+          replace
+        />
+      }
+    />
 
-          <Route
-            path="/resource-planner/dashboard"
-            element={<PlannerDashboard />}
-          />
+    <Route
+      path="dashboard"
+      element={<PlannerDashboard />}
+    />
 
-        </Route>
+    <Route
+      path="employees"
+      element={<PlannerEmployees />}
+    />
 
+    <Route
+      path="portfolio"
+      element={<PlannerPortfolio />}
+    />
+
+    <Route
+      path="requests"
+      element={<PlannerRequests />}
+    />
+
+  </Route>
+
+</Route>
 
         {/* =====================
             EMPLOYEE
