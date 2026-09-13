@@ -36,6 +36,9 @@ import POProfile from '../pages/po/Profile'
 import VerticalHeadDashboard from '../pages/verticalHead/VerticalHeadDashboard'
 import VHEmployeeDiscovery from '../pages/verticalHead/EmployeeDiscovery'
 import VHEmployeeDetails from '../pages/verticalHead/EmployeeDetails'
+import VHCalendar from '../pages/verticalHead/Calendar';
+import VHMyDepartment from '../pages/verticalHead/MyDepartment';
+import VHProjects from '../pages/verticalHead/Projects';
 
 function NotFound() {
   return (
@@ -282,6 +285,19 @@ export default function AppRoutes() {
         ====================== */}
 
         <Route element={<RoleRoute roles={['Head']} />}>
+        <Route
+  path="/vertical-head/projects"
+  element={<VHProjects />}
+/>
+        <Route
+  path="/vertical-head/my-department"
+  element={<VHMyDepartment />}
+/>
+
+        <Route
+    path="/vertical-head/calendar"
+    element={<VHCalendar />}
+  />
         <Route
   path="/vertical-head/employees/:id"
   element={<VHEmployeeDetails />}

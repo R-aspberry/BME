@@ -154,7 +154,7 @@ const getDepartment = (employee) =>
    COMPONENT
 ========================================================= */
 
-export default function EmployeeDetails() {
+export default function VerticalHeadEmployeeDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -281,13 +281,16 @@ export default function EmployeeDetails() {
         </div>
 
         <div className="po-sidebar-section-label">
-          Product Owner Portal
+          Vertical Head Portal
         </div>
 
-        <nav className="po-nav">
+        
+                <nav className="po-nav">
                   <NavLink
-                    to="/po/dashboard"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    to="/vertical-head/dashboard"
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
@@ -297,41 +300,62 @@ export default function EmployeeDetails() {
                   </NavLink>
         
                   <NavLink
-                    to="/po/project-requests"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    to="/vertical-head/resource-requests"
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
                       <Icon name="requests" />
                     </span>
-                    <span className="po-nav-text">Project Requests</span>
+                    <span className="po-nav-text">Resource Requests</span>
                   </NavLink>
         
                   <NavLink
-                    to="/po/projects"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
-                    onClick={closeMobileSidebar}
-                  >
-                    <span className="po-nav-icon">
-                      <Icon name="projects" />
-                    </span>
-                    <span className="po-nav-text">My Projects</span>
-                  </NavLink>
-        
-                  <NavLink
-                    to="/po/employees"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    to="/vertical-head/my-department"
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
                       <Icon name="employees" />
                     </span>
-                    <span className="po-nav-text">Employees</span>
+                    <span className="po-nav-text">My Department</span>
                   </NavLink>
         
                   <NavLink
-                    to="/po/notifications"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    to="/vertical-head/employee-discovery"
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="search" />
+                    </span>
+                    <span className="po-nav-text">Employee Discovery</span>
+                  </NavLink>
+        
+                  <NavLink
+                    to="/vertical-head/projects"
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="projects" />
+                    </span>
+                    <span className="po-nav-text">Projects</span>
+                  </NavLink>
+        
+                  <NavLink
+                    to="/vertical-head/notifications"
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
@@ -341,8 +365,10 @@ export default function EmployeeDetails() {
                   </NavLink>
         
                   <NavLink
-                    to="/po/calendar"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    to="/vertical-head/calendar"
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
@@ -350,23 +376,10 @@ export default function EmployeeDetails() {
                     </span>
                     <span className="po-nav-text">Calendar</span>
                   </NavLink>
-        
-                  <NavLink
-          to="/po/resource-requests"
-          className={({ isActive }) =>
-            `po-nav-item ${isActive ? 'active' : ''}`
-          }
-          onClick={closeMobileSidebar}
-        >
-          <span className="po-nav-icon">
-            <Icon name="usersPlus" />
-          </span>
-          <span className="po-nav-text">Resource Requests</span>
-        </NavLink>
                 </nav>
         <div className="po-sidebar-bottom">
           <NavLink
-            to="/po/profile"
+            to="/vertical-head/profile"
             className={({ isActive }) =>
               `po-nav-item ${isActive ? 'active' : ''}`
             }
@@ -420,7 +433,7 @@ export default function EmployeeDetails() {
             />
 
             <div className="po-header-title">
-              Product Owner Portal
+              Vertical Head Portal
             </div>
           </div>
 
@@ -444,7 +457,7 @@ export default function EmployeeDetails() {
 
               <div className="po-user-details">
                 <strong>{userName}</strong>
-                <span>Product Owner</span>
+                <span>Vertical Head</span>
               </div>
 
               <Icon name="chevron" size={15} />
@@ -461,10 +474,10 @@ export default function EmployeeDetails() {
                 <button
                   type="button"
                   className="po-back-button"
-                  onClick={() => navigate('/po/employees')}
+                  onClick={() => navigate('/vertical-head/employee-discovery')}
                 >
                   <Icon name="arrowLeft" size={15} />
-                  Back to Employees
+                  Back to Employee Discovery
                 </button>
 
                 <div className="po-page-eyebrow"></div>
@@ -519,9 +532,9 @@ export default function EmployeeDetails() {
                 <button
                   type="button"
                   className="aaib-btn aaib-btn-primary"
-                  onClick={() => navigate('/po/employees')}
+                  onClick={() => navigate('/vertical-head/employee-discovery')}
                 >
-                  Back to Employees
+                  Back to Employee Discovery
                 </button>
               </section>
             ) : (
@@ -628,10 +641,10 @@ export default function EmployeeDetails() {
                   <button
                     type="button"
                     className="aaib-btn aaib-btn-secondary"
-                    onClick={() => navigate('/po/employees')}
+                    onClick={() => navigate('/vertical-head/employee-discovery')}
                   >
                     <Icon name="arrowLeft" size={15} />
-                    Back to Employees
+                    Back to Employee Discovery
                   </button>
                 </div>
               </>
@@ -962,7 +975,11 @@ export default function EmployeeDetails() {
               width: 100%;
               justify-content: center;
             }
+
+            
           }
+
+          
         `}
       </style>
     </div>

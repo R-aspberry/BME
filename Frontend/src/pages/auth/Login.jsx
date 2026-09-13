@@ -30,6 +30,10 @@ export default function Login() {
       localStorage.setItem('userName', res.userName);
       localStorage.setItem('role', res.role);
 
+      if (res.userId != null) {
+  localStorage.setItem('userId', res.userId);
+}
+
 
       switch (res.role) {
   case 'BO':

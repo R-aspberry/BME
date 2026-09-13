@@ -662,7 +662,7 @@ export default function VHEmployeeDiscovery() {
                 </strong>
 
                 <span>
-                  Head of Digital Factory
+                  Vertical Head
                 </span>
               </div>
 
