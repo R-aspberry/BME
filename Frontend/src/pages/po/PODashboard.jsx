@@ -432,6 +432,19 @@ export default function PODashboard() {
             </span>
             <span className="po-nav-text">Calendar</span>
           </NavLink>
+
+          <NavLink
+  to="/po/resource-requests"
+  className={({ isActive }) =>
+    `po-nav-item ${isActive ? 'active' : ''}`
+  }
+  onClick={closeMobileSidebar}
+>
+  <span className="po-nav-icon">
+    <Icon name="usersPlus" />
+  </span>
+  <span className="po-nav-text">Resource Requests</span>
+</NavLink>
         </nav>
 
         <div className="po-sidebar-bottom">

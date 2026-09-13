@@ -472,7 +472,7 @@ export default function EmployeeDetails() {
                 <h1>Employee Details</h1>
 
                 <p>
-                  
+                  View employee information and organisational details.
                 </p>
               </div>
             </div>
@@ -612,7 +612,7 @@ export default function EmployeeDetails() {
 
                 {/* DATA NOTE */}
 
-                {/* <div className="po-employee-data-note">
+                <div className="po-employee-data-note">
                   <Icon name="alert" size={15} />
 
                   <span>
@@ -620,7 +620,7 @@ export default function EmployeeDetails() {
                     PO-10 will appear here when they are provided by the
                     employee API.
                   </span>
-                </div> */}
+                </div>
 
                 {/* FOOTER ACTION */}
 

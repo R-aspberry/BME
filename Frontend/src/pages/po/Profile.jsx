@@ -587,85 +587,85 @@ export default function Profile() {
         </div>
 
         <nav className="po-nav">
-          <NavLink
-            to="/po/dashboard"
-            className={({ isActive }) =>
-              `po-nav-item ${isActive ? 'active' : ''}`
-            }
-            onClick={closeMobileSidebar}
-          >
-            <span className="po-nav-icon">
-              <Icon name="dashboard" />
-            </span>
-            <span className="po-nav-text">Dashboard</span>
-          </NavLink>
-
-          <NavLink
-            to="/po/project-requests"
-            className={({ isActive }) =>
-              `po-nav-item ${isActive ? 'active' : ''}`
-            }
-            onClick={closeMobileSidebar}
-          >
-            <span className="po-nav-icon">
-              <Icon name="requests" />
-            </span>
-            <span className="po-nav-text">Project Requests</span>
-          </NavLink>
-
-          <NavLink
-            to="/po/projects"
-            className={({ isActive }) =>
-              `po-nav-item ${isActive ? 'active' : ''}`
-            }
-            onClick={closeMobileSidebar}
-          >
-            <span className="po-nav-icon">
-              <Icon name="projects" />
-            </span>
-            <span className="po-nav-text">My Projects</span>
-          </NavLink>
-
-          <NavLink
-            to="/po/employees"
-            className={({ isActive }) =>
-              `po-nav-item ${isActive ? 'active' : ''}`
-            }
-            onClick={closeMobileSidebar}
-          >
-            <span className="po-nav-icon">
-              <Icon name="employees" />
-            </span>
-            <span className="po-nav-text">Employees</span>
-          </NavLink>
-
-          <NavLink
-            to="/po/notifications"
-            className={({ isActive }) =>
-              `po-nav-item ${isActive ? 'active' : ''}`
-            }
-            onClick={closeMobileSidebar}
-          >
-            <span className="po-nav-icon">
-              <Icon name="notifications" />
-            </span>
-            <span className="po-nav-text">Notifications</span>
-          </NavLink>
-
-          <NavLink
-            to="/po/calendar"
-            className={({ isActive }) =>
-              `po-nav-item ${isActive ? 'active' : ''}`
-            }
-            onClick={closeMobileSidebar}
-          >
-            <span className="po-nav-icon">
-              <Icon name="calendar" />
-            </span>
-            <span className="po-nav-text">Calendar</span>
-          </NavLink>
-        </nav>
-
+                  <NavLink
+                    to="/po/dashboard"
+                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="dashboard" />
+                    </span>
+                    <span className="po-nav-text">Dashboard</span>
+                  </NavLink>
+        
+                  <NavLink
+                    to="/po/project-requests"
+                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="requests" />
+                    </span>
+                    <span className="po-nav-text">Project Requests</span>
+                  </NavLink>
+        
+                  <NavLink
+                    to="/po/projects"
+                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="projects" />
+                    </span>
+                    <span className="po-nav-text">My Projects</span>
+                  </NavLink>
+        
+                  <NavLink
+                    to="/po/employees"
+                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="employees" />
+                    </span>
+                    <span className="po-nav-text">Employees</span>
+                  </NavLink>
+        
+                  <NavLink
+                    to="/po/notifications"
+                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="notifications" />
+                    </span>
+                    <span className="po-nav-text">Notifications</span>
+                  </NavLink>
+        
+                  <NavLink
+                    to="/po/calendar"
+                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="calendar" />
+                    </span>
+                    <span className="po-nav-text">Calendar</span>
+                  </NavLink>
+        
+                  <NavLink
+          to="/po/resource-requests"
+          className={({ isActive }) =>
+            `po-nav-item ${isActive ? 'active' : ''}`
+          }
+          onClick={closeMobileSidebar}
+        >
+          <span className="po-nav-icon">
+            <Icon name="usersPlus" />
+          </span>
+          <span className="po-nav-text">Resource Requests</span>
+        </NavLink>
+                </nav>
         <div className="po-sidebar-bottom">
           <NavLink
             to="/po/profile"

@@ -2,9 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import Login from '../pages/auth/Login'
 
-// =========================================================
-// BUSINESS OWNER
-// =========================================================
+// Dashboards
 import BODashboard from '../pages/bo/BODashboard'
 import MyProjects from '../pages/bo/MyProjects'
 import CreateProject from '../pages/bo/CreateProject'
@@ -12,25 +10,19 @@ import Calendar from '../pages/bo/Calendar'
 import Notifications from '../pages/bo/Notifications'
 import Profile from '../pages/bo/Profile'
 import ProjectDetails from '../pages/bo/ProjectDetails'
-
-// =========================================================
-// EMPLOYEE
-// =========================================================
 import EmployeeDashboard from '../pages/employee/EmployeeDashboard'
 
-// =========================================================
-// RESOURCE PLANNER
-// =========================================================
 import PlannerLayout from '../pages/resourcePlanner/PlannerLayout'
 import PlannerDashboard from '../pages/resourcePlanner/PlannerDashboard'
 import PlannerEmployees from '../pages/resourcePlanner/PlannerEmployees'
 import PlannerPortfolio from '../pages/resourcePlanner/PlannerPortfolio'
 import PlannerRequests from '../pages/resourcePlanner/PlannerRequests'
 
-// =========================================================
-// PRODUCT OWNER
-// =========================================================
 import PODashboard from '../pages/po/PODashboard'
+
+import ProtectedRoute from './ProtectedRoute'
+import RoleRoute from './RoleRoute'
+
 import POProjectRequests from '../pages/po/ProjectRequests'
 import POMyProjects from '../pages/po/MyProjects'
 import POProjectDetails from '../pages/po/ProjectDetails'
@@ -41,17 +33,9 @@ import PONotifications from '../pages/po/Notifications'
 import POCalendar from '../pages/po/Calendar'
 import POProfile from '../pages/po/Profile'
 
-// =========================================================
-// VERTICAL HEAD
-// =========================================================
 import VerticalHeadDashboard from '../pages/verticalHead/VerticalHeadDashboard'
-
-// =========================================================
-// ROUTE GUARDS
-// =========================================================
-import ProtectedRoute from './ProtectedRoute'
-import RoleRoute from './RoleRoute'
-
+import VHEmployeeDiscovery from '../pages/verticalHead/EmployeeDiscovery'
+import VHEmployeeDetails from '../pages/verticalHead/EmployeeDetails'
 
 function NotFound() {
   return (
@@ -66,9 +50,7 @@ function NotFound() {
       }}
     >
       <h1>404</h1>
-
       <h2>Page Not Found</h2>
-
       <p>
         The page you are looking for does not exist
         or has not been implemented yet.
@@ -82,9 +64,9 @@ export default function AppRoutes() {
   return (
     <Routes>
 
-      {/* =====================================================
-          PUBLIC ROUTES
-      ====================================================== */}
+      {/* =========================
+          PUBLIC
+      ========================== */}
 
       <Route
         path="/login"
@@ -97,16 +79,16 @@ export default function AppRoutes() {
       />
 
 
-      {/* =====================================================
-          ALL AUTHENTICATED ROUTES
-      ====================================================== */}
+      {/* =========================
+          AUTHENTICATED USERS
+      ========================== */}
 
       <Route element={<ProtectedRoute />}>
 
 
-        {/* ===================================================
+        {/* =====================
             BUSINESS OWNER
-        ==================================================== */}
+        ====================== */}
 
         <Route element={<RoleRoute roles={['BO']} />}>
 
@@ -158,53 +140,53 @@ export default function AppRoutes() {
         </Route>
 
 
-        {/* ===================================================
-            RESOURCE PLANNER
-        ==================================================== */}
+        {/* =====================
+    RESOURCE PLANNER
+====================== */}
 
-        <Route element={<RoleRoute roles={['ResourcePlanner']} />}>
+<Route element={<RoleRoute roles={['ResourcePlanner']} />}>
 
-          <Route
-            path="/resource-planner"
-            element={<PlannerLayout />}
-          >
-            <Route
-              index
-              element={
-                <Navigate
-                  to="dashboard"
-                  replace
-                />
-              }
-            />
+  <Route
+    path="/resource-planner"
+    element={<PlannerLayout />}
+  >
+    <Route
+      index
+      element={
+        <Navigate
+          to="dashboard"
+          replace
+        />
+      }
+    />
 
-            <Route
-              path="dashboard"
-              element={<PlannerDashboard />}
-            />
+    <Route
+      path="dashboard"
+      element={<PlannerDashboard />}
+    />
 
-            <Route
-              path="employees"
-              element={<PlannerEmployees />}
-            />
+    <Route
+      path="employees"
+      element={<PlannerEmployees />}
+    />
 
-            <Route
-              path="portfolio"
-              element={<PlannerPortfolio />}
-            />
+    <Route
+      path="portfolio"
+      element={<PlannerPortfolio />}
+    />
 
-            <Route
-              path="requests"
-              element={<PlannerRequests />}
-            />
-          </Route>
+    <Route
+      path="requests"
+      element={<PlannerRequests />}
+    />
 
-        </Route>
+  </Route>
 
+</Route>
 
-        {/* ===================================================
+        {/* =====================
             EMPLOYEE
-        ==================================================== */}
+        ====================== */}
 
         <Route element={<RoleRoute roles={['Employee']} />}>
 
@@ -226,150 +208,88 @@ export default function AppRoutes() {
         </Route>
 
 
-        {/* ===================================================
-            PRODUCT OWNER
-        ==================================================== */}
+        {/* =====================
+            HEAD OF PO
+        ====================== */}
 
         <Route element={<RoleRoute roles={['HeadOfPO']} />}>
 
-          {/* /po → dashboard */}
+  <Route
+    path="/po"
+    element={
+      <Navigate
+        to="/po/dashboard"
+        replace
+      />
+    }
+  />
 
-          <Route
-            path="/po"
-            element={
-              <Navigate
-                to="/po/dashboard"
-                replace
-              />
-            }
-          />
+  <Route
+    path="/po/dashboard"
+    element={<PODashboard />}
+  />
 
+  <Route
+    path="/po/project-requests"
+    element={<POProjectRequests />}
+  />
 
-          {/* ===============================
-              DASHBOARD
-          ================================ */}
+  <Route
+    path="/po/my-projects"
+    element={<POMyProjects />}
+  />
 
-          <Route
-            path="/po/dashboard"
-            element={<PODashboard />}
-          />
+  <Route
+    path="/po/projects/:id"
+    element={<POProjectDetails />}
+  />
 
+  <Route
+    path="/po/resource-requests"
+    element={<POResourceRequests />}
+  />
 
-          {/* ===============================
-              PROJECT REQUESTS
-          ================================ */}
+  <Route
+    path="/po/employees"
+    element={<POEmployeeDirectory />}
+  />
 
-          <Route
-            path="/po/project-requests"
-            element={<POProjectRequests />}
-          />
+  <Route
+    path="/po/employees/:id"
+    element={<POEmployeeDetails />}
+  />
 
+  <Route
+    path="/po/notifications"
+    element={<PONotifications />}
+  />
 
-          {/* ===============================
-              MY PROJECTS
-              CANONICAL ROUTE
-          ================================ */}
+  <Route
+    path="/po/calendar"
+    element={<POCalendar />}
+  />
 
-          <Route
-            path="/po/projects"
-            element={<POMyProjects />}
-          />
+  <Route
+    path="/po/profile"
+    element={<POProfile />}
+  />
 
-
-          {/* ===============================
-              OLD/ALTERNATIVE ROUTE
-              REDIRECT TO CANONICAL ROUTE
-          ================================ */}
-
-          <Route
-            path="/po/my-projects"
-            element={
-              <Navigate
-                to="/po/projects"
-                replace
-              />
-            }
-          />
-
-
-          {/* ===============================
-              PROJECT DETAILS
-          ================================ */}
-
-          <Route
-            path="/po/projects/:id"
-            element={<POProjectDetails />}
-          />
+</Route>
 
 
-          {/* ===============================
-              RESOURCE REQUESTS
-          ================================ */}
-
-          <Route
-            path="/po/resource-requests"
-            element={<POResourceRequests />}
-          />
-
-
-          {/* ===============================
-              EMPLOYEES
-          ================================ */}
-
-          <Route
-            path="/po/employees"
-            element={<POEmployeeDirectory />}
-          />
-
-
-          {/* ===============================
-              EMPLOYEE DETAILS
-          ================================ */}
-
-          <Route
-            path="/po/employees/:id"
-            element={<POEmployeeDetails />}
-          />
-
-
-          {/* ===============================
-              NOTIFICATIONS
-          ================================ */}
-
-          <Route
-            path="/po/notifications"
-            element={<PONotifications />}
-          />
-
-
-          {/* ===============================
-              CALENDAR
-          ================================ */}
-
-          <Route
-            path="/po/calendar"
-            element={<POCalendar />}
-          />
-
-
-          {/* ===============================
-              PROFILE
-          ================================ */}
-
-          <Route
-            path="/po/profile"
-            element={<POProfile />}
-          />
-
-        </Route>
-
-
-        {/* ===================================================
+        {/* =====================
             VERTICAL HEAD
-        ==================================================== */}
+        ====================== */}
 
         <Route element={<RoleRoute roles={['Head']} />}>
-
+        <Route
+  path="/vertical-head/employees/:id"
+  element={<VHEmployeeDetails />}
+/>
+<Route
+  path="/vertical-head/employee-discovery"
+  element={<VHEmployeeDiscovery />}
+/>
           <Route
             path="/vertical-head"
             element={
@@ -390,9 +310,9 @@ export default function AppRoutes() {
       </Route>
 
 
-      {/* =====================================================
-          ROOT
-      ====================================================== */}
+      {/* =========================
+          DEFAULT
+      ========================== */}
 
       <Route
         path="/"
@@ -403,11 +323,6 @@ export default function AppRoutes() {
           />
         }
       />
-
-
-      {/* =====================================================
-          CATCH ALL
-      ====================================================== */}
 
       <Route
         path="*"
