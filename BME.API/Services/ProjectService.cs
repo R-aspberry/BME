@@ -156,8 +156,7 @@ public class ProjectService
 
         return true;
     }
-}
-
+    
     public async Task<List<ProjectDto>> GetMineAsync(int userId)
     {
         // find the BO for this user
@@ -183,3 +182,4 @@ public class ProjectService
             })
             .ToListAsync();
     }
+        }

@@ -507,13 +507,12 @@ export default function EmployeeDirectory() {
 
             <div className="po-directory-page-header">
               <div>
-                <div className="po-page-eyebrow">EMPLOYEES</div>
+                <div className="po-page-eyebrow"></div>
 
-                <h1>Employee Directory</h1>
+                <h1>Employee Discovery</h1>
 
                 <p>
-                  Browse employees across the organisation and view their
-                  details.
+                 
                 </p>
               </div>
             </div>

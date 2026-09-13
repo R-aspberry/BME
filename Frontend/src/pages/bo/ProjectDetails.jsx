@@ -1662,7 +1662,7 @@ export default function ProjectDetail() {
 
             <div className="bo-detail-actions">
 
-              <button
+              {/* <button
                 type="button"
                 className="aaib-btn aaib-btn-secondary"
                 onClick={() =>
@@ -1670,7 +1670,7 @@ export default function ProjectDetail() {
                 }
               >
                 Back to Projects
-              </button>
+              </button> */}
 
               {!editing ? (
                 <button

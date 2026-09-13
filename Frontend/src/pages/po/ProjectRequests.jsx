@@ -242,15 +242,20 @@ export default function ProjectRequests() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-  const userName = localStorage.getItem('userName') || 'User';
+ const userName = localStorage.getItem('userName') || 'User';
 
-  const initials = userName
-    .split(' ')
-    .filter(Boolean)
-    .map((word) => word[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
+const rawName = userName.split('.')[0] || 'User';
+
+const FN =
+  rawName.charAt(0).toUpperCase() +
+  rawName.slice(1);
+
+const initials = FN
+  .split(' ')
+  .map((word) => word[0])
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
 
   /* =======================================================
      LOAD REQUESTS
@@ -525,20 +530,26 @@ export default function ProjectRequests() {
               <span className="po-notification-dot" />
             </button>
 
-            <button
-              type="button"
-              className="po-header-user"
-              onClick={() => navigate('/po/profile')}
-            >
-              <div className="po-user-avatar">{initials}</div>
+            <div
+  className="po-header-user"
+  onClick={() => navigate('/po/profile')}
+  role="button"
+  tabIndex={0}
+  onKeyDown={(event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      navigate('/po/profile');
+    }
+  }}
+>
+  <div className="po-user-avatar">{initials}</div>
 
-              <div className="po-user-details">
-                <strong>{userName}</strong>
-                <span>Product Owner</span>
-              </div>
+  <div className="po-user-details">
+    <strong>{userName}</strong>
+    <span>Product Owner</span>
+  </div>
 
-              <Icon name="chevron" size={15} />
-            </button>
+  <Icon name="chevron" size={15} />
+</div>
           </div>
         </header>
 
@@ -548,14 +559,11 @@ export default function ProjectRequests() {
 
             <div className="po-request-page-header">
               <div>
-                <div className="po-page-eyebrow">PROJECT WORKFLOW</div>
+                <div className="po-page-eyebrow"></div>
 
                 <h1>Project Requests</h1>
 
-                <p>
-                  Review project submissions received from Business Owners
-                  before moving them through the project workflow.
-                </p>
+                <p></p>
               </div>
 
               <div className="po-request-count">
@@ -589,7 +597,7 @@ export default function ProjectRequests() {
                   <h2>Incoming Project Requests</h2>
                 </div>
 
-                <button
+                {/* <button
                   type="button"
                   className="po-refresh-button"
                   onClick={loadProjects}
@@ -597,7 +605,7 @@ export default function ProjectRequests() {
                 >
                   <Icon name="refresh" size={15} />
                   Refresh
-                </button>
+                </button> */}
               </div>
 
               <div className="po-request-search-row">
@@ -739,7 +747,7 @@ export default function ProjectRequests() {
                             <p>{description}</p>
                           )}
 
-                          <div className="po-request-meta">
+                          {/* <div className="po-request-meta">
                             <span>
                               <strong>Business Owner</strong>
                               {boId === null || boId === undefined
@@ -772,7 +780,7 @@ export default function ProjectRequests() {
                                 {flag}
                               </span>
                             </span>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="po-request-open">
@@ -809,7 +817,7 @@ export default function ProjectRequests() {
             align-items: flex-end;
             justify-content: space-between;
             gap: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
           }
 
           .po-page-eyebrow {
@@ -822,13 +830,13 @@ export default function ProjectRequests() {
           .po-request-page-header h1 {
             margin: 4px 0 5px;
             color: var(--aaib-primary);
-            font-size: 28px;
+            font-size: 32px;
             line-height: 1.15;
             letter-spacing: -.03em;
           }
 
           .po-request-page-header p {
-            max-width: 680px;
+            max-width: 760px;
             margin: 0;
             color: var(--aaib-text-muted);
             font-size: 12px;
@@ -836,10 +844,10 @@ export default function ProjectRequests() {
           }
 
           .po-request-count {
-            min-width: 105px;
-            padding: 11px 14px;
+            min-width: 128px;
+            padding: 13px 16px;
             border: 1px solid var(--aaib-border);
-            border-radius: 10px;
+            border-radius: 11px;
             background: var(--aaib-surface);
             box-shadow: var(--aaib-shadow-card);
             text-align: right;
@@ -864,10 +872,10 @@ export default function ProjectRequests() {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 18px;
-            padding: 14px 16px;
+            margin-bottom: 22px;
+            padding: 15px 18px;
             border: 1px solid rgba(197,160,89,.28);
-            border-radius: 10px;
+            border-radius: 11px;
             background: var(--aaib-accent-soft);
           }
 
@@ -877,7 +885,7 @@ export default function ProjectRequests() {
             flex: 0 0 auto;
             display: grid;
             place-items: center;
-            border-radius: 10px;
+            border-radius: 11px;
             background: rgba(255,255,255,.65);
             color: #8a6a1b;
           }
@@ -886,7 +894,7 @@ export default function ProjectRequests() {
             display: block;
             margin-bottom: 2px;
             color: var(--aaib-primary);
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 800;
           }
 
@@ -910,14 +918,14 @@ export default function ProjectRequests() {
             align-items: center;
             justify-content: space-between;
             gap: 14px;
-            padding: 21px 23px 16px;
+            padding: 22px 24px 18px;
           }
 
           .po-request-card-header > div > span {
             display: block;
             margin-bottom: 4px;
             color: var(--aaib-accent);
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 800;
             letter-spacing: .13em;
           }
@@ -937,7 +945,7 @@ export default function ProjectRequests() {
             min-height: 32px;
             padding: 0 10px;
             border: 1px solid var(--aaib-border);
-            border-radius: 8px;
+            border-radius: 9px;
             background: #fff;
             color: var(--aaib-primary);
             font-size: 9px;
@@ -957,7 +965,7 @@ export default function ProjectRequests() {
           }
 
           .po-request-search-row {
-            padding: 0 23px 13px;
+            padding: 0 24px 16px;
           }
 
           .po-request-search {
@@ -965,10 +973,10 @@ export default function ProjectRequests() {
             display: flex;
             align-items: center;
             gap: 8px;
-            min-height: 38px;
-            padding: 0 11px;
+            min-height: 44px;
+            padding: 0 13px;
             border: 1px solid var(--aaib-border);
-            border-radius: 9px;
+            border-radius: 10px;
             background: #fff;
           }
 
@@ -985,7 +993,7 @@ export default function ProjectRequests() {
             background: transparent;
             color: var(--aaib-text);
             font: inherit;
-            font-size: 10px;
+            font-size: 12px;
           }
 
           .po-request-search input::placeholder {
@@ -1016,9 +1024,9 @@ export default function ProjectRequests() {
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            padding: 0 23px 12px;
+            padding: 0 24px 14px;
             color: var(--aaib-text-muted);
-            font-size: 9px;
+            font-size: 11px;
           }
 
           .po-request-result-meta strong {
@@ -1042,11 +1050,11 @@ export default function ProjectRequests() {
           .po-request-item {
             position: relative;
             display: grid;
-            grid-template-columns: 38px minmax(0, 1fr) auto;
+            grid-template-columns: 48px minmax(0, 1fr) auto;
             align-items: center;
-            gap: 13px;
+            gap: 16px;
             width: 100%;
-            padding: 17px 23px;
+            padding: 20px 24px;
             border: 0;
             border-bottom: 1px solid var(--aaib-border);
             background: #fff;
@@ -1069,7 +1077,7 @@ export default function ProjectRequests() {
             height: 38px;
             display: grid;
             place-items: center;
-            border-radius: 10px;
+            border-radius: 11px;
             background: var(--aaib-primary-soft);
             color: var(--aaib-primary);
           }
@@ -1097,8 +1105,8 @@ export default function ProjectRequests() {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            min-height: 18px;
-            padding: 0 6px;
+            min-height: 22px;
+            padding: 0 8px;
             border-radius: 5px;
             background: var(--aaib-accent-soft);
             color: #8a6a1b;
@@ -1115,8 +1123,8 @@ export default function ProjectRequests() {
           }
 
           .po-request-project-info p {
-            max-width: 710px;
-            margin: 5px 0 10px;
+            max-width: 760px;
+            margin: 6px 0 12px;
             overflow: hidden;
             color: var(--aaib-text-muted);
             font-size: 9px;
@@ -1129,7 +1137,7 @@ export default function ProjectRequests() {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 10px 17px;
+            gap: 10px 22px;
           }
 
           .po-request-meta > span {
@@ -1137,13 +1145,13 @@ export default function ProjectRequests() {
             align-items: baseline;
             gap: 4px;
             color: var(--aaib-text-muted);
-            font-size: 8px;
+            font-size: 10px;
             white-space: nowrap;
           }
 
           .po-request-meta strong {
             color: var(--aaib-text);
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 800;
           }
 
@@ -1163,7 +1171,7 @@ export default function ProjectRequests() {
             align-items: center;
             gap: 7px;
             color: var(--aaib-primary);
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 800;
             white-space: nowrap;
           }
@@ -1174,7 +1182,7 @@ export default function ProjectRequests() {
             display: grid;
             place-items: center;
             border: 1px solid var(--aaib-border);
-            border-radius: 8px;
+            border-radius: 9px;
             background: #fff;
             transition: background .16s ease, border-color .16s ease, color .16s ease;
           }
@@ -1186,10 +1194,10 @@ export default function ProjectRequests() {
           }
 
           .po-request-footer {
-            padding: 11px 23px;
+            padding: 13px 24px;
             border-top: 1px solid var(--aaib-border);
             color: var(--aaib-text-muted);
-            font-size: 8px;
+            font-size: 10px;
           }
 
           .po-request-state {
@@ -1217,7 +1225,7 @@ export default function ProjectRequests() {
             max-width: 430px;
             margin: 0 0 18px;
             color: var(--aaib-text-muted);
-            font-size: 10px;
+            font-size: 12px;
             line-height: 1.6;
           }
 

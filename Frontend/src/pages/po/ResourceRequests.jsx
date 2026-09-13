@@ -140,8 +140,145 @@ function requestTotal(request) {
   );
 }
 
+
+function Icon({ name, size = 18 }) {
+  const common = {
+    width: size,
+    height: size,
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.8,
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    'aria-hidden': true,
+  };
+
+  const icons = {
+    dashboard: (
+      <>
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </>
+    ),
+    requests: (
+      <>
+        <rect x="4" y="3" width="16" height="18" rx="2" />
+        <path d="M8 7h8M8 11h8M8 15h5" />
+      </>
+    ),
+    projects: <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z" />,
+    employees: (
+      <>
+        <circle cx="9" cy="8" r="3" />
+        <path d="M3.5 20a5.5 5.5 0 0 1 11 0" />
+        <path d="M16 11a3 3 0 1 0 0-6" />
+        <path d="M17 15a5.3 5.3 0 0 1 3.5 5" />
+      </>
+    ),
+    notifications: (
+      <>
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+        <path d="M10 21h4" />
+      </>
+    ),
+    calendar: (
+      <>
+        <rect x="3" y="4" width="18" height="17" rx="2" />
+        <path d="M16 2v4M8 2v4M3 9h18" />
+      </>
+    ),
+    profile: (
+      <>
+        <circle cx="12" cy="8" r="3.5" />
+        <path d="M5 21a7 7 0 0 1 14 0" />
+      </>
+    ),
+    logout: (
+      <>
+        <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4" />
+        <path d="M14 8l4 4-4 4M9 12h9" />
+      </>
+    ),
+    menu: <path d="M4 6h16M4 12h16M4 18h16" />,
+    close: <path d="M6 6l12 12M18 6L6 18" />,
+    arrowRight: (
+      <>
+        <path d="M5 12h14" />
+        <path d="M13 6l6 6-6 6" />
+      </>
+    ),
+    arrowLeft: (
+      <>
+        <path d="M19 12H5" />
+        <path d="M11 18l-6-6 6-6" />
+      </>
+    ),
+    refresh: (
+      <>
+        <path d="M20 11a8 8 0 0 0-14.8-4L3 9" />
+        <path d="M3 4v5h5" />
+        <path d="M4 13a8 8 0 0 0 14.8 4L21 15" />
+        <path d="M21 20v-5h-5" />
+      </>
+    ),
+    search: (
+      <>
+        <circle cx="11" cy="11" r="6.5" />
+        <path d="m16 16 4 4" />
+      </>
+    ),
+    users: (
+      <>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+        <circle cx="9.5" cy="7" r="3.5" />
+        <path d="M16 11a3.5 3.5 0 1 0 0-7M21 21v-2a4 4 0 0 0-3-3.87" />
+      </>
+    ),
+    plus: <path d="M12 5v14M5 12h14" />,
+    edit: (
+      <>
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" />
+      </>
+    ),
+    trash: (
+      <>
+        <path d="M4 7h16M10 11v6M14 11v6" />
+        <path d="M6 7l1 13h10l1-13M9 7V4h6v3" />
+      </>
+    ),
+    check: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M8 12l2.7 2.7L16 9" />
+      </>
+    ),
+    clock: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </>
+    ),
+    info: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 10v6M12 7h.01" />
+      </>
+    ),
+    chevronDown: <path d="m6 9 6 6 6-6" />,
+  };
+
+  return <svg {...common}>{icons[name]}</svg>;
+}
+
 export default function ResourceRequests() {
   const navigate = useNavigate();
+
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const [projects, setProjects] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -453,1540 +590,1753 @@ export default function ResourceRequests() {
   }
 
   function getProjectName(projectId) {
-    return (
-      projectById.get(String(projectId))?.name || `Project ${projectId}`
-    );
+    return projectById.get(String(projectId))?.name || `Project ${projectId}`;
   }
 
   return (
-    <div className="po-shell resource-planner-page">
+    <div
+      className={`po-shell resource-planner-page ${
+        sidebarCollapsed ? 'po-sidebar-collapsed' : ''
+      } ${mobileSidebarOpen ? 'po-mobile-sidebar-open' : ''}`}
+    >
       <aside className="po-sidebar">
-        <div className="po-sidebar-brand">
-          <img src={aaibLogo} alt="AAIB" className="po-sidebar-logo" />
-          <div>
-            <div className="po-sidebar-title">AAIB</div>
-            <div className="po-sidebar-subtitle">Product Owner Portal</div>
+        <div className="po-sidebar-top">
+          <div className="po-sidebar-logo">
+            <span className="aaib-logo-light" />
           </div>
+
+          <button
+            type="button"
+            className="po-collapse-btn"
+            onClick={() => setSidebarCollapsed((previous) => !previous)}
+            aria-label="Toggle sidebar"
+          >
+            <Icon name="menu" size={19} />
+          </button>
+
+          <button
+            type="button"
+            className="po-mobile-close"
+            onClick={() => setMobileSidebarOpen(false)}
+            aria-label="Close menu"
+          >
+            <Icon name="close" size={21} />
+          </button>
         </div>
 
-        <nav className="po-sidebar-nav" aria-label="Product Owner navigation">
-          {PO_NAV_ITEMS.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                `po-nav-item ${isActive ? 'active' : ''}`
-              }
-            >
-              <span className="po-nav-icon" aria-hidden="true">
-                {item.icon}
-              </span>
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
+        <div className="po-sidebar-section-label">Product Owner Portal</div>
 
-          <NavLink
-            to="/po/resource-requests"
-            className={({ isActive }) =>
-              `po-nav-item ${isActive ? 'active' : ''}`
-            }
-          >
-            <span className="po-nav-icon" aria-hidden="true">
-              ◒
-            </span>
-            <span>Resource Requests</span>
+        <nav className="po-nav">
+          <NavLink to="/po/dashboard" className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileSidebarOpen(false)}>
+            <span className="po-nav-icon"><Icon name="dashboard" /></span>
+            <span className="po-nav-text">Dashboard</span>
+          </NavLink>
+          <NavLink to="/po/project-requests" className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileSidebarOpen(false)}>
+            <span className="po-nav-icon"><Icon name="requests" /></span>
+            <span className="po-nav-text">Project Requests</span>
+          </NavLink>
+          <NavLink to="/po/projects" className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileSidebarOpen(false)}>
+            <span className="po-nav-icon"><Icon name="projects" /></span>
+            <span className="po-nav-text">My Projects</span>
+          </NavLink>
+          <NavLink to="/po/employees" className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileSidebarOpen(false)}>
+            <span className="po-nav-icon"><Icon name="employees" /></span>
+            <span className="po-nav-text">Employees</span>
+          </NavLink>
+          <NavLink to="/po/notifications" className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileSidebarOpen(false)}>
+            <span className="po-nav-icon"><Icon name="notifications" /></span>
+            <span className="po-nav-text">Notifications</span>
+          </NavLink>
+          <NavLink to="/po/calendar" className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileSidebarOpen(false)}>
+            <span className="po-nav-icon"><Icon name="calendar" /></span>
+            <span className="po-nav-text">Calendar</span>
+          </NavLink>
+          <NavLink to="/po/resource-requests" className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileSidebarOpen(false)}>
+            <span className="po-nav-icon"><Icon name="users" /></span>
+            <span className="po-nav-text">Resource Requests</span>
           </NavLink>
         </nav>
 
-        <button
-          type="button"
-          className="po-sidebar-logout"
-          onClick={logout}
-        >
-          <span className="po-nav-icon" aria-hidden="true">
-            ↪
-          </span>
-          <span>Logout</span>
-        </button>
+        <div className="po-sidebar-bottom">
+          <NavLink to="/po/profile" className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileSidebarOpen(false)}>
+            <span className="po-nav-icon"><Icon name="profile" /></span>
+            <span className="po-nav-text">My Profile</span>
+          </NavLink>
+          <button type="button" className="po-nav-item po-logout" onClick={logout}>
+            <span className="po-nav-icon"><Icon name="logout" /></span>
+            <span className="po-nav-text">Logout</span>
+          </button>
+        </div>
       </aside>
 
-      <main className="po-main">
+      <div
+        className="po-sidebar-backdrop"
+        onClick={() => setMobileSidebarOpen(false)}
+        aria-hidden="true"
+      />
+
+      <div className="po-page">
         <header className="po-header">
           <div className="po-header-left">
-            <img
-              src={aaibLogo}
-              alt="AAIB"
-              className="po-header-aaib-logo"
-            />
+            <button
+              type="button"
+              className="po-mobile-menu"
+              onClick={() => setMobileSidebarOpen(true)}
+              aria-label="Open menu"
+            >
+              <Icon name="menu" size={20} />
+            </button>
+
+            <img src={aaibLogo} alt="AAIB" className="po-header-aaib-logo" />
             <div className="po-header-title">Product Owner Portal</div>
           </div>
 
           <div className="po-header-right">
-            <div className="po-header-role">Resource Planner</div>
-            <div className="po-header-avatar">PO</div>
+            <button
+              type="button"
+              className="po-header-icon"
+              onClick={() => navigate('/po/notifications')}
+              aria-label="Open notifications"
+            >
+              <Icon name="notifications" size={19} />
+              <span className="po-notification-dot" />
+            </button>
+
+            <button
+              type="button"
+              className="po-header-user"
+              onClick={() => navigate('/po/profile')}
+            >
+              <div className="po-user-avatar">
+                {(localStorage.getItem('userName') || 'PO')
+                  .split(' ')
+                  .filter(Boolean)
+                  .map((word) => word[0])
+                  .join('')
+                  .slice(0, 2)
+                  .toUpperCase()}
+              </div>
+              <div className="po-user-details">
+                <strong>{localStorage.getItem('userName') || 'User'}</strong>
+                <span>Product Owner</span>
+              </div>
+            </button>
           </div>
         </header>
 
-        <div className="po-content">
-          <div className="resource-page-heading">
-            <div>
-              <div className="po-breadcrumb">
-                Product Owner <span>/</span> Resource Planner
+        <main className="po-main">
+          <div className="po-content">
+            <div className="resource-modern-heading">
+              <div>
+                <div className="po-page-eyebrow"> </div>
+                <h1>Resource Requests</h1>
+                <p>
+                </p>
               </div>
-              <h1>Resource Planner</h1>
-              <p>
-                Define the number of employees required for each department
-                before the Vertical Head allocation stage.
-              </p>
+
+              <div className="resource-heading-actions">
+                {/* <button
+                  type="button"
+                  className="resource-modern-secondary"
+                  onClick={() => navigate('/po/projects')}
+                >
+                  <Icon name="projects" size={15} />
+                  My Projects
+                </button>
+
+                <button
+                  type="button"
+                  className="resource-modern-primary"
+                  onClick={() => {
+                    setSelectedProjectId('');
+                    setDepartmentCounts({});
+                    setActiveTab('create');
+                    clearMessages();
+                  }}
+                >
+                  <Icon name="plus" size={15} />
+                  New Request
+                </button> */}
+              </div>
             </div>
 
-            <button
-              type="button"
-              className="resource-secondary-button"
-              onClick={() => navigate('/po/my-projects')}
-            >
-              View My Projects
-            </button>
-          </div>
+            <section className="resource-overview-strip">
+              <div className="resource-overview-stat">
+                <div className="resource-overview-icon">
+                  <Icon name="projects" size={17} />
+                </div>
+                <div>
+                  <span>Projects</span>
+                  <strong>{projects.length}</strong>
+                  <small>Available for planning</small>
+                </div>
+              </div>
 
-          <div className="resource-info-banner">
-            <div className="resource-info-icon">i</div>
-            <div>
-              <strong>Frontend-only request storage</strong>
-              <p>
-                Resource-request tables and APIs are not implemented in the
-                current database. Requests on this page are therefore saved
-                locally in this browser until the backend is available.
-              </p>
-            </div>
-          </div>
+              <div className="resource-overview-divider" />
 
-          {error && (
-            <div className="resource-alert resource-alert-error" role="alert">
-              <span>!</span>
-              <div>{error}</div>
+              <div className="resource-overview-stat">
+                <div className="resource-overview-icon gold">
+                  <Icon name="users" size={17} />
+                </div>
+                <div>
+                  <span>Departments</span>
+                  <strong>{departments.length}</strong>
+                  <small>From employee data</small>
+                </div>
+              </div>
+
+              <div className="resource-overview-divider" />
+
+              <div className="resource-overview-stat">
+                <div className="resource-overview-icon green">
+                  <Icon name="clock" size={17} />
+                </div>
+                <div>
+                  <span>Saved Requests</span>
+                  <strong>{savedRequests.length}</strong>
+                  <small>On this device</small>
+                </div>
+              </div>
+
+              <div className="resource-overview-divider" />
+
+              <div className="resource-overview-stat">
+                <div className="resource-overview-icon">
+                  <Icon name="check" size={17} />
+                </div>
+                <div>
+                  <span>Current Required</span>
+                  <strong>{currentTotal}</strong>
+                  <small>Selected project</small>
+                </div>
+              </div>
+            </section>
+
+            {error && (
+              <div className="resource-modern-alert error" role="alert">
+                <Icon name="info" size={17} />
+                <div>
+                  <strong>Unable to load all data</strong>
+                  <span>{error}</span>
+                </div>
+                <button type="button" onClick={() => setError('')} aria-label="Dismiss error">×</button>
+              </div>
+            )}
+
+            {successMessage && (
+              <div className="resource-modern-alert success" role="status">
+                <Icon name="check" size={17} />
+                <div>
+                  <strong>Request saved</strong>
+                  <span>{successMessage}</span>
+                </div>
+                <button type="button" onClick={() => setSuccessMessage('')} aria-label="Dismiss success message">×</button>
+              </div>
+            )}
+
+            <div className="resource-modern-tabs">
               <button
                 type="button"
-                onClick={() => setError('')}
-                aria-label="Dismiss error"
+                className={activeTab === 'create' ? 'active' : ''}
+                onClick={() => {
+                  setActiveTab('create');
+                  clearMessages();
+                }}
               >
-                ×
+                <Icon name="plus" size={15} />
+                Create Request
               </button>
-            </div>
-          )}
 
-          {successMessage && (
-            <div
-              className="resource-alert resource-alert-success"
-              role="status"
-            >
-              <span>✓</span>
-              <div>{successMessage}</div>
               <button
                 type="button"
-                onClick={() => setSuccessMessage('')}
-                aria-label="Dismiss success message"
+                className={activeTab === 'saved' ? 'active' : ''}
+                onClick={() => {
+                  setActiveTab('saved');
+                  clearMessages();
+                }}
               >
-                ×
+                <Icon name="requests" size={15} />
+                Saved Requests
+                <span>{savedRequests.length}</span>
               </button>
             </div>
-          )}
 
-          <div className="resource-tabs">
-            <button
-              type="button"
-              className={activeTab === 'create' ? 'active' : ''}
-              onClick={() => {
-                setActiveTab('create');
-                clearMessages();
-              }}
-            >
-              Create / Edit Request
-            </button>
-
-            <button
-              type="button"
-              className={activeTab === 'saved' ? 'active' : ''}
-              onClick={() => {
-                setActiveTab('saved');
-                clearMessages();
-              }}
-            >
-              Saved Requests
-              <span className="resource-tab-count">{savedRequests.length}</span>
-            </button>
-          </div>
-
-          {isLoading ? (
-            <div className="resource-state-card">
-              <div className="resource-spinner" />
-              <h3>Loading Resource Planner</h3>
-              <p>Retrieving projects and available department data…</p>
-            </div>
-          ) : activeTab === 'create' ? (
-            <form onSubmit={handleSaveRequest}>
-              <section className="resource-card">
-                <div className="resource-card-header">
-                  <div>
-                    <span className="resource-eyebrow">STEP 01</span>
-                    <h2>Select Project</h2>
-                    <p>
-                      Choose the project for which employee capacity is being
-                      requested.
-                    </p>
-                  </div>
-
-                  {selectedProject && (
-                    <span className="resource-project-status">
-                      {selectedProject.status}
-                    </span>
-                  )}
-                </div>
-
-                <div className="resource-project-selector">
-                  <label htmlFor="resource-project-search">
-                    Search projects
-                  </label>
-                  <div className="resource-search-wrap">
-                    <span aria-hidden="true">⌕</span>
-                    <input
-                      id="resource-project-search"
-                      type="text"
-                      placeholder="Search by project name or ID"
-                      value={searchTerm}
-                      onChange={(event) => setSearchTerm(event.target.value)}
-                    />
-                  </div>
-
-                  <label htmlFor="resource-project-filter">
-                    Status
-                  </label>
-                  <select
-                    id="resource-project-filter"
-                    value={projectFilter}
-                    onChange={(event) => setProjectFilter(event.target.value)}
-                  >
-                    <option value="all">All statuses</option>
-                    {Array.from(
-                      new Set(projects.map((project) => project.status)),
-                    )
-                      .sort()
-                      .map((status) => (
-                        <option key={status} value={status}>
-                          {status}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-
-                {filteredProjects.length === 0 ? (
-                  <div className="resource-empty-inline">
-                    <span>◌</span>
-                    <div>
-                      <strong>No matching projects</strong>
-                      <p>
-                        No project matched the current search and filter.
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="resource-project-grid">
-                    {filteredProjects.map((project) => {
-                      const isSelected =
-                        String(selectedProjectId) === String(project.id);
-                      const hasSavedRequest = savedProjectIds.has(
-                        String(project.id),
-                      );
-
-                      return (
-                        <button
-                          type="button"
-                          key={project.id}
-                          className={`resource-project-card ${
-                            isSelected ? 'selected' : ''
-                          }`}
-                          onClick={() => {
-                            handleProjectSelection({
-                              target: { value: String(project.id) },
-                            });
-                          }}
-                        >
-                          <div className="resource-project-top">
-                            <span className="resource-project-id">
-                              PRJ-{String(project.id).padStart(4, '0')}
-                            </span>
-                            {hasSavedRequest && (
-                              <span className="resource-saved-badge">
-                                Saved
-                              </span>
-                            )}
-                          </div>
-
-                          <h3>{project.name}</h3>
-
-                          <div className="resource-project-meta">
-                            <span>{project.status}</span>
-                            <span>{project.flag}</span>
-                          </div>
-
-                          <div className="resource-project-dates">
-                            <span>
-                              Start <strong>{formatDate(project.startDate)}</strong>
-                            </span>
-                            <span>
-                              End <strong>{formatDate(project.endDate)}</strong>
-                            </span>
-                          </div>
-
-                          <div className="resource-project-select-indicator">
-                            {isSelected ? 'Selected ✓' : 'Select project →'}
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
+            {isLoading ? (
+              <section className="resource-modern-state">
+                <div className="resource-modern-spinner" />
+                <h3>Loading resource planning</h3>
+                <p>Retrieving projects and department information...</p>
               </section>
-
-              {selectedProject && (
-                <>
-                  <section className="resource-card">
-                    <div className="resource-card-header">
-                      <div>
-                        <span className="resource-eyebrow">STEP 02</span>
-                        <h2>Department Requirements</h2>
-                        <p>
-                          Enter the number of employees required from each
-                          department. Leave departments blank when no resource
-                          is required.
-                        </p>
-                      </div>
-
-                      <div className="resource-total-chip">
-                        <span>Total Required</span>
-                        <strong>{currentTotal}</strong>
-                        <small>employees</small>
-                      </div>
+            ) : activeTab === 'create' ? (
+              <form onSubmit={handleSaveRequest}>
+                <section className="resource-modern-card">
+                  <div className="resource-modern-card-header">
+                    <div>
+                      <span className="resource-modern-eyebrow">STEP 01</span>
+                      <h2>Select Project</h2>
+                      <p>Choose the project that needs employee capacity.</p>
                     </div>
 
-                    {validationError && (
-                      <div className="resource-validation" role="alert">
-                        <span>!</span>
-                        {validationError}
+                    {selectedProject && (
+                      <div className="resource-selected-project">
+                        <span>Selected project</span>
+                        <strong>{selectedProject.name}</strong>
+                        <small>
+                          PRJ-{String(selectedProject.id).padStart(4, '0')}
+                        </small>
                       </div>
                     )}
+                  </div>
 
-                    {departments.length === 0 ? (
-                      <div className="resource-empty-inline">
-                        <span>◌</span>
+                  <div className="resource-project-controls">
+                    <div className="resource-control search">
+                      <label htmlFor="resource-project-search">Search projects</label>
+                      <div>
+                        <Icon name="search" size={16} />
+                        <input
+                          id="resource-project-search"
+                          type="text"
+                          placeholder="Search project name or ID..."
+                          value={searchTerm}
+                          onChange={(event) => setSearchTerm(event.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="resource-control">
+                      <label htmlFor="resource-project-filter">Status</label>
+                      <div className="resource-select-wrap">
+                        <select
+                          id="resource-project-filter"
+                          value={projectFilter}
+                          onChange={(event) => setProjectFilter(event.target.value)}
+                        >
+                          <option value="all">All statuses</option>
+                          {Array.from(new Set(projects.map((project) => project.status)))
+                            .sort()
+                            .map((projectStatus) => (
+                              <option key={projectStatus} value={projectStatus}>
+                                {projectStatus}
+                              </option>
+                            ))}
+                        </select>
+                        <Icon name="chevronDown" size={14} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {filteredProjects.length === 0 ? (
+                    <div className="resource-modern-empty-inline">
+                      <div className="resource-modern-empty-icon">
+                        <Icon name="search" size={19} />
+                      </div>
+                      <div>
+                        <strong>No matching projects</strong>
+                        <span>Try another project name, ID or status.</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="resource-project-modern-grid">
+                      {filteredProjects.map((project) => {
+                        const isSelected =
+                          String(selectedProjectId) === String(project.id);
+                        const hasSavedRequest = savedProjectIds.has(
+                          String(project.id)
+                        );
+
+                        return (
+                          <button
+                            type="button"
+                            key={project.id}
+                            className={`resource-project-modern-card ${
+                              isSelected ? 'selected' : ''
+                            }`}
+                            onClick={() =>
+                              handleProjectSelection({
+                                target: { value: String(project.id) },
+                              })
+                            }
+                          >
+                            <div className="resource-project-card-topline">
+                              <span>
+                                PRJ-{String(project.id).padStart(4, '0')}
+                              </span>
+                              {hasSavedRequest && (
+                                <em>
+                                  <Icon name="check" size={10} />
+                                  Saved
+                                </em>
+                              )}
+                            </div>
+
+                            <h3>{project.name}</h3>
+
+                            <div className="resource-project-card-bottom">
+                              <span className={`resource-project-status-pill ${String(project.status).toLowerCase().replace(/\s+/g, '-')}`}>
+                                {project.status}
+                              </span>
+                              <span className="resource-project-open">
+                                {isSelected ? 'Selected' : 'Select'}
+                                <Icon name="arrowRight" size={13} />
+                              </span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </section>
+
+                {selectedProject && (
+                  <>
+                    <section className="resource-modern-card">
+                      <div className="resource-modern-card-header">
                         <div>
-                          <strong>No departments available</strong>
+                          <span className="resource-modern-eyebrow">STEP 02</span>
+                          <h2>Department Requirements</h2>
                           <p>
-                            Department information will appear once employees
-                            are returned from the employee API.
+                            Enter the required employee count for each department.
+                            The corresponding Vertical Head is shown for reference.
                           </p>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="resource-department-list">
-                        {departments.map((department) => {
-                          const value = departmentCounts[department.name] ?? '';
-                          const numericValue = Number(value);
-                          const hasInvalidValue =
-                            String(value).trim() !== '' &&
-                            (!Number.isInteger(numericValue) ||
-                              numericValue <= 0);
 
-                          return (
-                            <div
-                              key={department.name}
-                              className={`resource-department-row ${
-                                hasInvalidValue ? 'invalid' : ''
-                              }`}
-                            >
-                              <div className="resource-department-main">
-                                <div className="resource-department-icon">
-                                  {department.name.slice(0, 1).toUpperCase()}
+                        <div className="resource-total-box">
+                          <span>Total Required</span>
+                          <strong>{currentTotal}</strong>
+                          <small>employees</small>
+                        </div>
+                      </div>
+
+                      {validationError && (
+                        <div className="resource-validation-modern" role="alert">
+                          <Icon name="info" size={15} />
+                          <span>{validationError}</span>
+                        </div>
+                      )}
+
+                      {departments.length === 0 ? (
+                        <div className="resource-modern-empty-inline">
+                          <div className="resource-modern-empty-icon">
+                            <Icon name="users" size={19} />
+                          </div>
+                          <div>
+                            <strong>No departments available</strong>
+                            <span>
+                              Department information will appear when employees
+                              are returned from the employee API.
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="resource-department-modern-list">
+                          <div className="resource-department-modern-head">
+                            <span>Department</span>
+                            <span>Vertical Head</span>
+                            <span>Required Employees</span>
+                          </div>
+
+                          {departments.map((department) => {
+                            const value =
+                              departmentCounts[department.name] ?? '';
+                            const numericValue = Number(value);
+                            const hasInvalidValue =
+                              String(value).trim() !== '' &&
+                              (!Number.isInteger(numericValue) ||
+                                numericValue <= 0);
+
+                            return (
+                              <div
+                                key={department.name}
+                                className={`resource-department-modern-row ${
+                                  hasInvalidValue ? 'invalid' : ''
+                                }`}
+                              >
+                                <div className="resource-department-name">
+                                  <div className="resource-department-modern-icon">
+                                    {department.name.slice(0, 1).toUpperCase()}
+                                  </div>
+                                  <div>
+                                    <strong>{department.name}</strong>
+                                    <span>Employee capacity requirement</span>
+                                  </div>
                                 </div>
-                                <div>
-                                  <h3>{department.name}</h3>
-                                  <p>
-                                    {department.head ? (
-                                      <>
-                                        Vertical Head:{' '}
-                                        <strong>
-                                          {fullEmployeeName(department.head)}
-                                        </strong>
-                                      </>
-                                    ) : (
-                                      'Vertical Head not available in current employee data'
-                                    )}
-                                  </p>
+
+                                <div className="resource-department-vh">
+                                  {department.head ? (
+                                    <>
+                                      <strong>
+                                        {fullEmployeeName(department.head)}
+                                      </strong>
+                                      <span>{department.head.title || 'Vertical Head'}</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <strong>Not available</strong>
+                                      <span>Not found in current employee data</span>
+                                    </>
+                                  )}
+                                </div>
+
+                                <div className="resource-department-modern-input">
+                                  <label htmlFor={`count-${department.name}`}>
+                                    Required
+                                  </label>
+                                  <input
+                                    id={`count-${department.name}`}
+                                    type="number"
+                                    min="1"
+                                    step="1"
+                                    inputMode="numeric"
+                                    placeholder="0"
+                                    value={value}
+                                    onChange={(event) =>
+                                      handleDepartmentCountChange(
+                                        department.name,
+                                        event.target.value
+                                      )
+                                    }
+                                  />
                                 </div>
                               </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </section>
 
-                              <div className="resource-department-input-group">
-                                <label htmlFor={`count-${department.name}`}>
-                                  Required employees
-                                </label>
-                                <input
-                                  id={`count-${department.name}`}
-                                  type="number"
-                                  min="1"
-                                  step="1"
-                                  inputMode="numeric"
-                                  placeholder="0"
-                                  value={value}
-                                  onChange={(event) =>
-                                    handleDepartmentCountChange(
-                                      department.name,
-                                      event.target.value,
-                                    )
-                                  }
-                                />
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </section>
-
-                  <section className="resource-card resource-review-card">
-                    <div className="resource-card-header">
-                      <div>
-                        <span className="resource-eyebrow">STEP 03</span>
-                        <h2>Review Request</h2>
-                        <p>
-                          Confirm the project and requested capacity before
-                          saving.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="resource-review-grid">
-                      <div>
-                        <span>Project</span>
-                        <strong>{selectedProject.name}</strong>
-                      </div>
-                      <div>
-                        <span>Project Status</span>
-                        <strong>{selectedProject.status}</strong>
-                      </div>
-                      <div>
-                        <span>Total Departments</span>
-                        <strong>
-                          {
-                            Object.entries(departmentCounts).filter(
-                              ([, value]) => Number(value) > 0,
-                            ).length
-                          }
-                        </strong>
-                      </div>
-                      <div>
-                        <span>Total Employees</span>
-                        <strong>{currentTotal}</strong>
-                      </div>
-                    </div>
-
-                    <div className="resource-review-note">
-                      <span>◒</span>
-                      <div>
-                        <strong>Next workflow stage</strong>
-                        <p>
-                          After the backend resource-request workflow is
-                          implemented, each requested department can be routed
-                          to its respective Vertical Head for employee
-                          allocation.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="resource-form-actions">
-                      <button
-                        type="button"
-                        className="resource-cancel-button"
-                        onClick={() => {
-                          setSelectedProjectId('');
-                          setDepartmentCounts({});
-                          setValidationError('');
-                        }}
-                      >
-                        Clear
-                      </button>
-
-                      <button
-                        type="submit"
-                        className="resource-primary-button"
-                        disabled={isSaving}
-                      >
-                        {isSaving
-                          ? 'Saving…'
-                          : savedProjectIds.has(String(selectedProjectId))
-                            ? 'Update Resource Request'
-                            : 'Save Resource Request'}
-                      </button>
-                    </div>
-                  </section>
-                </>
-              )}
-            </form>
-          ) : (
-            <section className="resource-card">
-              <div className="resource-card-header">
-                <div>
-                  <span className="resource-eyebrow">RESOURCE REQUESTS</span>
-                  <h2>Saved Requests</h2>
-                  <p>
-                    Requests currently stored in this browser while the
-                    backend resource-request functionality is being developed.
-                  </p>
-                </div>
-                <div className="resource-total-chip compact">
-                  <span>Requests</span>
-                  <strong>{savedRequests.length}</strong>
-                </div>
-              </div>
-
-              {savedRequests.length === 0 ? (
-                <div className="resource-empty-state">
-                  <div className="resource-empty-icon">◒</div>
-                  <h3>No resource requests yet</h3>
-                  <p>
-                    Create a project resource request to see it appear here.
-                  </p>
-                  <button
-                    type="button"
-                    className="resource-primary-button"
-                    onClick={() => setActiveTab('create')}
-                  >
-                    Create First Request
-                  </button>
-                </div>
-              ) : (
-                <div className="resource-request-list">
-                  {savedRequests.map((request) => (
-                    <article
-                      key={request.id}
-                      className="resource-request-card"
-                    >
-                      <div className="resource-request-main">
-                        <div className="resource-request-heading">
-                          <span className="resource-project-id">
-                            PRJ-
-                            {String(request.projectId).padStart(4, '0')}
-                          </span>
-                          <span className="resource-pending-badge">
-                            {request.status || REQUEST_STATUS.PENDING}
-                          </span>
+                    <section className="resource-modern-card resource-review-modern-card">
+                      <div className="resource-modern-card-header">
+                        <div>
+                          <span className="resource-modern-eyebrow">STEP 03</span>
+                          <h2>Review Request</h2>
+                          <p>
+                            Confirm the demand before saving the request.
+                          </p>
                         </div>
 
-                        <h3>{getProjectName(request.projectId)}</h3>
-
-                        <p>
-                          Updated {formatDateTime(request.updatedAt)}
-                        </p>
+                        <span className="resource-review-status-pill">
+                          <Icon name="clock" size={12} />
+                          Pending
+                        </span>
                       </div>
 
-                      <div className="resource-request-summary">
+                      <div className="resource-review-modern-grid">
+                        <div>
+                          <span>Project</span>
+                          <strong>{selectedProject.name}</strong>
+                        </div>
+                        <div>
+                          <span>Project ID</span>
+                          <strong>
+                            PRJ-{String(selectedProject.id).padStart(4, '0')}
+                          </strong>
+                        </div>
                         <div>
                           <span>Departments</span>
                           <strong>
                             {
-                              Object.entries(request.departments || {}).filter(
-                                ([, count]) => Number(count) > 0,
+                              Object.entries(departmentCounts).filter(
+                                ([, value]) => Number(value) > 0
                               ).length
                             }
                           </strong>
                         </div>
                         <div>
-                          <span>Employees</span>
-                          <strong>{requestTotal(request)}</strong>
+                          <span>Total Employees</span>
+                          <strong>{currentTotal}</strong>
                         </div>
                       </div>
 
-                      <div className="resource-request-departments">
-                        {Object.entries(request.departments || {})
-                          .filter(([, count]) => Number(count) > 0)
-                          .map(([department, count]) => (
-                            <div key={department}>
-                              <span>{department}</span>
-                              <strong>{count}</strong>
-                            </div>
-                          ))}
-                      </div>
+                      {/* <div className="resource-next-stage">
+                        <div className="resource-next-stage-icon">
+                          <Icon name="users" size={16} />
+                        </div>
+                        <div>
+                          <strong></strong>
+                          <span>
+                          </span>
+                        </div>
+                      </div> */}
 
-                      <div className="resource-request-actions">
+                      <div className="resource-modern-actions">
                         <button
                           type="button"
-                          className="resource-secondary-button"
-                          onClick={() => openSavedRequest(request)}
+                          className="resource-modern-secondary"
+                          onClick={() => {
+                            setSelectedProjectId('');
+                            setDepartmentCounts({});
+                            setValidationError('');
+                          }}
                         >
-                          Edit
+                          Clear
                         </button>
+
                         <button
-                          type="button"
-                          className="resource-delete-button"
-                          onClick={() => handleDeleteRequest(request.id)}
+                          type="submit"
+                          className="resource-modern-primary"
+                          disabled={isSaving}
                         >
-                          Remove
+                          <Icon name="check" size={15} />
+                          {isSaving
+                            ? 'Saving...'
+                            : savedProjectIds.has(String(selectedProjectId))
+                              ? 'Update Resource Request'
+                              : 'Save Resource Request'}
                         </button>
                       </div>
-                    </article>
-                  ))}
+                    </section>
+                  </>
+                )}
+              </form>
+            ) : (
+              <section className="resource-modern-card">
+                <div className="resource-modern-card-header">
+                  <div>
+                    <span className="resource-modern-eyebrow">REQUESTS</span>
+                    <h2>Saved Resource Requests</h2>
+                    <p>Review, edit or remove requests saved on this device.</p>
+                  </div>
+
+                  <div className="resource-total-box compact">
+                    <span>Total Requests</span>
+                    <strong>{savedRequests.length}</strong>
+                  </div>
                 </div>
-              )}
-            </section>
-          )}
-        </div>
-      </main>
+
+                {savedRequests.length === 0 ? (
+                  <div className="resource-modern-empty-state">
+                    <div className="resource-modern-empty-icon large">
+                      <Icon name="users" size={25} />
+                    </div>
+                    <h3>No resource requests yet</h3>
+                    <p>
+                      Select a project and define department requirements to
+                      create your first request.
+                    </p>
+                    <button
+                      type="button"
+                      className="resource-modern-primary"
+                      onClick={() => setActiveTab('create')}
+                    >
+                      <Icon name="plus" size={15} />
+                      Create Request
+                    </button>
+                  </div>
+                ) : (
+                  <div className="resource-saved-modern-list">
+                    {savedRequests.map((request) => {
+                      const departmentEntries = Object.entries(
+                        request.departments || {}
+                      ).filter(([, count]) => Number(count) > 0);
+
+                      return (
+                        <article
+                          key={request.id}
+                          className="resource-saved-modern-row"
+                        >
+                          <div className="resource-saved-main">
+                            <div className="resource-saved-project-icon">
+                              <Icon name="projects" size={17} />
+                            </div>
+
+                            <div>
+                              <div className="resource-saved-meta">
+                                <span>
+                                  PRJ-{String(request.projectId).padStart(4, '0')}
+                                </span>
+                                <em>
+                                  {request.status || REQUEST_STATUS.PENDING}
+                                </em>
+                              </div>
+                              <h3>{getProjectName(request.projectId)}</h3>
+                              <p>Updated {formatDateTime(request.updatedAt)}</p>
+                            </div>
+                          </div>
+
+                          <div className="resource-saved-stats">
+                            <div>
+                              <span>Departments</span>
+                              <strong>{departmentEntries.length}</strong>
+                            </div>
+                            <div>
+                              <span>Employees</span>
+                              <strong>{requestTotal(request)}</strong>
+                            </div>
+                          </div>
+
+                          <div className="resource-saved-departments">
+                            {departmentEntries.map(([department, count]) => (
+                              <span key={department}>
+                                {department}
+                                <strong>{count}</strong>
+                              </span>
+                            ))}
+                          </div>
+
+                          <div className="resource-saved-actions">
+                            <button
+                              type="button"
+                              className="resource-icon-action"
+                              onClick={() => openSavedRequest(request)}
+                              title="Edit request"
+                              aria-label="Edit request"
+                            >
+                              <Icon name="edit" size={15} />
+                            </button>
+
+                            <button
+                              type="button"
+                              className="resource-icon-action danger"
+                              onClick={() => handleDeleteRequest(request.id)}
+                              title="Remove request"
+                              aria-label="Remove request"
+                            >
+                              <Icon name="trash" size={15} />
+                            </button>
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                )}
+              </section>
+            )}
+          </div>
+        </main>
+      </div>
 
       <style>{`
-        .resource-planner-page {
-          --resource-border: rgba(23, 33, 43, 0.09);
-          --resource-soft: #f4f6f5;
-          --resource-muted: #687483;
-        }
-
-        .resource-planner-page .po-sidebar {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .resource-planner-page .po-sidebar-nav {
-          flex: 1;
-        }
-
-        .resource-planner-page .po-sidebar-logout {
-          margin-top: auto;
-        }
-
-        .resource-page-heading {
+        .resource-modern-heading {
           display: flex;
           align-items: flex-end;
           justify-content: space-between;
           gap: 24px;
-          margin-bottom: 22px;
+          margin-bottom: 20px;
         }
 
-        .resource-page-heading h1 {
-          margin: 4px 0 8px;
-          color: var(--aaib-text);
+        .resource-modern-heading h1 {
+          margin: 4px 0 6px;
+          color: var(--aaib-primary);
           font-size: 31px;
-          line-height: 1.1;
-          font-weight: 750;
-          letter-spacing: -0.03em;
+          line-height: 1.08;
+          letter-spacing: -.035em;
         }
 
-        .resource-page-heading p {
+        .resource-modern-heading p {
+          max-width: 760px;
           margin: 0;
-          max-width: 720px;
-          color: var(--resource-muted);
+          color: var(--aaib-text-muted);
+          font-size: 11px;
           line-height: 1.65;
-          font-size: 14px;
         }
 
-        .po-breadcrumb {
-          color: var(--resource-muted);
-          font-size: 12px;
-          font-weight: 650;
-          letter-spacing: 0.02em;
-        }
-
-        .po-breadcrumb span {
-          padding: 0 6px;
-          color: var(--aaib-accent);
-        }
-
-        .resource-info-banner {
+        .resource-heading-actions {
           display: flex;
-          align-items: flex-start;
-          gap: 12px;
-          padding: 15px 17px;
-          margin-bottom: 18px;
-          border: 1px solid rgba(197, 160, 89, 0.28);
-          border-radius: 14px;
-          background: rgba(197, 160, 89, 0.09);
+          gap: 8px;
+          flex: 0 0 auto;
         }
 
-        .resource-info-icon {
-          width: 26px;
-          height: 26px;
+        .resource-overview-strip {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          align-items: center;
+          margin-bottom: 15px;
+          padding: 13px 17px;
+          border: 1px solid var(--aaib-border);
+          border-radius: var(--aaib-radius);
+          background: #fff;
+          box-shadow: var(--aaib-shadow-card);
+        }
+
+        .resource-overview-stat {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          min-width: 0;
+          padding: 2px 7px;
+        }
+
+        .resource-overview-icon {
+          width: 34px;
+          height: 34px;
           display: grid;
           place-items: center;
-          flex: 0 0 26px;
-          border-radius: 50%;
-          background: var(--aaib-accent);
-          color: white;
-          font-size: 13px;
-          font-weight: 800;
+          flex: 0 0 auto;
+          border-radius: 9px;
+          background: var(--aaib-primary-soft);
+          color: var(--aaib-primary);
         }
 
-        .resource-info-banner strong {
+        .resource-overview-icon.gold {
+          background: var(--aaib-accent-soft);
+          color: #96721d;
+        }
+
+        .resource-overview-icon.green {
+          background: var(--aaib-success-soft);
+          color: var(--aaib-success);
+        }
+
+        .resource-overview-stat span {
+          display: block;
+          color: var(--aaib-text-muted);
+          font-size: 7px;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: .06em;
+        }
+
+        .resource-overview-stat strong {
           display: block;
           color: var(--aaib-primary);
-          font-size: 13px;
-          margin-bottom: 3px;
+          font-size: 18px;
+          line-height: 1;
         }
 
-        .resource-info-banner p {
+        .resource-overview-stat small {
+          display: block;
+          margin-top: 3px;
+          color: #89938c;
+          font-size: 7px;
+        }
+
+        .resource-overview-divider {
+          width: 1px;
+          height: 30px;
+          background: var(--aaib-border);
+        }
+
+        .resource-modern-alert {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          align-items: center;
+          gap: 9px;
+          margin-bottom: 12px;
+          padding: 10px 12px;
+          border-radius: 9px;
+          font-size: 9px;
+        }
+
+        .resource-modern-alert.error {
+          background: var(--aaib-danger-soft);
+          color: var(--aaib-danger);
+        }
+
+        .resource-modern-alert.success {
+          background: var(--aaib-success-soft);
+          color: var(--aaib-success);
+        }
+
+        .resource-modern-alert strong,
+        .resource-modern-alert span {
+          display: block;
+        }
+
+        .resource-modern-alert strong {
+          margin-bottom: 1px;
+          font-size: 9px;
+        }
+
+        .resource-modern-alert button {
+          border: 0;
+          background: transparent;
+          color: inherit;
+          cursor: pointer;
+          font-size: 17px;
+        }
+
+        .resource-modern-tabs {
+          display: flex;
+          gap: 2px;
+          width: fit-content;
+          margin-bottom: 14px;
+          padding: 3px;
+          border: 1px solid var(--aaib-border);
+          border-radius: 9px;
+          background: var(--aaib-surface-alt);
+        }
+
+        .resource-modern-tabs button {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          min-height: 36px;
+          padding: 0 12px;
+          border: 0;
+          border-radius: 7px;
+          background: transparent;
+          color: var(--aaib-text-muted);
+          font-size: 9px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+
+        .resource-modern-tabs button.active {
+          background: #fff;
+          color: var(--aaib-primary);
+          box-shadow: 0 2px 7px rgba(27,40,30,.07);
+        }
+
+        .resource-modern-tabs button > span {
+          min-width: 18px;
+          height: 18px;
+          display: inline-grid;
+          place-items: center;
+          padding: 0 4px;
+          border-radius: 999px;
+          background: var(--aaib-accent-soft);
+          color: var(--aaib-primary);
+          font-size: 7px;
+        }
+
+        .resource-modern-card {
+          margin-bottom: 13px;
+          padding: 20px;
+          border: 1px solid var(--aaib-border);
+          border-radius: var(--aaib-radius);
+          background: #fff;
+          box-shadow: var(--aaib-shadow-card);
+        }
+
+        .resource-modern-card-header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 18px;
+          margin-bottom: 17px;
+        }
+
+        .resource-modern-eyebrow {
+          display: block;
+          color: var(--aaib-accent);
+          font-size: 7px;
+          font-weight: 850;
+          letter-spacing: .13em;
+        }
+
+        .resource-modern-card-header h2 {
+          margin: 4px 0;
+          color: var(--aaib-primary);
+          font-size: 17px;
+          line-height: 1.1;
+        }
+
+        .resource-modern-card-header p {
+          max-width: 650px;
           margin: 0;
-          color: #5d6470;
-          font-size: 12px;
+          color: var(--aaib-text-muted);
+          font-size: 9px;
           line-height: 1.55;
         }
 
-        .resource-alert {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 12px 14px;
-          border-radius: 12px;
-          margin-bottom: 16px;
-          font-size: 13px;
-          font-weight: 650;
-        }
-
-        .resource-alert > span:first-child {
-          width: 22px;
-          height: 22px;
-          display: grid;
-          place-items: center;
-          border-radius: 50%;
-          flex: 0 0 22px;
-          font-size: 11px;
-          font-weight: 800;
-        }
-
-        .resource-alert button {
-          margin-left: auto;
-          border: 0;
-          background: transparent;
-          cursor: pointer;
-          font-size: 20px;
-          line-height: 1;
-          color: inherit;
-          opacity: 0.65;
-        }
-
-        .resource-alert-error {
-          color: #8f2525;
-          background: rgba(205, 57, 57, 0.08);
-          border: 1px solid rgba(205, 57, 57, 0.16);
-        }
-
-        .resource-alert-error > span:first-child {
-          background: rgba(205, 57, 57, 0.16);
-        }
-
-        .resource-alert-success {
-          color: #236140;
-          background: rgba(38, 133, 85, 0.08);
-          border: 1px solid rgba(38, 133, 85, 0.15);
-        }
-
-        .resource-alert-success > span:first-child {
-          background: rgba(38, 133, 85, 0.16);
-        }
-
-        .resource-tabs {
-          display: flex;
-          gap: 5px;
-          padding: 4px;
-          width: fit-content;
-          margin-bottom: 20px;
-          border: 1px solid var(--resource-border);
-          border-radius: 12px;
-          background: var(--resource-soft);
-        }
-
-        .resource-tabs button {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          min-height: 38px;
-          border: 0;
+        .resource-selected-project {
+          min-width: 225px;
+          padding: 10px 12px;
+          border: 1px solid rgba(197,160,89,.28);
           border-radius: 9px;
-          padding: 0 15px;
-          color: var(--resource-muted);
-          background: transparent;
-          font: inherit;
-          font-size: 13px;
-          font-weight: 700;
-          cursor: pointer;
-        }
-
-        .resource-tabs button.active {
-          color: var(--aaib-primary);
-          background: #fff;
-          box-shadow: 0 2px 8px rgba(20, 33, 24, 0.07);
-        }
-
-        .resource-tab-count {
-          min-width: 21px;
-          height: 21px;
-          display: grid;
-          place-items: center;
-          border-radius: 999px;
-          color: var(--aaib-primary);
           background: var(--aaib-accent-soft);
-          font-size: 11px;
-          font-weight: 800;
         }
 
-        .resource-card {
-          border: 1px solid var(--resource-border);
-          border-radius: 18px;
-          background: var(--aaib-surface);
-          box-shadow: var(--aaib-shadow-soft);
-          padding: 24px;
-          margin-bottom: 18px;
+        .resource-selected-project span,
+        .resource-selected-project small {
+          display: block;
+          color: #876b28;
+          font-size: 7px;
         }
 
-        .resource-card-header {
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          gap: 20px;
-          margin-bottom: 20px;
-        }
-
-        .resource-eyebrow {
-          color: var(--aaib-accent);
+        .resource-selected-project strong {
+          display: block;
+          margin: 3px 0;
+          color: var(--aaib-primary);
           font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 0.13em;
         }
 
-        .resource-card-header h2 {
-          margin: 5px 0 7px;
-          color: var(--aaib-text);
-          font-size: 20px;
-          letter-spacing: -0.02em;
-        }
-
-        .resource-card-header p {
-          margin: 0;
-          max-width: 760px;
-          color: var(--resource-muted);
-          font-size: 13px;
-          line-height: 1.6;
-        }
-
-        .resource-project-selector {
+        .resource-project-controls {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) 190px;
-          gap: 8px 14px;
-          align-items: center;
-          margin-bottom: 18px;
+          grid-template-columns: minmax(0, 1fr) 180px;
+          gap: 10px;
+          margin-bottom: 14px;
         }
 
-        .resource-project-selector label {
-          grid-row: 1;
-          color: #6b7280;
-          font-size: 11px;
-          font-weight: 700;
+        .resource-control label {
+          display: block;
+          margin-bottom: 5px;
+          color: var(--aaib-text-muted);
+          font-size: 7px;
+          font-weight: 850;
           text-transform: uppercase;
-          letter-spacing: 0.05em;
+          letter-spacing: .06em;
         }
 
-        .resource-project-selector label + .resource-search-wrap,
-        .resource-project-selector select {
-          grid-row: 2;
-        }
-
-        .resource-search-wrap {
+        .resource-control > div {
           position: relative;
         }
 
-        .resource-search-wrap > span {
+        .resource-control.search > div {
+          display: flex;
+          align-items: center;
+        }
+
+        .resource-control.search svg {
           position: absolute;
-          left: 12px;
-          top: 50%;
-          transform: translateY(-50%);
-          color: #88919c;
-          font-size: 17px;
+          left: 10px;
+          color: var(--aaib-text-muted);
           pointer-events: none;
         }
 
-        .resource-search-wrap input,
-        .resource-project-selector select,
-        .resource-department-input-group input {
+        .resource-control input,
+        .resource-select-wrap select {
           width: 100%;
-          border: 1px solid rgba(23, 33, 43, 0.12);
-          border-radius: 11px;
+          min-height: 39px;
+          border: 1px solid var(--aaib-border);
+          border-radius: 8px;
+          outline: none;
           background: #fff;
           color: var(--aaib-text);
-          outline: none;
-          transition: border-color 0.18s ease, box-shadow 0.18s ease;
-          box-sizing: border-box;
+          font-size: 9px;
         }
 
-        .resource-search-wrap input,
-        .resource-project-selector select {
-          min-height: 44px;
-          padding: 0 13px;
-          font: inherit;
-          font-size: 13px;
+        .resource-control.search input {
+          padding: 0 11px 0 31px;
         }
 
-        .resource-search-wrap input {
-          padding-left: 36px;
+        .resource-select-wrap select {
+          padding: 0 28px 0 11px;
+          appearance: none;
         }
 
-        .resource-search-wrap input:focus,
-        .resource-project-selector select:focus,
-        .resource-department-input-group input:focus {
-          border-color: rgba(197, 160, 89, 0.85);
-          box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.12);
+        .resource-select-wrap svg {
+          position: absolute;
+          top: 50%;
+          right: 10px;
+          pointer-events: none;
+          color: var(--aaib-text-muted);
+          transform: translateY(-50%);
         }
 
-        .resource-project-grid {
+        .resource-control input:focus,
+        .resource-select-wrap select:focus,
+        .resource-department-modern-input input:focus {
+          border-color: rgba(197,160,89,.72);
+          box-shadow: 0 0 0 3px rgba(197,160,89,.1);
+        }
+
+        .resource-project-modern-grid {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 12px;
+          gap: 10px;
         }
 
-        .resource-project-card {
-          text-align: left;
-          padding: 16px;
+        .resource-project-modern-card {
           min-width: 0;
-          border: 1px solid rgba(23, 33, 43, 0.1);
-          border-radius: 14px;
+          padding: 14px;
+          border: 1px solid var(--aaib-border);
+          border-radius: 10px;
           background: #fff;
+          text-align: left;
           cursor: pointer;
-          transition: border-color 0.18s ease, transform 0.18s ease,
-            box-shadow 0.18s ease;
-          font: inherit;
+          transition: .18s ease;
         }
 
-        .resource-project-card:hover {
+        .resource-project-modern-card:hover {
+          border-color: rgba(197,160,89,.5);
           transform: translateY(-1px);
-          border-color: rgba(197, 160, 89, 0.55);
-          box-shadow: 0 8px 22px rgba(20, 33, 24, 0.06);
+          box-shadow: 0 7px 17px rgba(27,40,30,.06);
         }
 
-        .resource-project-card.selected {
+        .resource-project-modern-card.selected {
           border-color: var(--aaib-accent);
-          background: linear-gradient(
-            180deg,
-            rgba(197, 160, 89, 0.08),
-            #fff 55%
-          );
-          box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.12);
+          background: linear-gradient(180deg, rgba(197,160,89,.08), #fff 65%);
+          box-shadow: 0 0 0 2px rgba(197,160,89,.1);
         }
 
-        .resource-project-top,
-        .resource-project-meta,
-        .resource-project-dates {
+        .resource-project-card-topline,
+        .resource-project-card-bottom {
           display: flex;
           align-items: center;
           justify-content: space-between;
           gap: 8px;
         }
 
-        .resource-project-id {
+        .resource-project-card-topline > span {
           color: var(--aaib-accent);
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 0.08em;
+          font-size: 7px;
+          font-weight: 850;
+          letter-spacing: .08em;
         }
 
-        .resource-saved-badge,
-        .resource-pending-badge,
-        .resource-project-status {
+        .resource-project-card-topline em {
           display: inline-flex;
           align-items: center;
-          min-height: 24px;
-          padding: 0 8px;
-          border-radius: 999px;
-          font-size: 10px;
-          font-weight: 800;
-        }
-
-        .resource-saved-badge {
-          color: #3c614c;
-          background: rgba(38, 133, 85, 0.08);
-        }
-
-        .resource-pending-badge,
-        .resource-project-status {
-          color: #7b622c;
-          background: rgba(197, 160, 89, 0.14);
-        }
-
-        .resource-project-card h3 {
-          margin: 11px 0 11px;
-          color: var(--aaib-text);
-          font-size: 15px;
-          line-height: 1.35;
-        }
-
-        .resource-project-meta {
-          justify-content: flex-start;
-          flex-wrap: wrap;
-          color: var(--resource-muted);
-          font-size: 11px;
-        }
-
-        .resource-project-meta span {
-          padding-right: 8px;
-          border-right: 1px solid rgba(23, 33, 43, 0.12);
-        }
-
-        .resource-project-meta span:last-child {
-          border-right: 0;
-        }
-
-        .resource-project-dates {
-          margin-top: 17px;
-          padding-top: 13px;
-          border-top: 1px solid rgba(23, 33, 43, 0.07);
-          justify-content: flex-start;
-          font-size: 10px;
-          color: #858d98;
-        }
-
-        .resource-project-dates span {
-          display: flex;
-          flex-direction: column;
           gap: 3px;
-        }
-
-        .resource-project-dates strong {
-          color: #4b5563;
-          font-size: 11px;
-        }
-
-        .resource-project-select-indicator {
-          margin-top: 14px;
-          color: var(--aaib-primary);
-          font-size: 11px;
-          font-weight: 800;
-        }
-
-        .resource-total-chip {
-          min-width: 124px;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          padding: 11px 13px;
-          border: 1px solid rgba(197, 160, 89, 0.25);
-          border-radius: 13px;
-          background: rgba(197, 160, 89, 0.08);
-        }
-
-        .resource-total-chip span {
-          color: #816c40;
-          font-size: 10px;
-          font-weight: 750;
-        }
-
-        .resource-total-chip strong {
-          color: var(--aaib-primary);
-          font-size: 24px;
-          line-height: 1.05;
-          margin-top: 2px;
-        }
-
-        .resource-total-chip small {
-          color: #7a7f86;
-          font-size: 9px;
-        }
-
-        .resource-total-chip.compact {
-          min-width: 82px;
-          align-items: center;
-        }
-
-        .resource-department-list {
-          display: flex;
-          flex-direction: column;
-          border-top: 1px solid rgba(23, 33, 43, 0.07);
-        }
-
-        .resource-department-row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 20px;
-          padding: 16px 4px;
-          border-bottom: 1px solid rgba(23, 33, 43, 0.07);
-        }
-
-        .resource-department-row:last-child {
-          border-bottom: 0;
-        }
-
-        .resource-department-row.invalid {
-          background: rgba(205, 57, 57, 0.025);
-        }
-
-        .resource-department-main {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          min-width: 0;
-        }
-
-        .resource-department-icon {
-          width: 38px;
-          height: 38px;
-          display: grid;
-          place-items: center;
-          flex: 0 0 38px;
-          border-radius: 11px;
-          color: var(--aaib-primary);
-          background: var(--aaib-primary-soft);
-          font-size: 13px;
+          padding: 3px 6px;
+          border-radius: 999px;
+          background: var(--aaib-success-soft);
+          color: var(--aaib-success);
+          font-size: 6px;
+          font-style: normal;
           font-weight: 850;
         }
 
-        .resource-department-main h3 {
-          margin: 0 0 3px;
-          color: var(--aaib-text);
-          font-size: 14px;
-        }
-
-        .resource-department-main p {
-          margin: 0;
-          color: var(--resource-muted);
+        .resource-project-modern-card h3 {
+          min-height: 34px;
+          margin: 11px 0;
+          color: var(--aaib-primary);
           font-size: 11px;
-          line-height: 1.5;
+          line-height: 1.45;
         }
 
-        .resource-department-main strong {
-          color: #4d5966;
-        }
-
-        .resource-department-input-group {
-          width: 180px;
-          flex: 0 0 180px;
-        }
-
-        .resource-department-input-group label {
-          display: block;
-          margin-bottom: 6px;
-          color: #68727e;
-          font-size: 10px;
-          font-weight: 750;
-        }
-
-        .resource-department-input-group input {
-          height: 44px;
-          padding: 0 12px;
-          font: inherit;
-          font-size: 14px;
-          font-weight: 700;
-          text-align: center;
-        }
-
-        .resource-review-grid {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 1px;
-          margin-bottom: 16px;
-          overflow: hidden;
-          border: 1px solid rgba(23, 33, 43, 0.08);
-          border-radius: 13px;
-          background: rgba(23, 33, 43, 0.08);
-        }
-
-        .resource-review-grid > div {
-          min-height: 78px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          padding: 13px 15px;
-          background: #fff;
-        }
-
-        .resource-review-grid span {
-          color: #838b95;
-          font-size: 10px;
-          font-weight: 700;
-          margin-bottom: 5px;
-        }
-
-        .resource-review-grid strong {
-          color: var(--aaib-text);
-          font-size: 14px;
-        }
-
-        .resource-review-note {
-          display: flex;
-          gap: 10px;
-          padding: 13px 14px;
-          border-radius: 12px;
+        .resource-project-status-pill,
+        .resource-review-status-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 7px;
+          border-radius: 999px;
           background: var(--aaib-surface-alt);
+          color: var(--aaib-text-muted);
+          font-size: 6px;
+          font-weight: 800;
         }
 
-        .resource-review-note > span {
-          color: var(--aaib-accent);
-          font-size: 18px;
+        .resource-project-status-pill.in-progress {
+          background: var(--aaib-primary-soft);
+          color: var(--aaib-primary);
+        }
+
+        .resource-project-status-pill.completed {
+          background: var(--aaib-success-soft);
+          color: var(--aaib-success);
+        }
+
+        .resource-project-status-pill.pending,
+        .resource-project-status-pill.submitted {
+          background: var(--aaib-accent-soft);
+          color: #8b6b21;
+        }
+
+        .resource-project-open {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          color: var(--aaib-primary);
+          font-size: 7px;
+          font-weight: 850;
+        }
+
+        .resource-total-box {
+          min-width: 105px;
+          padding: 9px 11px;
+          border: 1px solid rgba(197,160,89,.25);
+          border-radius: 9px;
+          background: var(--aaib-accent-soft);
+          text-align: right;
+        }
+
+        .resource-total-box.compact {
+          min-width: 88px;
+        }
+
+        .resource-total-box span,
+        .resource-total-box small {
+          display: block;
+          color: #816c40;
+          font-size: 7px;
+        }
+
+        .resource-total-box strong {
+          display: block;
+          margin: 2px 0;
+          color: var(--aaib-primary);
+          font-size: 21px;
           line-height: 1;
         }
 
-        .resource-review-note strong {
+        .resource-validation-modern {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          margin-bottom: 11px;
+          padding: 9px 11px;
+          border-radius: 8px;
+          background: var(--aaib-danger-soft);
+          color: var(--aaib-danger);
+          font-size: 8px;
+        }
+
+        .resource-department-modern-list {
+          border: 1px solid var(--aaib-border);
+          border-radius: 9px;
+          overflow: hidden;
+        }
+
+        .resource-department-modern-head,
+        .resource-department-modern-row {
+          display: grid;
+          grid-template-columns: 1.45fr 1fr 150px;
+          column-gap: 18px;
+          align-items: center;
+        }
+
+        .resource-department-modern-head {
+          min-height: 34px;
+          padding: 0 14px;
+          border-bottom: 1px solid var(--aaib-border);
+          background: var(--aaib-surface-alt);
+        }
+
+        .resource-department-modern-head span {
+          color: var(--aaib-text-muted);
+          font-size: 6px;
+          font-weight: 850;
+          text-transform: uppercase;
+          letter-spacing: .08em;
+        }
+
+        .resource-department-modern-row {
+          min-height: 63px;
+          padding: 9px 14px;
+          border-bottom: 1px solid var(--aaib-border);
+        }
+
+        .resource-department-modern-row:last-child {
+          border-bottom: 0;
+        }
+
+        .resource-department-modern-row.invalid {
+          background: rgba(201,58,58,.025);
+        }
+
+        .resource-department-name {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          min-width: 0;
+        }
+
+        .resource-department-modern-icon {
+          width: 31px;
+          height: 31px;
+          display: grid;
+          place-items: center;
+          flex: 0 0 auto;
+          border-radius: 8px;
+          background: var(--aaib-primary-soft);
+          color: var(--aaib-primary);
+          font-size: 9px;
+          font-weight: 850;
+        }
+
+        .resource-department-name strong {
           display: block;
+          color: var(--aaib-primary);
+          font-size: 9px;
+        }
+
+        .resource-department-name span,
+        .resource-department-vh span {
+          display: block;
+          margin-top: 2px;
+          color: var(--aaib-text-muted);
+          font-size: 7px;
+          line-height: 1.3;
+        }
+
+        .resource-department-vh {
+          min-width: 0;
+          padding-left: 2px;
+        }
+
+        .resource-department-vh strong {
+          display: block;
+          overflow: hidden;
           color: var(--aaib-text);
-          font-size: 12px;
-          margin-bottom: 3px;
+          font-size: 8px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
-        .resource-review-note p {
-          margin: 0;
-          color: var(--resource-muted);
-          font-size: 11px;
-          line-height: 1.6;
+        .resource-department-modern-input label {
+          display: block;
+          margin-bottom: 4px;
+          color: var(--aaib-text-muted);
+          font-size: 7px;
+          font-weight: 800;
+          text-transform: uppercase;
         }
 
-        .resource-form-actions {
+        .resource-department-modern-input input {
+          width: 100%;
+          height: 34px;
+          padding: 0 9px;
+          border: 1px solid var(--aaib-border);
+          border-radius: 8px;
+          outline: none;
+          color: var(--aaib-primary);
+          text-align: center;
+          font-size: 10px;
+          font-weight: 850;
+        }
+
+        .resource-review-modern-card {
+          border-top: 3px solid var(--aaib-primary);
+        }
+
+        .resource-review-status-pill {
+          background: var(--aaib-accent-soft);
+          color: #8b6b21;
+          padding: 6px 8px;
+        }
+
+        .resource-review-modern-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr 1fr 1fr;
+          gap: 1px;
+          margin-bottom: 12px;
+          overflow: hidden;
+          border: 1px solid var(--aaib-border);
+          border-radius: 9px;
+          background: var(--aaib-border);
+        }
+
+        .resource-review-modern-grid > div {
+          min-height: 62px;
+          padding: 11px;
+          background: #fff;
+        }
+
+        .resource-review-modern-grid span {
+          display: block;
+          margin-bottom: 4px;
+          color: var(--aaib-text-muted);
+          font-size: 7px;
+          font-weight: 800;
+          text-transform: uppercase;
+        }
+
+        .resource-review-modern-grid strong {
+          display: block;
+          overflow: hidden;
+          color: var(--aaib-primary);
+          font-size: 10px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .resource-next-stage {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          padding: 10px 11px;
+          border-radius: 8px;
+          background: var(--aaib-surface-alt);
+        }
+
+        .resource-next-stage-icon {
+          width: 29px;
+          height: 29px;
+          display: grid;
+          place-items: center;
+          flex: 0 0 auto;
+          border-radius: 8px;
+          background: var(--aaib-primary-soft);
+          color: var(--aaib-primary);
+        }
+
+        .resource-next-stage strong {
+          display: block;
+          color: var(--aaib-primary);
+          font-size: 8px;
+        }
+
+        .resource-next-stage span {
+          display: block;
+          margin-top: 2px;
+          color: var(--aaib-text-muted);
+          font-size: 7px;
+          line-height: 1.45;
+        }
+
+        .resource-modern-actions {
           display: flex;
           justify-content: flex-end;
+          gap: 7px;
+          margin-top: 13px;
+        }
+
+        .resource-modern-empty-inline {
+          min-height: 92px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           gap: 9px;
-          margin-top: 19px;
+          padding: 16px;
+          border: 1px dashed rgba(27,40,30,.13);
+          border-radius: 9px;
+          background: #fcfdfc;
         }
 
-        .resource-primary-button,
-        .resource-secondary-button,
-        .resource-cancel-button,
-        .resource-delete-button {
-          min-height: 40px;
-          padding: 0 15px;
-          border-radius: 10px;
-          font: inherit;
-          font-size: 12px;
-          font-weight: 800;
-          cursor: pointer;
-          transition: transform 0.18s ease, box-shadow 0.18s ease,
-            border-color 0.18s ease;
-        }
-
-        .resource-primary-button {
-          border: 1px solid var(--aaib-primary);
-          background: var(--aaib-primary);
-          color: #fff;
-        }
-
-        .resource-primary-button:hover:not(:disabled) {
-          transform: translateY(-1px);
-          box-shadow: 0 8px 18px rgba(20, 33, 24, 0.14);
-        }
-
-        .resource-primary-button:disabled {
-          cursor: wait;
-          opacity: 0.6;
-        }
-
-        .resource-secondary-button,
-        .resource-cancel-button {
-          border: 1px solid rgba(23, 33, 43, 0.12);
-          background: #fff;
-          color: var(--aaib-primary);
-        }
-
-        .resource-secondary-button:hover,
-        .resource-cancel-button:hover {
-          border-color: rgba(197, 160, 89, 0.6);
-        }
-
-        .resource-delete-button {
-          border: 1px solid rgba(205, 57, 57, 0.16);
-          background: rgba(205, 57, 57, 0.05);
-          color: #9b2c2c;
-        }
-
-        .resource-delete-button:hover {
-          border-color: rgba(205, 57, 57, 0.32);
-        }
-
-        .resource-validation {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 10px 12px;
-          margin-bottom: 12px;
-          border: 1px solid rgba(205, 57, 57, 0.16);
-          border-radius: 10px;
-          background: rgba(205, 57, 57, 0.06);
-          color: #8e2b2b;
-          font-size: 12px;
-          font-weight: 650;
-        }
-
-        .resource-validation > span {
-          width: 19px;
-          height: 19px;
+        .resource-modern-empty-icon {
+          width: 34px;
+          height: 34px;
           display: grid;
           place-items: center;
-          flex: 0 0 19px;
-          border-radius: 50%;
-          background: rgba(205, 57, 57, 0.12);
-          font-size: 10px;
-          font-weight: 800;
-        }
-
-        .resource-empty-inline {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 12px;
-          min-height: 108px;
-          border: 1px dashed rgba(23, 33, 43, 0.13);
-          border-radius: 12px;
-          color: var(--resource-muted);
-          background: rgba(248, 249, 250, 0.65);
-        }
-
-        .resource-empty-inline > span {
-          font-size: 26px;
-          color: var(--aaib-accent);
-        }
-
-        .resource-empty-inline strong {
-          display: block;
-          color: var(--aaib-text);
-          font-size: 13px;
-          margin-bottom: 3px;
-        }
-
-        .resource-empty-inline p {
-          margin: 0;
-          color: var(--resource-muted);
-          font-size: 11px;
-        }
-
-        .resource-state-card,
-        .resource-empty-state {
-          min-height: 290px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          padding: 30px;
-          border: 1px solid var(--resource-border);
-          border-radius: 18px;
-          background: #fff;
-          box-shadow: var(--aaib-shadow-soft);
-        }
-
-        .resource-state-card h3,
-        .resource-empty-state h3 {
-          margin: 13px 0 5px;
-          color: var(--aaib-text);
-          font-size: 18px;
-        }
-
-        .resource-state-card p,
-        .resource-empty-state p {
-          margin: 0 0 17px;
-          color: var(--resource-muted);
-          font-size: 12px;
-        }
-
-        .resource-spinner {
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          border: 3px solid rgba(23, 33, 43, 0.1);
-          border-top-color: var(--aaib-accent);
-          animation: resource-spin 0.8s linear infinite;
-        }
-
-        @keyframes resource-spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        .resource-empty-icon {
-          width: 56px;
-          height: 56px;
-          display: grid;
-          place-items: center;
-          border-radius: 16px;
-          color: var(--aaib-primary);
+          flex: 0 0 auto;
+          border-radius: 9px;
           background: var(--aaib-primary-soft);
-          font-size: 28px;
+          color: var(--aaib-primary);
         }
 
-        .resource-request-list {
+        .resource-modern-empty-icon.large {
+          width: 50px;
+          height: 50px;
+          border-radius: 13px;
+        }
+
+        .resource-modern-empty-inline strong,
+        .resource-modern-empty-inline span {
+          display: block;
+        }
+
+        .resource-modern-empty-inline strong {
+          color: var(--aaib-primary);
+          font-size: 9px;
+        }
+
+        .resource-modern-empty-inline span {
+          margin-top: 2px;
+          color: var(--aaib-text-muted);
+          font-size: 8px;
+        }
+
+        .resource-modern-state,
+        .resource-modern-empty-state {
+          min-height: 250px;
           display: flex;
           flex-direction: column;
-          gap: 12px;
-        }
-
-        .resource-request-card {
-          display: grid;
-          grid-template-columns: minmax(250px, 1.25fr) 130px minmax(250px, 1fr) auto;
           align-items: center;
-          gap: 17px;
-          padding: 17px;
-          border: 1px solid rgba(23, 33, 43, 0.09);
-          border-radius: 14px;
+          justify-content: center;
+          padding: 30px;
+          border: 1px solid var(--aaib-border);
+          border-radius: var(--aaib-radius);
           background: #fff;
+          box-shadow: var(--aaib-shadow-card);
+          text-align: center;
         }
 
-        .resource-request-heading {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
-
-        .resource-request-main h3 {
-          margin: 7px 0 4px;
-          color: var(--aaib-text);
+        .resource-modern-state h3,
+        .resource-modern-empty-state h3 {
+          margin: 13px 0 4px;
+          color: var(--aaib-primary);
           font-size: 15px;
         }
 
-        .resource-request-main p {
-          margin: 0;
-          color: #88919c;
-          font-size: 10px;
+        .resource-modern-state p,
+        .resource-modern-empty-state p {
+          margin: 0 0 14px;
+          color: var(--aaib-text-muted);
+          font-size: 9px;
         }
 
-        .resource-request-summary {
+        .resource-modern-spinner {
+          width: 28px;
+          height: 28px;
+          border: 3px solid rgba(27,40,30,.1);
+          border-top-color: var(--aaib-accent);
+          border-radius: 50%;
+          animation: resourceModernSpin .8s linear infinite;
+        }
+
+        @keyframes resourceModernSpin {
+          to { transform: rotate(360deg); }
+        }
+
+        .resource-saved-modern-list {
           display: grid;
-          grid-template-columns: 1fr;
           gap: 9px;
         }
 
-        .resource-request-summary div {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
+        .resource-saved-modern-row {
+          display: grid;
+          grid-template-columns: minmax(240px, 1.35fr) 100px minmax(240px, 1fr) 70px;
+          align-items: center;
+          gap: 13px;
+          padding: 13px;
+          border: 1px solid var(--aaib-border);
+          border-radius: 10px;
+          background: #fff;
+          transition: .18s ease;
         }
 
-        .resource-request-summary span {
-          color: #8b939d;
-          font-size: 9px;
-          font-weight: 750;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
+        .resource-saved-modern-row:hover {
+          border-color: rgba(197,160,89,.42);
+          box-shadow: 0 6px 14px rgba(27,40,30,.05);
         }
 
-        .resource-request-summary strong {
-          color: var(--aaib-primary);
-          font-size: 16px;
-        }
-
-        .resource-request-departments {
+        .resource-saved-main {
           display: flex;
           align-items: center;
-          flex-wrap: wrap;
-          gap: 7px;
+          gap: 9px;
+          min-width: 0;
         }
 
-        .resource-request-departments div {
+        .resource-saved-project-icon {
+          width: 35px;
+          height: 35px;
+          display: grid;
+          place-items: center;
+          flex: 0 0 auto;
+          border-radius: 9px;
+          background: var(--aaib-primary-soft);
+          color: var(--aaib-primary);
+        }
+
+        .resource-saved-meta {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        }
+
+        .resource-saved-meta > span {
+          color: var(--aaib-accent);
+          font-size: 6px;
+          font-weight: 850;
+          letter-spacing: .07em;
+        }
+
+        .resource-saved-meta em {
+          padding: 3px 6px;
+          border-radius: 999px;
+          background: var(--aaib-accent-soft);
+          color: #8b6b21;
+          font-size: 6px;
+          font-style: normal;
+          font-weight: 850;
+        }
+
+        .resource-saved-main h3 {
+          margin: 4px 0 2px;
+          color: var(--aaib-primary);
+          font-size: 10px;
+        }
+
+        .resource-saved-main p {
+          margin: 0;
+          color: var(--aaib-text-muted);
+          font-size: 7px;
+        }
+
+        .resource-saved-stats {
+          display: flex;
+          gap: 13px;
+        }
+
+        .resource-saved-stats span {
+          display: block;
+          color: var(--aaib-text-muted);
+          font-size: 6px;
+          font-weight: 800;
+          text-transform: uppercase;
+        }
+
+        .resource-saved-stats strong {
+          display: block;
+          margin-top: 2px;
+          color: var(--aaib-primary);
+          font-size: 14px;
+        }
+
+        .resource-saved-departments {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 5px;
+        }
+
+        .resource-saved-departments span {
           display: inline-flex;
           align-items: center;
-          gap: 7px;
-          min-height: 30px;
-          padding: 0 9px;
-          border-radius: 9px;
+          gap: 5px;
+          min-height: 24px;
+          padding: 0 6px;
+          border-radius: 7px;
           background: var(--aaib-surface-alt);
-          color: #58626d;
-          font-size: 10px;
-          font-weight: 650;
+          color: var(--aaib-text-muted);
+          font-size: 6px;
+          font-weight: 700;
         }
 
-        .resource-request-departments strong {
+        .resource-saved-departments strong {
           color: var(--aaib-primary);
         }
 
-        .resource-request-actions {
+        .resource-saved-actions {
           display: flex;
-          gap: 7px;
           justify-content: flex-end;
+          gap: 5px;
         }
 
-        @media (max-width: 1180px) {
-          .resource-project-grid {
+        .resource-icon-action {
+          width: 29px;
+          height: 29px;
+          display: grid;
+          place-items: center;
+          padding: 0;
+          border: 1px solid var(--aaib-border);
+          border-radius: 7px;
+          background: #fff;
+          color: var(--aaib-primary);
+          cursor: pointer;
+        }
+
+        .resource-icon-action:hover {
+          background: var(--aaib-primary-soft);
+        }
+
+        .resource-icon-action.danger {
+          color: var(--aaib-danger);
+        }
+
+        .resource-icon-action.danger:hover {
+          background: var(--aaib-danger-soft);
+        }
+
+        @media (max-width: 1120px) {
+          .resource-project-modern-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
 
-          .resource-request-card {
-            grid-template-columns: 1fr 1fr;
+          .resource-saved-modern-row {
+            grid-template-columns: minmax(220px, 1fr) 90px minmax(200px, 1fr);
           }
 
-          .resource-request-actions {
-            justify-content: flex-start;
+          .resource-saved-actions {
+            grid-column: 1 / -1;
+            justify-content: flex-end;
+            padding-top: 8px;
+            border-top: 1px solid var(--aaib-border);
           }
         }
 
         @media (max-width: 900px) {
-          .resource-page-heading {
+          .resource-overview-strip {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+          }
+
+          .resource-overview-divider {
+            display: none;
+          }
+
+          .resource-modern-heading {
             align-items: flex-start;
             flex-direction: column;
           }
 
-          .resource-project-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .resource-review-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-
-          .resource-department-row {
-            align-items: flex-start;
-            flex-direction: column;
-          }
-
-          .resource-department-input-group {
-            width: 100%;
-            flex-basis: auto;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .resource-planner-page .po-content {
-            padding: 18px 14px 26px;
-          }
-
-          .resource-card {
-            padding: 17px;
-            border-radius: 14px;
-          }
-
-          .resource-project-selector {
-            grid-template-columns: 1fr;
-          }
-
-          .resource-project-selector label + .resource-search-wrap,
-          .resource-project-selector select {
-            grid-row: auto;
-          }
-
-          .resource-review-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .resource-review-grid > div {
-            min-height: 62px;
-          }
-
-          .resource-request-card {
-            grid-template-columns: 1fr;
-          }
-
-          .resource-request-actions {
+          .resource-heading-actions {
             width: 100%;
           }
 
-          .resource-request-actions button {
+          .resource-heading-actions button {
             flex: 1;
           }
 
-          .resource-form-actions {
+          .resource-project-controls {
+            grid-template-columns: 1fr;
+          }
+
+          .resource-project-modern-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .resource-department-modern-head {
+            display: none;
+          }
+
+          .resource-department-modern-row {
+            grid-template-columns: 1fr 150px;
+            gap: 10px 16px;
+          }
+
+          .resource-department-name {
+            grid-column: 1 / -1;
+          }
+
+          .resource-review-modern-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 700px) {
+          .resource-overview-strip {
+            grid-template-columns: 1fr;
+          }
+
+          .resource-modern-card {
+            padding: 15px;
+          }
+
+          .resource-modern-card-header {
+            flex-direction: column;
+          }
+
+          .resource-selected-project {
+            width: 100%;
+          }
+
+          .resource-department-modern-row {
+            grid-template-columns: 1fr;
+          }
+
+          .resource-department-modern-input {
+            width: 100%;
+          }
+
+          .resource-review-modern-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .resource-modern-actions {
             flex-direction: column-reverse;
           }
 
-          .resource-form-actions button {
+          .resource-modern-actions button {
             width: 100%;
+          }
+
+          .resource-saved-modern-row {
+            grid-template-columns: 1fr;
+          }
+
+          .resource-saved-actions {
+            grid-column: auto;
+          }
+
+          .resource-saved-stats {
+            padding: 9px 0;
+            border-top: 1px solid var(--aaib-border);
+            border-bottom: 1px solid var(--aaib-border);
+          }
+        }
+
+        @media (max-width: 520px) {
+          .resource-modern-heading h1 {
+            font-size: 27px;
+          }
+
+          .resource-heading-actions {
+            flex-direction: column;
+          }
+
+          .resource-review-modern-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .resource-saved-actions {
+            justify-content: stretch;
+          }
+
+          .resource-icon-action {
+            flex: 1;
           }
         }
       `}</style>

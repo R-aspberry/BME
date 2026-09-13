@@ -189,8 +189,6 @@ const getFlag = (project) =>
 const getDescription = (project) =>
   project?.description ?? project?.Description ?? '';
 
-const getMvp = (project) =>
-  project?.mvp ?? project?.MVP ?? '—';
 
 const getBudget = (project) =>
   project?.budget ?? project?.Budget ?? null;
@@ -486,10 +484,6 @@ export default function MyProjects() {
         sidebarCollapsed ? 'po-sidebar-collapsed' : ''
       } ${mobileSidebarOpen ? 'po-mobile-sidebar-open' : ''}`}
     >
-      {/* ===================================================
-          SIDEBAR
-      ==================================================== */}
-
       <aside className="po-sidebar">
         <div className="po-sidebar-top">
           <div className="po-sidebar-logo">
@@ -559,7 +553,7 @@ export default function MyProjects() {
             <span className="po-nav-icon">
               <Icon name="projects" />
             </span>
-            <span className="po-nav-text">My Projects</span>
+            <span className="po-nav-text">Projects</span>
           </NavLink>
 
           <NavLink
@@ -635,10 +629,6 @@ export default function MyProjects() {
         aria-hidden="true"
       />
 
-      {/* ===================================================
-          PAGE
-      ==================================================== */}
-
       <div className="po-page">
         <header className="po-header">
           <div className="po-header-left">
@@ -685,94 +675,83 @@ export default function MyProjects() {
                 <span>Product Owner</span>
               </div>
 
-              <Icon name="chevron" size={15} />
+              <Icon name="chevronDown" size={15} />
             </button>
           </div>
         </header>
 
         <main className="po-main">
           <div className="po-content">
-            {/* PAGE HEADER */}
-
-            <div className="po-projects-page-header">
+            <div className="po-projects-heading">
               <div>
-                <div className="po-page-eyebrow">PROJECTS</div>
-
+                <div className="po-page-eyebrow"></div>
                 <h1>Projects</h1>
-
                 <p>
-                  Browse all projects in the system and review projects
-                  awaiting Product Owner action.
                 </p>
               </div>
+
+              {/* <button
+                type="button"
+                className="po-project-refresh"
+                onClick={loadProjects}
+                disabled={isLoading}
+              >
+                <Icon name="refresh" size={15} />
+                Refresh
+              </button> */}
             </div>
 
-            {/* PROJECT SUMMARY */}
-
-            <section className="po-project-summary">
-              <div className="po-project-summary-item">
-                <div className="po-project-summary-icon">
+            <section className="po-project-kpis">
+              <div className="po-project-kpi">
+                <div className="po-project-kpi-icon">
                   <Icon name="briefcase" size={18} />
                 </div>
-
                 <div>
-                  <span>ALL PROJECTS</span>
+                  <span>Total Projects</span>
                   <strong>{isLoading ? '—' : projects.length}</strong>
+                  <small>Across your current portfolio</small>
                 </div>
               </div>
 
-              <div className="po-project-summary-divider" />
-
-              <div className="po-project-summary-item">
-                <div className="po-project-summary-icon review">
+              <div className="po-project-kpi review">
+                <div className="po-project-kpi-icon">
                   <Icon name="clock" size={18} />
                 </div>
-
                 <div>
-                  <span>AWAITING PO REVIEW</span>
-                  <strong>
-                    {isLoading ? '—' : awaitingReviewCount}
-                  </strong>
+                  <span>Awaiting Review</span>
+                  <strong>{isLoading ? '—' : awaitingReviewCount}</strong>
+                  <small>Projects requiring PO attention</small>
                 </div>
               </div>
 
-              <div className="po-project-summary-divider" />
-
-              <div className="po-project-summary-item">
-                <div className="po-project-summary-icon progress">
+              <div className="po-project-kpi current">
+                <div className="po-project-kpi-icon">
                   <Icon name="check" size={18} />
                 </div>
-
                 <div>
-                  <span>IN CURRENT VIEW</span>
-                  <strong>
-                    {isLoading ? '—' : displayedProjects.length}
-                  </strong>
+                  <span>Visible Projects</span>
+                  <strong>{isLoading ? '—' : displayedProjects.length}</strong>
+                  <small>Matching your current filters</small>
                 </div>
               </div>
             </section>
 
-            {/* PROJECT LIST CARD */}
-
             <section className="po-projects-card">
-              <div className="po-projects-card-header">
+              <div className="po-projects-card-head">
                 <div>
-                  <span>PROJECT DIRECTORY</span>
-                  <h2>All Projects</h2>
+                  <span className="po-projects-kicker">PROJECT DIRECTORY</span>
+                  <h2>Project Portfolio</h2>
+                  <p>
+                    Select a project to inspect its status, timeline, budget,
+                    BRD and resource-planning information.
+                  </p>
                 </div>
 
-                <button
-                  type="button"
-                  className="po-refresh-button"
-                  onClick={loadProjects}
-                  disabled={isLoading}
-                >
-                  <Icon name="refresh" size={15} />
-                  Refresh
-                </button>
+                <div className="po-project-count-pill">
+                  {isLoading ? '—' : displayedProjects.length}
+                  <span>visible</span>
+                </div>
               </div>
-
-              {/* TABS */}
 
               <div className="po-project-tabs">
                 <button
@@ -782,7 +761,7 @@ export default function MyProjects() {
                   }`}
                   onClick={() => setActiveTab('all')}
                 >
-                  <span>All Projects</span>
+                  All Projects
                   <strong>{projects.length}</strong>
                 </button>
 
@@ -793,22 +772,19 @@ export default function MyProjects() {
                   }`}
                   onClick={() => setActiveTab('review')}
                 >
-                  <span>Awaiting PO Review</span>
+                  Awaiting PO Review
                   <strong>{awaitingReviewCount}</strong>
                 </button>
               </div>
 
-              {/* FILTERS */}
-
-              <div className="po-project-filters">
+              <div className="po-project-toolbar">
                 <div className="po-project-search">
                   <Icon name="search" size={16} />
-
                   <input
                     type="text"
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
-                    placeholder="Search by project name, ID, description or BO ID..."
+                    placeholder="Search projects, IDs, descriptions or BO IDs..."
                     aria-label="Search projects"
                   />
 
@@ -824,36 +800,40 @@ export default function MyProjects() {
                   )}
                 </div>
 
-                <div className="po-project-select">
-                  <select
-                    value={statusFilter}
-                    onChange={(event) => setStatusFilter(event.target.value)}
-                    aria-label="Filter by project status"
-                  >
-                    {statuses.map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
-                  </select>
-
-                  <Icon name="chevronDown" size={14} />
+                <div className="po-project-filter">
+                  <label htmlFor="po-status-filter">Status</label>
+                  <div>
+                    <select
+                      id="po-status-filter"
+                      value={statusFilter}
+                      onChange={(event) => setStatusFilter(event.target.value)}
+                    >
+                      {statuses.map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))}
+                    </select>
+                    <Icon name="chevronDown" size={13} />
+                  </div>
                 </div>
 
-                <div className="po-project-select">
-                  <select
-                    value={flagFilter}
-                    onChange={(event) => setFlagFilter(event.target.value)}
-                    aria-label="Filter by project flag"
-                  >
-                    {flags.map((flag) => (
-                      <option key={flag} value={flag}>
-                        {flag}
-                      </option>
-                    ))}
-                  </select>
-
-                  <Icon name="chevronDown" size={14} />
+                <div className="po-project-filter">
+                  <label htmlFor="po-flag-filter">Flag</label>
+                  <div>
+                    <select
+                      id="po-flag-filter"
+                      value={flagFilter}
+                      onChange={(event) => setFlagFilter(event.target.value)}
+                    >
+                      {flags.map((flag) => (
+                        <option key={flag} value={flag}>
+                          {flag}
+                        </option>
+                      ))}
+                    </select>
+                    <Icon name="chevronDown" size={13} />
+                  </div>
                 </div>
               </div>
 
@@ -879,25 +859,19 @@ export default function MyProjects() {
                 </div>
               )}
 
-              {/* STATES */}
-
               {isLoading ? (
                 <div className="po-project-state">
                   <div className="po-state-loader" aria-hidden="true" />
                   <h3>Loading projects</h3>
-                  <p>
-                    Retrieving the project directory from the system.
-                  </p>
+                  <p>Retrieving the project directory from the system.</p>
                 </div>
               ) : errorMessage ? (
                 <div className="po-project-state">
                   <div className="po-state-icon error">
                     <Icon name="alert" size={22} />
                   </div>
-
                   <h3>Unable to load projects</h3>
                   <p>{errorMessage}</p>
-
                   <button
                     type="button"
                     className="aaib-btn aaib-btn-primary"
@@ -912,7 +886,6 @@ export default function MyProjects() {
                   <div className="po-state-icon">
                     <Icon name="briefcase" size={22} />
                   </div>
-
                   <h3>No projects found</h3>
                   <p>
                     There are currently no projects available in the system.
@@ -923,12 +896,10 @@ export default function MyProjects() {
                   <div className="po-state-icon">
                     <Icon name="search" size={22} />
                   </div>
-
                   <h3>No matching projects</h3>
                   <p>
                     Try changing your search, tab or project filters.
                   </p>
-
                   <button
                     type="button"
                     className="aaib-btn aaib-btn-secondary"
@@ -938,132 +909,123 @@ export default function MyProjects() {
                   </button>
                 </div>
               ) : (
-                <div className="po-project-table-wrap">
-                  <table className="po-project-table">
-                    <thead>
-                      <tr>
-                        <th>Project</th>
-                        <th>Status</th>
-                        <th>Flag</th>
-                        <th>Timeline</th>
-                        <th>Budget</th>
-                        <th>MVP</th>
-                        <th>BO ID</th>
-                        <th aria-label="Action" />
-                      </tr>
-                    </thead>
+                <div className="po-project-list">
+                  <div className="po-project-list-head">
+                    <span>Project</span>
+                    <span>Status</span>
+                    <span>Flag</span>
+                    <span>Timeline</span>
+                    <span>Budget</span>
+                    <span>BO</span>
+                    <span aria-hidden="true" />
+                  </div>
 
-                    <tbody>
-                      {displayedProjects.map((project) => {
-                        const id = getProjectId(project);
-                        const name = getProjectName(project);
-                        const status = getStatus(project);
-                        const flag = getFlag(project);
-                        const budget = getBudget(project);
-                        const mvp = getMvp(project);
-                        const boId = getBusinessOwnerId(project);
-                        const startDate = getStartDate(project);
-                        const endDate = getEndDate(project);
+                  {displayedProjects.map((project) => {
+                    const id = getProjectId(project);
+                    const name = getProjectName(project);
+                    const status = getStatus(project);
+                    const flag = getFlag(project);
+                    const budget = getBudget(project);
+                    const boId = getBusinessOwnerId(project);
+                    const startDate = getStartDate(project);
+                    const endDate = getEndDate(project);
+                    const description = getDescription(project);
+                    const isPendingReview = isAwaitingPOReview(project);
 
-                        return (
-                          <tr
-                            key={id}
-                            className="po-project-row"
-                            onClick={() => openProject(project)}
+                    return (
+                      <div
+                        key={id}
+                        className="po-project-row"
+                        onClick={() => openProject(project)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            openProject(project);
+                          }
+                        }}
+                      >
+                        <div className="po-project-main">
+                          <div className="po-project-row-icon">
+                            <Icon name="briefcase" size={17} />
+                          </div>
+
+                          <div className="po-project-row-copy">
+                            <div className="po-project-row-title">
+                              <strong>{name}</strong>
+                              {isPendingReview && (
+                                <span className="po-review-chip">
+                                  <Icon name="clock" size={10} />
+                                  Review
+                                </span>
+                              )}
+                            </div>
+
+                            <span>Project #{id}</span>
+
+                            {description && (
+                              <p title={description}>{description}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="po-project-cell">
+                          <span className="po-cell-label">Status</span>
+                          <span
+                            className={`po-status-badge ${getStatusClass(
+                              status
+                            )}`}
                           >
-                            <td>
-                              <div className="po-table-project">
-                                <div className="po-table-project-icon">
-                                  <Icon name="briefcase" size={15} />
-                                </div>
+                            {status}
+                          </span>
+                        </div>
 
-                                <div>
-                                  <strong>{name}</strong>
+                        <div className="po-project-cell">
+                          <span className="po-cell-label">Flag</span>
+                          <span
+                            className={`po-flag-badge ${getFlagClass(flag)}`}
+                          >
+                            <Icon name="flag" size={11} />
+                            {flag}
+                          </span>
+                        </div>
 
-                                  <span>
-                                    Project ID: {id}
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
+                        <div className="po-project-cell timeline">
+                          <span className="po-cell-label">Timeline</span>
+                          <div>
+                            <strong>{formatDate(startDate)}</strong>
+                            <span>→</span>
+                            <strong>{formatDate(endDate)}</strong>
+                          </div>
+                        </div>
 
-                            <td>
-                              <span
-                                className={`po-status-badge ${getStatusClass(
-                                  status
-                                )}`}
-                              >
-                                {status}
-                              </span>
-                            </td>
+                        <div className="po-project-cell">
+                          <span className="po-cell-label">Budget</span>
+                          <strong className="po-project-budget">
+                            {budget === null || budget === undefined
+                              ? '—'
+                              : `${formatBudget(budget)} EGP`}
+                          </strong>
+                        </div>
 
-                            <td>
-                              <span
-                                className={`po-flag-badge ${getFlagClass(
-                                  flag
-                                )}`}
-                              >
-                                <Icon name="flag" size={11} />
-                                {flag}
-                              </span>
-                            </td>
+                        <div className="po-project-cell">
+                          <span className="po-cell-label">BO</span>
+                          <strong className="po-bo-id">
+                            {boId === null || boId === undefined
+                              ? '—'
+                              : `#${boId}`}
+                          </strong>
+                        </div>
 
-                            <td>
-                              <div className="po-project-timeline">
-                                <span>{formatDate(startDate)}</span>
-                                <span className="po-timeline-arrow">→</span>
-                                <span>{formatDate(endDate)}</span>
-                              </div>
-                            </td>
-
-                            <td>
-                              <span className="po-project-budget">
-                                {budget === null || budget === undefined
-                                  ? '—'
-                                  : `${formatBudget(budget)} EGP`}
-                              </span>
-                            </td>
-
-                            <td>
-                              <span
-                                className={`po-mvp-badge ${
-                                  String(mvp).toLowerCase() === 'approved'
-                                    ? 'approved'
-                                    : ''
-                                }`}
-                              >
-                                {mvp}
-                              </span>
-                            </td>
-
-                            <td>
-                              <span className="po-bo-id">
-                                {boId === null || boId === undefined
-                                  ? '—'
-                                  : `#${boId}`}
-                              </span>
-                            </td>
-
-                            <td>
-                              <button
-                                type="button"
-                                className="po-view-project"
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  openProject(project);
-                                }}
-                                aria-label={`View ${name}`}
-                                title="View project details"
-                              >
-                                <Icon name="eye" size={15} />
-                                <Icon name="chevron" size={14} />
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                        <div className="po-project-action">
+                          <span>{isPendingReview ? 'Review' : 'Open'}</span>
+                          <span className="po-project-action-icon">
+                            <Icon name="arrowRight" size={15} />
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </section>
@@ -1073,163 +1035,192 @@ export default function MyProjects() {
 
       <style>
         {`
-          .po-projects-page-header {
+          .po-projects-heading {
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 20px;
+            gap: 24px;
+            margin-bottom: 22px;
           }
 
-          .po-page-eyebrow {
-            color: var(--aaib-accent);
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: .15em;
-          }
-
-          .po-projects-page-header h1 {
-            margin: 4px 0 5px;
+          .po-projects-heading h1 {
+            margin: 5px 0 6px;
             color: var(--aaib-primary);
-            font-size: 28px;
-            line-height: 1.15;
-            letter-spacing: -.03em;
+            font-size: 32px;
+            line-height: 1.05;
+            letter-spacing: -.035em;
           }
 
-          .po-projects-page-header p {
-            max-width: 650px;
+          .po-projects-heading p {
+            max-width: 720px;
             margin: 0;
             color: var(--aaib-text-muted);
             font-size: 12px;
+            line-height: 1.6;
           }
 
-          .po-project-summary {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr auto 1fr;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 18px;
-            padding: 16px 18px;
-            background: var(--aaib-surface);
-            border: 1px solid var(--aaib-border);
-            border-radius: var(--aaib-radius);
-            box-shadow: var(--aaib-shadow-card);
-          }
-
-          .po-project-summary-item {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            min-width: 0;
-          }
-
-          .po-project-summary-icon {
-            width: 37px;
-            height: 37px;
-            flex: 0 0 auto;
-            display: grid;
-            place-items: center;
-            border-radius: 10px;
-            background: var(--aaib-primary-soft);
-            color: var(--aaib-primary);
-          }
-
-          .po-project-summary-icon.review {
-            background: var(--aaib-accent-soft);
-            color: #96721d;
-          }
-
-          .po-project-summary-icon.progress {
-            background: var(--aaib-success-soft);
-            color: var(--aaib-success);
-          }
-
-          .po-project-summary-item span {
-            display: block;
-            margin-bottom: 2px;
-            color: var(--aaib-text-muted);
-            font-size: 8px;
-            font-weight: 800;
-            letter-spacing: .08em;
-          }
-
-          .po-project-summary-item strong {
-            display: block;
-            color: var(--aaib-primary);
-            font-size: 17px;
-            line-height: 1.1;
-          }
-
-          .po-project-summary-divider {
-            width: 1px;
-            height: 32px;
-            background: var(--aaib-border);
-          }
-
-          .po-projects-card {
-            overflow: hidden;
-            background: var(--aaib-surface);
-            border: 1px solid var(--aaib-border);
-            border-radius: var(--aaib-radius);
-            box-shadow: var(--aaib-shadow-card);
-          }
-
-          .po-projects-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 14px;
-            padding: 21px 23px 15px;
-          }
-
-          .po-projects-card-header > div > span {
-            display: block;
-            margin-bottom: 4px;
-            color: var(--aaib-accent);
-            font-size: 8px;
-            font-weight: 800;
-            letter-spacing: .13em;
-          }
-
-          .po-projects-card-header h2 {
-            margin: 0;
-            color: var(--aaib-primary);
-            font-size: 18px;
-            line-height: 1.2;
-            letter-spacing: -.02em;
-          }
-
-          .po-refresh-button {
+          .po-project-refresh {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            min-height: 32px;
-            padding: 0 10px;
+            justify-content: center;
+            gap: 7px;
+            min-height: 38px;
+            padding: 0 14px;
+            flex: 0 0 auto;
             border: 1px solid var(--aaib-border);
-            border-radius: 8px;
+            border-radius: 10px;
             background: #fff;
             color: var(--aaib-primary);
-            font-size: 9px;
-            font-weight: 700;
+            font-size: 11px;
+            font-weight: 750;
             cursor: pointer;
-            transition: background .18s ease, border-color .18s ease;
+            box-shadow: var(--aaib-shadow-card);
+            transition: .18s ease;
           }
 
-          .po-refresh-button:hover:not(:disabled) {
+          .po-project-refresh:hover:not(:disabled) {
+            border-color: rgba(27,40,30,.18);
             background: var(--aaib-primary-soft);
-            border-color: rgba(27,40,30,.15);
+            transform: translateY(-1px);
           }
 
-          .po-refresh-button:disabled {
+          .po-project-refresh:disabled {
             opacity: .55;
             cursor: not-allowed;
           }
 
+          .po-project-kpis {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
+          }
+
+          .po-project-kpi {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+            padding: 16px 17px;
+            border: 1px solid var(--aaib-border);
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: var(--aaib-shadow-card);
+          }
+
+          .po-project-kpi-icon {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--aaib-primary-soft);
+            color: var(--aaib-primary);
+          }
+
+          .po-project-kpi.review .po-project-kpi-icon {
+            background: var(--aaib-accent-soft);
+            color: #8b6b20;
+          }
+
+          .po-project-kpi.current .po-project-kpi-icon {
+            background: var(--aaib-success-soft);
+            color: var(--aaib-success);
+          }
+
+          .po-project-kpi span {
+            display: block;
+            color: var(--aaib-text-muted);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+          }
+
+          .po-project-kpi strong {
+            display: block;
+            margin-top: 2px;
+            color: var(--aaib-primary);
+            font-size: 23px;
+            line-height: 1;
+            letter-spacing: -.03em;
+          }
+
+          .po-project-kpi small {
+            display: block;
+            margin-top: 4px;
+            color: #8a948e;
+            font-size: 9px;
+            line-height: 1.3;
+          }
+
+          .po-projects-card {
+            overflow: hidden;
+            border: 1px solid var(--aaib-border);
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: var(--aaib-shadow-card);
+          }
+
+          .po-projects-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 22px 24px 18px;
+          }
+
+          .po-projects-kicker {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--aaib-accent);
+            font-size: 8px;
+            font-weight: 850;
+            letter-spacing: .14em;
+          }
+
+          .po-projects-card-head h2 {
+            margin: 0;
+            color: var(--aaib-primary);
+            font-size: 21px;
+            line-height: 1.1;
+            letter-spacing: -.025em;
+          }
+
+          .po-projects-card-head p {
+            margin: 6px 0 0;
+            color: var(--aaib-text-muted);
+            font-size: 10px;
+            line-height: 1.5;
+          }
+
+          .po-project-count-pill {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            flex: 0 0 auto;
+            padding: 10px 12px;
+            border: 1px solid var(--aaib-border);
+            border-radius: 10px;
+            background: var(--aaib-surface-alt);
+            color: var(--aaib-primary);
+            font-size: 19px;
+            font-weight: 850;
+            line-height: 1;
+          }
+
+          .po-project-count-pill span {
+            color: var(--aaib-text-muted);
+            font-size: 9px;
+            font-weight: 700;
+          }
+
           .po-project-tabs {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             gap: 4px;
-            padding: 0 23px;
+            padding: 0 24px;
             border-bottom: 1px solid var(--aaib-border);
           }
 
@@ -1238,23 +1229,23 @@ export default function MyProjects() {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            min-height: 40px;
+            min-height: 44px;
             padding: 0 11px;
             border: 0;
             background: transparent;
             color: var(--aaib-text-muted);
-            font-size: 9px;
-            font-weight: 700;
+            font-size: 10px;
+            font-weight: 750;
             cursor: pointer;
           }
 
           .po-project-tab strong {
             min-width: 20px;
-            height: 18px;
+            height: 19px;
             display: inline-grid;
             place-items: center;
             padding: 0 5px;
-            border-radius: 9px;
+            border-radius: 999px;
             background: var(--aaib-surface-alt);
             color: var(--aaib-text-muted);
             font-size: 8px;
@@ -1263,12 +1254,12 @@ export default function MyProjects() {
           .po-project-tab::after {
             content: '';
             position: absolute;
-            right: 9px;
+            right: 8px;
             bottom: -1px;
-            left: 9px;
+            left: 8px;
             height: 2px;
-            background: transparent;
             border-radius: 2px 2px 0 0;
+            background: transparent;
           }
 
           .po-project-tab.active {
@@ -1284,27 +1275,24 @@ export default function MyProjects() {
             background: var(--aaib-accent);
           }
 
-          .po-project-filters {
+          .po-project-toolbar {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 180px 170px;
+            grid-template-columns: minmax(0, 1fr) 155px 145px;
             gap: 10px;
-            padding: 16px 23px 13px;
-          }
-
-          .po-project-search,
-          .po-project-select {
-            position: relative;
-            display: flex;
-            align-items: center;
-            min-height: 38px;
-            border: 1px solid var(--aaib-border);
-            border-radius: 9px;
-            background: #fff;
+            align-items: end;
+            padding: 18px 24px 12px;
           }
 
           .po-project-search {
-            padding: 0 11px;
-            gap: 8px;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 0 12px;
+            border: 1px solid var(--aaib-border);
+            border-radius: 10px;
+            background: #fff;
+            transition: .18s ease;
           }
 
           .po-project-search > svg {
@@ -1324,7 +1312,7 @@ export default function MyProjects() {
           }
 
           .po-project-search input::placeholder {
-            color: #9aa39e;
+            color: #9ba49f;
           }
 
           .po-project-search:focus-within {
@@ -1335,40 +1323,52 @@ export default function MyProjects() {
           .po-project-search-clear {
             width: 22px;
             height: 22px;
-            flex: 0 0 auto;
             display: grid;
             place-items: center;
+            padding: 0;
             border: 0;
             background: transparent;
             color: var(--aaib-text-muted);
-            font-size: 16px;
-            line-height: 1;
+            font-size: 17px;
             cursor: pointer;
           }
 
-          .po-project-select {
-            padding: 0 10px;
+          .po-project-filter label {
+            display: block;
+            margin: 0 0 5px 2px;
+            color: var(--aaib-text-muted);
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
           }
 
-          .po-project-select select {
+          .po-project-filter > div {
+            position: relative;
+          }
+
+          .po-project-filter select {
             width: 100%;
-            height: 36px;
-            padding: 0 23px 0 0;
-            border: 0;
+            min-height: 42px;
+            padding: 0 30px 0 11px;
+            border: 1px solid var(--aaib-border);
+            border-radius: 10px;
             outline: 0;
             appearance: none;
-            background: transparent;
+            background: #fff;
             color: var(--aaib-text);
             font: inherit;
             font-size: 10px;
             cursor: pointer;
           }
 
-          .po-project-select > svg {
+          .po-project-filter > div > svg {
             position: absolute;
-            right: 9px;
+            top: 50%;
+            right: 10px;
             pointer-events: none;
             color: var(--aaib-text-muted);
+            transform: translateY(-50%);
           }
 
           .po-project-result-meta {
@@ -1376,7 +1376,7 @@ export default function MyProjects() {
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            padding: 0 23px 12px;
+            padding: 0 24px 13px;
             color: var(--aaib-text-muted);
             font-size: 9px;
           }
@@ -1386,114 +1386,210 @@ export default function MyProjects() {
           }
 
           .po-project-result-meta button {
-            border: 0;
             padding: 0;
+            border: 0;
             background: transparent;
             color: var(--aaib-primary);
             font-size: 9px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
           }
 
-          .po-project-table-wrap {
-            width: 100%;
-            overflow-x: auto;
+          .po-project-list {
             border-top: 1px solid var(--aaib-border);
           }
 
-          .po-project-table {
-            width: 100%;
-            min-width: 1120px;
-            border-collapse: collapse;
+          .po-project-list-head,
+          .po-project-row {
+            display: grid;
+            grid-template-columns:
+              minmax(260px, 2.25fr)
+              minmax(100px, .95fr)
+              minmax(95px, .85fr)
+              minmax(145px, 1.35fr)
+              minmax(105px, .95fr)
+              minmax(75px, .7fr)
+              minmax(58px, .5fr)
+              76px;
+            gap: 12px;
+            align-items: center;
+            padding-left: 24px;
+            padding-right: 20px;
           }
 
-          .po-project-table thead th {
-            padding: 11px 13px;
+          .po-project-list-head {
+            min-height: 38px;
+            background: #f5f7f6;
             border-bottom: 1px solid var(--aaib-border);
-            background: var(--aaib-surface-alt);
-            color: #7b8780;
-            font-size: 8px;
-            font-weight: 800;
-            text-align: left;
+          }
+
+          .po-project-list-head span {
+            color: #758078;
+            font-size: 7px;
+            font-weight: 850;
+            letter-spacing: .08em;
             text-transform: uppercase;
-            letter-spacing: .07em;
-            white-space: nowrap;
-          }
-
-          .po-project-table thead th:first-child {
-            padding-left: 23px;
-          }
-
-          .po-project-table thead th:last-child {
-            width: 65px;
-            padding-right: 23px;
-          }
-
-          .po-project-table tbody td {
-            padding: 14px 13px;
-            border-bottom: 1px solid var(--aaib-border);
-            vertical-align: middle;
-          }
-
-          .po-project-table tbody tr:last-child td {
-            border-bottom: 0;
           }
 
           .po-project-row {
+            min-height: 84px;
+            border-bottom: 1px solid var(--aaib-border);
+            background: #fff;
             cursor: pointer;
-            transition: background .16s ease;
+            transition: background .16s ease, box-shadow .16s ease;
+          }
+
+          .po-project-row:last-child {
+            border-bottom: 0;
           }
 
           .po-project-row:hover {
-            background: var(--aaib-primary-soft);
+            background: #fbfcfb;
+            box-shadow: inset 3px 0 0 var(--aaib-accent);
           }
 
-          .po-project-table tbody td:first-child {
-            padding-left: 23px;
+          .po-project-row:focus-visible {
+            outline: 2px solid rgba(197,160,89,.7);
+            outline-offset: -2px;
           }
 
-          .po-project-table tbody td:last-child {
-            padding-right: 23px;
-          }
-
-          .po-table-project {
+          .po-project-main {
             display: flex;
             align-items: center;
-            gap: 10px;
-            min-width: 220px;
-          }
-
-          .po-table-project-icon {
-            width: 35px;
-            height: 35px;
-            flex: 0 0 auto;
-            display: grid;
-            place-items: center;
-            border-radius: 9px;
-            background: var(--aaib-primary-soft);
-            color: var(--aaib-primary);
-          }
-
-          .po-table-project > div:last-child {
+            gap: 11px;
             min-width: 0;
           }
 
-          .po-table-project strong {
-            display: block;
-            max-width: 240px;
-            overflow: hidden;
+          .po-project-row-icon {
+            width: 39px;
+            height: 39px;
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: var(--aaib-primary-soft);
             color: var(--aaib-primary);
-            font-size: 10px;
-            font-weight: 800;
+          }
+
+          .po-project-row-copy {
+            min-width: 0;
+          }
+
+          .po-project-row-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            min-width: 0;
+          }
+
+          .po-project-row-title > strong {
+            min-width: 0;
+            color: var(--aaib-primary);
+            font-size: 11px;
+            font-weight: 850;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+          }
+
+          .po-project-row-copy > span {
+            display: block;
+            margin-top: 2px;
+            color: var(--aaib-text-muted);
+            font-size: 8px;
+            font-weight: 700;
+          }
+
+          .po-project-row-copy p {
+            max-width: 320px;
+            margin: 4px 0 0;
+            overflow: hidden;
+            color: #8a948e;
+            font-size: 8px;
+            line-height: 1.35;
             text-overflow: ellipsis;
             white-space: nowrap;
           }
 
-          .po-table-project span {
-            display: block;
-            margin-top: 3px;
+          .po-review-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            flex: 0 0 auto;
+            min-height: 19px;
+            padding: 0 6px;
+            border-radius: 999px;
+            background: var(--aaib-accent-soft);
+            color: #87681c;
+            font-size: 7px;
+            font-weight: 850;
+          }
+
+          .po-project-cell {
+            min-width: 0;
+          }
+
+          .po-cell-label {
+            display: none;
+          }
+
+          .po-project-cell.timeline > div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
             color: var(--aaib-text-muted);
             font-size: 8px;
+            white-space: nowrap;
+          }
+
+          .po-project-cell.timeline strong {
+            color: var(--aaib-text);
+            font-size: 8px;
+            font-weight: 700;
+          }
+
+          .po-project-cell.timeline span {
+            color: #9ba49f;
+          }
+
+          .po-project-budget {
+            color: var(--aaib-text);
+            font-size: 9px;
+            font-weight: 800;
+            white-space: nowrap;
+          }
+
+          .po-bo-id {
+            color: var(--aaib-text);
+            font-size: 9px;
+            font-weight: 750;
+          }
+
+          .po-project-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+            color: var(--aaib-primary);
+            font-size: 8px;
+            font-weight: 850;
+            white-space: nowrap;
+          }
+
+          .po-project-action-icon {
+            width: 31px;
+            height: 31px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--aaib-border);
+            border-radius: 9px;
+            background: #fff;
+            transition: .16s ease;
+          }
+
+          .po-project-row:hover .po-project-action-icon {
+            border-color: var(--aaib-primary);
+            background: var(--aaib-primary);
+            color: #fff;
           }
 
           .po-status-badge,
@@ -1502,11 +1598,12 @@ export default function MyProjects() {
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            min-height: 23px;
-            padding: 0 7px;
-            border-radius: 6px;
+            min-height: 24px;
+            max-width: 100%;
+            padding: 0 8px;
+            border-radius: 7px;
             font-size: 8px;
-            font-weight: 700;
+            font-weight: 800;
             white-space: nowrap;
           }
 
@@ -1540,10 +1637,6 @@ export default function MyProjects() {
             color: var(--aaib-text-muted);
           }
 
-          .po-flag-badge svg {
-            color: currentColor;
-          }
-
           .po-flag-badge.high {
             background: var(--aaib-danger-soft);
             color: var(--aaib-danger);
@@ -1559,26 +1652,6 @@ export default function MyProjects() {
             color: var(--aaib-success);
           }
 
-          .po-project-timeline {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--aaib-text-muted);
-            font-size: 8px;
-            white-space: nowrap;
-          }
-
-          .po-timeline-arrow {
-            color: #9da6a1;
-          }
-
-          .po-project-budget {
-            color: var(--aaib-text);
-            font-size: 9px;
-            font-weight: 700;
-            white-space: nowrap;
-          }
-
           .po-mvp-badge {
             background: var(--aaib-surface-alt);
             color: var(--aaib-text-muted);
@@ -1589,46 +1662,18 @@ export default function MyProjects() {
             color: var(--aaib-success);
           }
 
-          .po-bo-id {
-            color: var(--aaib-text-muted);
-            font-size: 9px;
-            font-weight: 700;
-          }
-
-          .po-view-project {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            width: 40px;
-            height: 32px;
-            border: 1px solid var(--aaib-border);
-            border-radius: 8px;
-            background: #fff;
-            color: var(--aaib-primary);
-            cursor: pointer;
-            transition: background .16s ease, border-color .16s ease;
-          }
-
-          .po-view-project:hover {
-            background: var(--aaib-primary);
-            border-color: var(--aaib-primary);
-            color: #fff;
-          }
-
           .po-project-state {
-            min-height: 320px;
+            min-height: 310px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 35px 24px;
-            border-top: 1px solid var(--aaib-border);
+            padding: 36px 24px;
             text-align: center;
           }
 
           .po-project-state.compact {
-            min-height: 250px;
+            min-height: 270px;
           }
 
           .po-project-state h3 {
@@ -1645,85 +1690,123 @@ export default function MyProjects() {
             line-height: 1.6;
           }
 
-          .po-state-icon {
-            width: 48px;
-            height: 48px;
-            display: grid;
-            place-items: center;
-            border-radius: 13px;
-            background: var(--aaib-primary-soft);
-            color: var(--aaib-primary);
-          }
+          @media (max-width: 1200px) {
+            .po-project-list-head,
+            .po-project-row {
+              grid-template-columns:
+                minmax(235px, 2fr)
+                minmax(95px, .9fr)
+                minmax(90px, .8fr)
+                minmax(130px, 1.15fr)
+                minmax(100px, .85fr)
+                minmax(72px, .65fr)
+                52px
+                70px;
+              gap: 9px;
+            }
 
-          .po-state-icon.error {
-            background: var(--aaib-danger-soft);
-            color: var(--aaib-danger);
-          }
-
-          .po-state-loader {
-            width: 32px;
-            height: 32px;
-            border: 3px solid rgba(27,40,30,.1);
-            border-top-color: var(--aaib-accent);
-            border-radius: 50%;
-            animation: poProjectsSpin .8s linear infinite;
-          }
-
-          @keyframes poProjectsSpin {
-            to {
-              transform: rotate(360deg);
+            .po-project-row-copy p {
+              max-width: 240px;
             }
           }
 
-          @media (max-width: 1050px) {
-            .po-project-filters {
-              grid-template-columns: minmax(0, 1fr) 170px;
-            }
-
-            .po-project-select:last-child {
-              grid-column: 2;
-            }
-
-            .po-project-search {
-              grid-column: 1 / -1;
-            }
-          }
-
-          @media (max-width: 820px) {
-            .po-project-summary {
-              grid-template-columns: 1fr 1fr 1fr;
-            }
-
-            .po-project-summary-divider {
-              display: none;
-            }
-
-            .po-project-filters {
+          @media (max-width: 980px) {
+            .po-project-kpis {
               grid-template-columns: 1fr 1fr;
             }
 
+            .po-project-kpi.current {
+              grid-column: 1 / -1;
+            }
+
+            .po-project-toolbar {
+              grid-template-columns: minmax(0, 1fr) 150px;
+            }
+
             .po-project-search {
               grid-column: 1 / -1;
             }
 
-            .po-project-select:last-child {
-              grid-column: auto;
+            .po-project-list-head {
+              display: none;
+            }
+
+            .po-project-list {
+              display: grid;
+              gap: 10px;
+              padding: 12px;
+              background: var(--aaib-surface-alt);
+            }
+
+            .po-project-row {
+              display: grid;
+              grid-template-columns: minmax(0, 1fr) 160px 130px;
+              gap: 12px 18px;
+              min-height: 0;
+              padding: 17px;
+              border: 1px solid var(--aaib-border);
+              border-radius: 12px;
+              background: #fff;
+            }
+
+            .po-project-row:last-child {
+              border-bottom: 1px solid var(--aaib-border);
+            }
+
+            .po-project-cell {
+              padding-left: 2px;
+            }
+
+            .po-cell-label {
+              display: block;
+              margin-bottom: 5px;
+              color: var(--aaib-text-muted);
+              font-size: 7px;
+              font-weight: 850;
+              letter-spacing: .07em;
+              text-transform: uppercase;
+            }
+
+            .po-project-row .po-project-main {
+              grid-column: 1 / -1;
+              padding-bottom: 4px;
+            }
+
+            .po-project-row .po-project-action {
+              justify-self: end;
+              align-self: end;
             }
           }
 
-          @media (max-width: 600px) {
-            .po-project-summary {
-              grid-template-columns: 1fr;
-            }
-
-            .po-projects-card-header {
+          @media (max-width: 720px) {
+            .po-projects-heading {
               align-items: flex-start;
               flex-direction: column;
             }
 
-            .po-refresh-button {
+            .po-project-refresh {
               width: 100%;
-              justify-content: center;
+            }
+
+            .po-project-kpis {
+              grid-template-columns: 1fr;
+            }
+
+            .po-project-kpi.current {
+              grid-column: auto;
+            }
+
+            .po-projects-card-head {
+              align-items: flex-start;
+              flex-direction: column;
+            }
+
+            .po-project-toolbar {
+              grid-template-columns: 1fr;
+            }
+
+            .po-project-search {
+              grid-column: auto;
             }
 
             .po-project-tabs {
@@ -1734,22 +1817,365 @@ export default function MyProjects() {
               flex: 0 0 auto;
             }
 
-            .po-project-filters {
-              grid-template-columns: 1fr;
+            .po-project-row {
+              grid-template-columns: 1fr 1fr;
             }
 
-            .po-project-search,
-            .po-project-select:last-child {
+            .po-project-row .po-project-main {
+              grid-column: 1 / -1;
+            }
+
+            .po-project-row .po-project-action {
+              grid-column: 1 / -1;
+              justify-self: stretch;
+              justify-content: space-between;
+              margin-top: 3px;
+              padding-top: 11px;
+              border-top: 1px solid var(--aaib-border);
+            }
+          }
+
+          @media (max-width: 520px) {
+            .po-projects-heading h1 {
+              font-size: 28px;
+            }
+
+            .po-projects-card-head,
+            .po-project-tabs,
+            .po-project-toolbar,
+            .po-project-result-meta {
+              padding-left: 16px;
+              padding-right: 16px;
+            }
+
+            .po-project-list {
+              padding: 8px;
+            }
+
+            .po-project-row {
+              grid-template-columns: 1fr;
+              gap: 13px;
+              padding: 15px;
+            }
+
+            .po-project-row .po-project-main,
+            .po-project-row .po-project-action {
               grid-column: auto;
             }
 
-            .po-project-result-meta {
-              align-items: flex-start;
-              flex-direction: column;
+            .po-project-row .po-project-action {
+              justify-content: space-between;
+            }
+
+            .po-project-cell.timeline > div {
+              flex-wrap: wrap;
             }
           }
+
+          /* FINAL ALIGNMENT PASS */
+          .po-project-list-head,
+          .po-project-row {
+            grid-template-columns:
+              minmax(360px, 3.2fr)
+              125px
+              110px
+              180px
+              135px
+              65px
+              82px !important;
+            column-gap: 14px !important;
+            align-items: center !important;
+          }
+
+          .po-project-list-head > span,
+          .po-project-row > * {
+            min-width: 0;
+          }
+
+          .po-project-list-head > span {
+            text-align: left !important;
+          }
+
+          .po-project-main {
+            width: 100%;
+            min-width: 0;
+            align-items: center;
+          }
+
+          .po-project-row-copy {
+            width: 100%;
+            min-width: 0;
+          }
+
+          .po-project-row-title {
+            width: 100%;
+            min-width: 0;
+          }
+
+          .po-project-row-title > strong {
+            max-width: 100%;
+          }
+
+          .po-project-row-copy p {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .po-project-cell {
+            width: 100%;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+          }
+
+          .po-project-cell.timeline > div {
+            width: 100%;
+            justify-content: flex-start;
+          }
+
+          .po-project-cell .po-status-badge,
+          .po-project-cell .po-flag-badge,
+          .po-project-cell .po-mvp-badge {
+            margin: 0;
+            justify-self: start;
+          }
+
+          .po-project-budget,
+          .po-bo-id {
+            display: block;
+            margin: 0;
+          }
+
+          .po-project-action {
+            width: 100%;
+            justify-content: flex-start;
+            justify-self: stretch;
+          }
+
+          @media (max-width: 1200px) and (min-width: 981px) {
+            .po-project-list-head,
+            .po-project-row {
+              grid-template-columns:
+                minmax(310px, 3fr)
+                110px
+                100px
+                155px
+                115px
+                60px
+                76px !important;
+              column-gap: 10px !important;
+            }
+          }
+
+          @media (max-width: 980px) {
+            .po-project-list-head,
+            .po-project-row {
+              grid-template-columns:
+                minmax(0, 1fr)
+                160px
+                130px !important;
+              column-gap: 18px !important;
+            }
+          }
+
+          @media (max-width: 720px) {
+            .po-project-row {
+              grid-template-columns: 1fr 1fr !important;
+              column-gap: 18px !important;
+            }
+          }
+
+          @media (max-width: 520px) {
+            .po-project-row {
+              grid-template-columns: 1fr !important;
+              column-gap: 0 !important;
+            }
+          }
+
+
+          /* =========================================================
+             CLEAN FINAL PROJECT GRID ALIGNMENT
+             Header and every row use the exact same percentage grid.
+             ========================================================= */
+
+          .po-project-list-head,
+          .po-project-row {
+            display: grid !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            grid-template-columns:
+              36%
+              11%
+              10%
+              15%
+              10%
+              6%
+              12% !important;
+            column-gap: 0 !important;
+            align-items: center !important;
+          }
+
+          .po-project-list-head {
+            min-height: 38px !important;
+            padding-left: 24px !important;
+            padding-right: 20px !important;
+          }
+
+          .po-project-list-head > span {
+            min-width: 0 !important;
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            text-align: left !important;
+          }
+
+          .po-project-row {
+            min-height: 88px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          .po-project-main,
+          .po-project-cell,
+          .po-project-action {
+            min-width: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+          }
+
+          .po-project-main {
+            display: flex !important;
+            align-items: center !important;
+            gap: 11px !important;
+            padding-right: 14px !important;
+          }
+
+          .po-project-row-copy {
+            min-width: 0 !important;
+            width: 100% !important;
+          }
+
+          .po-project-row-title {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 7px !important;
+            min-width: 0 !important;
+            width: 100% !important;
+          }
+
+          .po-project-row-title > strong {
+            min-width: 0 !important;
+            max-width: 100% !important;
+            overflow: visible !important;
+            text-overflow: clip !important;
+            white-space: normal !important;
+            word-break: normal !important;
+            color: var(--aaib-primary) !important;
+            font-size: 11px !important;
+            line-height: 1.25 !important;
+          }
+
+          .po-project-row-copy > span,
+          .po-project-row-copy p {
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+          }
+
+          .po-project-cell {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+          }
+
+          .po-project-cell.timeline > div {
+            width: auto !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 5px !important;
+            white-space: nowrap !important;
+          }
+
+          .po-project-action {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 7px !important;
+            padding-left: 8px !important;
+          }
+
+          .po-project-action-icon {
+            flex: 0 0 auto !important;
+          }
+
+          @media (max-width: 980px) {
+            .po-project-list-head {
+              display: none !important;
+            }
+
+            .po-project-row {
+              display: grid !important;
+              grid-template-columns: minmax(0, 1fr) 150px 120px !important;
+              column-gap: 16px !important;
+            }
+
+            .po-project-row .po-project-main {
+              grid-column: 1 / -1 !important;
+              width: 100% !important;
+              padding-right: 0 !important;
+            }
+
+            .po-project-row .po-project-cell {
+              width: 100% !important;
+              padding-left: 0 !important;
+              padding-right: 0 !important;
+            }
+
+            .po-project-row .po-project-action {
+              width: 100% !important;
+              justify-content: flex-end !important;
+            }
+          }
+
+          @media (max-width: 720px) {
+            .po-project-row {
+              grid-template-columns: 1fr 1fr !important;
+              row-gap: 13px !important;
+            }
+
+            .po-project-row .po-project-main {
+              grid-column: 1 / -1 !important;
+            }
+
+            .po-project-row .po-project-action {
+              grid-column: 1 / -1 !important;
+              justify-content: space-between !important;
+              padding-top: 10px !important;
+              border-top: 1px solid var(--aaib-border) !important;
+            }
+          }
+
+          @media (max-width: 520px) {
+            .po-project-row {
+              grid-template-columns: 1fr !important;
+              row-gap: 12px !important;
+            }
+
+            .po-project-row .po-project-main,
+            .po-project-row .po-project-action {
+              grid-column: auto !important;
+            }
+          }
+
         `}
       </style>
     </div>
   );
 }
+

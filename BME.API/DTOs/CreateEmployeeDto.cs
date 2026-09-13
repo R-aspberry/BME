@@ -17,5 +17,5 @@ public class CreateEmployeeDto
     public int? OSE_ID { get; set; }
     public int? Manager_ID { get; set; }
     public int? D_ID { get; set; }
-    public int? Type_of_contract_ID { get; set; }
+    public string? Type_of_contract { get; set; }
 }

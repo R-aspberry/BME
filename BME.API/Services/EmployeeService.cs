@@ -64,7 +64,7 @@ public class EmployeeService
             OSE_ID = dto.OSE_ID,
             Manager_ID = dto.Manager_ID,
             D_ID = dto.D_ID,
-            Type_of_contract_ID = dto.Type_of_contract_ID
+            Type_of_contract = dto.Type_of_contract
         };
 
         _context.Employees.Add(employee);
@@ -106,7 +106,7 @@ public class EmployeeService
         employee.OSE_ID = dto.OSE_ID;
         employee.Manager_ID = dto.Manager_ID;
         employee.D_ID = dto.D_ID;
-        employee.Type_of_contract_ID = dto.Type_of_contract_ID;
+        employee.Type_of_contract = dto.Type_of_contract;
 
         await _context.SaveChangesAsync();
 

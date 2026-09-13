@@ -30,8 +30,8 @@ export default function EmployeeDashboard() {
   const active = projects.filter(project => !['done', 'completed'].includes((project.status || '').toLowerCase())).length
 
   return (
-    <div className="employee-content aaib-animate-fade">
-      <section className="employee-welcome">
+    <div className="bo-content employee-content aaib-animate-fade">
+      <section className="bo-hero employee-welcome">
         <div>
           <p className="employee-eyebrow">EMPLOYEE WORKSPACE</p>
           <h1>Good to see you, {displayName}</h1>
@@ -40,10 +40,10 @@ export default function EmployeeDashboard() {
         <div className="employee-welcome-mark">{displayName.slice(0, 1).toUpperCase()}</div>
       </section>
 
-      <div className="employee-stat-grid">
-        <div className="aaib-panel employee-stat"><span>Assigned projects</span><strong>{loading ? '—' : projects.length}</strong><small>Across your workspace</small></div>
-        <div className="aaib-panel employee-stat"><span>Active work</span><strong>{loading ? '—' : active}</strong><small>Still moving forward</small></div>
-        <div className="aaib-panel employee-stat"><span>Upcoming dates</span><strong>03</strong><small>Milestones this month</small></div>
+      <div className="bo-kpi-grid employee-stat-grid">
+        <div className="bo-kpi-card employee-stat"><span className="bo-kpi-label">Assigned projects</span><strong>{loading ? '—' : projects.length}</strong><small className="bo-kpi-description">Across your workspace</small></div>
+        <div className="bo-kpi-card employee-stat"><span className="bo-kpi-label">Active work</span><strong>{loading ? '—' : active}</strong><small className="bo-kpi-description">Still moving forward</small></div>
+        <div className="bo-kpi-card employee-stat"><span className="bo-kpi-label">Upcoming dates</span><strong>03</strong><small className="bo-kpi-description">Milestones this month</small></div>
       </div>
       <div className="aaib-panel employee-energy-banner"><div><p className="employee-eyebrow">YOUR SOCIAL ENERGY</p><strong>{energy}%</strong><span>{Number(energy) >= 70 ? 'Open to connect' : Number(energy) >= 40 ? 'Available with focus' : 'Quiet focus mode'}</span></div><div className="employee-energy-bar"><i style={{ width: `${energy}%` }} /></div><Link to="/employee/profile">Adjust signal</Link></div>
 

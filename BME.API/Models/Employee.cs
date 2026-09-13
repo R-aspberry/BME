@@ -32,7 +32,7 @@ public class Employee
 
     public int? D_ID { get; set; }
 
-    public int? Type_of_contract_ID { get; set; }
+    public string? Type_of_contract { get; set; }
 
     public Department? Department { get; set; }
 

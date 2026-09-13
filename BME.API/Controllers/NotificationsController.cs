@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BME.API.Data;
 using BME.API.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace BME.API.Controllers;
 

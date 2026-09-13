@@ -34,48 +34,118 @@ public sealed class AuthService(
         return CreateResponse(user, "Unknown", null);
     }
 
-    public async Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
+    public async Task<AuthResponse> LoginAsync(
+    LoginRequest request,
+    CancellationToken cancellationToken)
+{
+    // 1. Find the user in the Users table
+    var user = await dbContext.Users
+        .SingleOrDefaultAsync(
+            u => u.User_Name == request.UserName,
+            cancellationToken);
+
+    // 2. Verify username + password
+    if (user is null ||
+        passwordHasher.VerifyHashedPassword(
+            user,
+            user.PasswordHash,
+            request.Password) == PasswordVerificationResult.Failed)
     {
-        // 1. Authenticate the base User
-        var user = await dbContext.Users
-            .SingleOrDefaultAsync(item => item.User_Name == request.UserName, cancellationToken);
-            
-        if (user is null || passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password) == PasswordVerificationResult.Failed)
-            throw new UnauthorizedAccessException("Invalid username or password.");
+        throw new UnauthorizedAccessException(
+            "Invalid username or password.");
+    }
 
-        // 2. Determine Role and fetch Department if applicable
-        string role = "Unknown";
-        string? departmentName = null;
+    string role = "Unknown";
+    string? departmentName = null;
 
-        // Note: Replace the generic Set<T> types with your exact C# Model class names if they differ slightly
-        if (await dbContext.Set<BO>().AnyAsync(b => b.User_ID == user.User_ID, cancellationToken))
+    // =====================================================
+    // 3. CHECK BUSINESS OWNER
+    // =====================================================
+
+    var isBO = await dbContext.BOs
+        .AnyAsync(
+            b => b.User_ID == user.User_ID,
+            cancellationToken);
+
+    if (isBO)
+    {
+        role = "BO";
+    }
+    else
+    {
+        // =================================================
+        // 4. CHECK RESOURCE PLANNER
+        // =================================================
+
+        var isResourcePlanner = await dbContext.Resource_Planner
+            .AnyAsync(
+                p => p.User_ID == user.User_ID,
+                cancellationToken);
+
+        if (isResourcePlanner)
         {
-            role = "BO";
+            role = "ResourcePlanner";
         }
         else
         {
-            var employee = await dbContext.Set<Employee>()
+            // =============================================
+            // 5. CHECK EMPLOYEE
+            // =============================================
+
+            var employee = await dbContext.Employees
                 .Include(e => e.Department)
-                .FirstOrDefaultAsync(e => e.User_ID == user.User_ID, cancellationToken);
+                .FirstOrDefaultAsync(
+                    e => e.User_ID == user.User_ID,
+                    cancellationToken);
 
             if (employee != null)
             {
-                role = "Employee";
                 departmentName = employee.Department?.D_Name;
-            }
-            else if (await dbContext.Set<ResourcePlanner>().AnyAsync(p => p.User_ID == user.User_ID, cancellationToken))
-            {
-                role = "ResourcePlanner";
-            }
-            else if (await dbContext.Set<OSE>().AnyAsync(o => o.User_ID == user.User_ID, cancellationToken))
-            {
-                role = "OSE";
+
+                // =========================================
+                // 6. DETERMINE EMPLOYEE TRACK FROM TITLE
+                // =========================================
+
+                if (string.Equals(
+                        employee.Title,
+                        "Head of Product Owner",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    role = "HeadOfPO";
+                }
+                else if (!string.IsNullOrWhiteSpace(employee.Title) &&
+                         employee.Title.StartsWith(
+                             "Head of ",
+                             StringComparison.OrdinalIgnoreCase))
+                {
+                    role = "Head";
+                }
+                else if (string.Equals(
+                             employee.Title,
+                             "Employee",
+                             StringComparison.OrdinalIgnoreCase))
+                {
+                    role = "Employee";
+                }
+                else
+                {
+                    // Employee exists but we don't know
+                    // which dashboard this employee belongs to.
+                    role = "Unknown";
+                }
             }
         }
-
-        // 3. Generate response with determined role and department
-        return CreateResponse(user, role, departmentName);
     }
+
+    // =====================================================
+    // 7. RETURN TOKEN + ROLE
+    // =====================================================
+
+    return CreateResponse(
+        user,
+        role,
+        departmentName);
+}
 
     private AuthResponse CreateResponse(User user, string role, string? departmentName)
     {

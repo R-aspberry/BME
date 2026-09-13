@@ -972,7 +972,7 @@ export default function POCalendar() {
             <div className="bo-calendar-page-header">
               <div>
                 <div className="bo-calendar-eyebrow">
-                  SCHEDULE & DEADLINES
+                  
                 </div>
 
                 <h1>
@@ -980,7 +980,6 @@ export default function POCalendar() {
                 </h1>
 
                 <p>
-                  Keep track of project deadlines, meetings and personal follow-ups in one place.
                 </p>
               </div>
             </div>

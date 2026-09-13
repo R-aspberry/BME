@@ -1,7 +1,6 @@
 -- ==========================================
 -- SAFE DROP SEQUENCE
 -- ==========================================
-DROP TABLE IF EXISTS OXEXE;
 DROP TABLE IF EXISTS Works_ON;
 DROP TABLE IF EXISTS OSE;
 DROP TABLE IF EXISTS Projects;
@@ -9,7 +8,6 @@ DROP TABLE IF EXISTS BO;
 DROP TABLE IF EXISTS Resource_Planner;
 DROP TABLE IF EXISTS Employees;
 DROP TABLE IF EXISTS Department;
-DROP TABLE IF EXISTS Type_of_contract;
 DROP TABLE IF EXISTS Users;
 GO  -- Executes the drops immediately
 
@@ -29,10 +27,7 @@ CREATE TABLE Department(
     Availability INT
 );
 
-CREATE TABLE Type_of_contract(
-    C_ID INT PRIMARY KEY,
-    C_Name VARCHAR(50)
-);
+
 
 CREATE TABLE Employees (
     ID INT PRIMARY KEY,
@@ -50,11 +45,10 @@ CREATE TABLE Employees (
     OSE_ID INT,    
     Manager_ID INT,
     D_ID INT,
-    Type_of_contract_ID INT,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+    Type_of_contract_ID VARCHAR(50),
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Manager_ID) REFERENCES Employees(ID),
     FOREIGN KEY (D_ID) REFERENCES Department(D_ID),
-    FOREIGN KEY (Type_of_contract_ID) REFERENCES Type_of_contract(C_ID)
 );
 
 CREATE TABLE BO (
@@ -64,7 +58,7 @@ CREATE TABLE BO (
     Email VARCHAR(100),
     Phone VARCHAR(20),
     User_ID INT,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
 );
 
 CREATE TABLE Projects (
@@ -115,7 +109,7 @@ CREATE TABLE OSE (
     FOREIGN KEY (EMP_ID) REFERENCES Employees(ID),
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Planner_ID) REFERENCES Resource_Planner(Planner_ID),
-    FOREIGN KEY (Interviewer_ID) REFERENCES Employees(ID)
+    FOREIGN KEY (Interviewer_ID) REFERENCES Employees(ID),
 );
 
 --CREATE TABLE OXEXE (
@@ -135,24 +129,28 @@ GO  -- Forces the new schema to compile before parsing the INSERTs below
 -- USERS
 -- ==========================================
 INSERT INTO Users (User_ID, User_Name, PasswordHash) VALUES
-(1, 'john.carter', 'hash1'),
-(2, 'sarah.lee', 'hash2'),
-(3, 'michael.chen', 'hash3'),
-(4, 'emma.davis', 'hash4'),
-(5, 'olivia.brown', 'hash5'),
-(6, 'liam.wilson', 'hash6'),
-(7, 'noah.martinez', 'hash7'),
-(8, 'ava.thompson', 'hash8'),
-(9, 'sophia.anderson', 'hash9'),
-(10, 'james.taylor', 'hash10'),
-(11, 'isabella.moore', 'hash11'),
-(12, 'benjamin.white', 'hash12'),
-(13, 'mia.harris', 'hash13'),
-(14, 'ethan.clark', 'hash14'),
-(15, 'charlotte.lewis', 'hash15'),
-(16, 'omar.khatab', 'hash16'),
+(1, 'john.carter', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(2, 'sarah.lee', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(3, 'michael.chen', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(4, 'emma.davis', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(5, 'olivia.brown', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(6, 'liam.wilson', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(7, 'noah.martinez', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(8, 'ava.thompson', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(9, 'sophia.anderson', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(10, 'james.taylor', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(11, 'isabella.moore', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(12, 'benjamin.white', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(13, 'mia.harris', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(14, 'ethan.clark', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(15, 'charlotte.lewis', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(16, 'omar.khatab', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
 (17, 'karen.adams', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
-(18, 'peter.nguyen', 'hash18');
+(18, 'peter.nguyen', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
+(19, 'david.green', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg==');
+
+
+
 
 
 -- ==========================================
@@ -170,10 +168,7 @@ INSERT INTO Department (D_ID, D_Name, Availability) VALUES
 -- ==========================================
 -- TYPES OF CONTRACT
 -- ==========================================
-INSERT INTO Type_of_contract (C_ID, C_Name) VALUES
-(1, 'Full-Time Permanent'),
-(2, 'Part-Time Permanent'),
-(3, 'Outsource');
+
 
 
 -- ==========================================
@@ -287,7 +282,7 @@ VALUES
  'linda.scott@company.com', '555-0202', 18),
 
 (3, 'David Green', 'Operations',
- 'david.green@company.com', '555-0203', 1);
+ 'david.green@company.com', '555-0203', 19);
 
 
 -- ==========================================
@@ -439,5 +434,8 @@ VALUES
 --(1, 8), 
 --(2, 12);
 
-SELECT * FROM Employees;
+SELECT * FROM Users;
+SELECT * FROM Department;
 SELECT * FROM OSE;
+SELECT * FROM BO;
+
