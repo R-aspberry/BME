@@ -61,9 +61,10 @@ public class OSEService
 
     public async Task<OSEDto> CreateAsync(CreateOSEDto createOSEDto)
     {
+        var nextOseId = (await _context.OSE.MaxAsync(ose => (int?)ose.OSE_ID) ?? 0) + 1;
         var ose = new OSE
         {
-            OSE_ID = createOSEDto.OSE_ID,
+            OSE_ID = nextOseId,
             FN = createOSEDto.FN,
             LN = createOSEDto.LN,
             Age = createOSEDto.Age,

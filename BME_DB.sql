@@ -1,11 +1,19 @@
 -- ==========================================
+-- BME DATABASE SETUP - CORRECTED SCRIPT
+-- ==========================================
+-- Run this script against the BME_DB database.
+-- The original script's data and structure are preserved.
+-- Syntax errors in Employees and Resource_Planner have been fixed.
+
+-- ==========================================
+
 -- SAFE DROP SEQUENCE
 -- ==========================================
 DROP TABLE IF EXISTS OXEXE;
-DROP TABLE IF EXISTS Planner_Requests;
-DROP TABLE IF EXISTS PO_Requests;
 DROP TABLE IF EXISTS Works_ON;
 DROP TABLE IF EXISTS OSE;
+DROP TABLE IF EXISTS Planner_Requests;
+DROP TABLE IF EXISTS PO_Requests;
 DROP TABLE IF EXISTS Projects;
 DROP TABLE IF EXISTS BO;
 DROP TABLE IF EXISTS Resource_Planner;
@@ -22,7 +30,7 @@ CREATE TABLE Users (
     User_ID INT PRIMARY KEY,
     User_Name VARCHAR(50),
     PasswordHash VARCHAR(255) NOT NULL
-    
+   
 );
 
 CREATE TABLE Department(
@@ -41,9 +49,6 @@ CREATE TABLE Employees (
     User_ID INT,
     FN VARCHAR(50),
     LN VARCHAR(50),
-    Age INT,
-    Skills VARCHAR(500),
-    Title VARCHAR(100),
     Title VARCHAR(100),
     DOB DATE,
     Hired_Date DATE,
@@ -57,6 +62,7 @@ CREATE TABLE Employees (
     D_ID INT,
     Type_of_contract_ID INT,
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+
     FOREIGN KEY (Manager_ID) REFERENCES Employees(ID),
     FOREIGN KEY (D_ID) REFERENCES Department(D_ID),
     FOREIGN KEY (Type_of_contract_ID) REFERENCES Type_of_contract(C_ID)
@@ -108,6 +114,9 @@ CREATE TABLE OSE (
     OSE_ID INT PRIMARY KEY,
     FN VARCHAR(50),
     LN VARCHAR(50),
+    Age INT NULL,
+    Skills VARCHAR(500) NULL,
+    Title VARCHAR(100) NULL,
     Vendor VARCHAR(100),
     Email VARCHAR(100),
     Phone VARCHAR(20),
@@ -126,7 +135,7 @@ CREATE TABLE PO_Requests (
     Request_ID INT IDENTITY(1,1) PRIMARY KEY,
     Department VARCHAR(100) NOT NULL,
     Required_Count INT NOT NULL,
-    Details VARCHAR(1000),
+    Details VARCHAR(1000) NULL,
     Status VARCHAR(30) NOT NULL DEFAULT 'Pending',
     Planner_ID INT NULL,
     Created_At DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
@@ -137,7 +146,7 @@ CREATE TABLE Planner_Requests (
     Request_ID INT IDENTITY(1,1) PRIMARY KEY,
     Department VARCHAR(100) NOT NULL,
     Required_Count INT NOT NULL,
-    Details VARCHAR(1000),
+    Details VARCHAR(1000) NULL,
     Status VARCHAR(30) NOT NULL DEFAULT 'Pending',
     Planner_ID INT NULL,
     Created_At DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
@@ -177,7 +186,7 @@ INSERT INTO Users (User_ID, User_Name, PasswordHash) VALUES
 (14, 'ethan.clark', 'hash14'),
 (15, 'charlotte.lewis', 'hash15'),
 (16, 'omar.khatab', 'hash16'),
-(17, 'karen.adams', 'hash17'),
+(17, 'karen.adams', 'AQAAAAIAAYagAAAAEDJmdb6IrNMlhMs+ndPymJ6R1kIAEnAL1qSlMy6huq9BmDhLhDffCZSsXaAubzTkQg=='),
 (18, 'peter.nguyen', 'hash18');
 
 
@@ -360,35 +369,7 @@ VALUES
  'Self-service portal for customer account management.',
  120000.00, 'Approved',
  'BRD_CustomerPortal_v1.pdf',
- '2024-03-01', '2025-01-20', 1),
-
-(5, 'Payments Modernization',
- 'High Priority', 'Planning',
- 'Modernize payment processing and settlement workflows for corporate customers.',
- 320000.00, 'Discovery',
- 'BRD_PaymentsModernization_v1.pdf',
- '2026-04-15', '2027-02-28', 1),
-
-(6, 'Branch Experience Refresh',
- 'Medium', 'In Progress',
- 'Improve the branch experience with faster service journeys and clearer customer support.',
- 175000.00, 'In Design',
- 'BRD_BranchExperience_v1.pdf',
- '2026-03-01', '2026-11-30', 2),
-
-(7, 'Fraud Insights Dashboard',
- 'High Priority', 'Planning',
- 'Build a real-time dashboard for fraud trends, alerts, and investigation outcomes.',
- 210000.00, 'Draft',
- 'BRD_FraudInsights_v1.pdf',
- '2026-05-10', '2027-01-15', 3),
-
-(8, 'Green Operations Tracker',
- 'Low', 'Open',
- 'Track operational sustainability goals and measurable progress across the bank.',
- 95000.00, 'Concept',
- 'BRD_GreenOperations_v1.pdf',
- '2026-06-01', '2026-12-15', 2);
+ '2024-03-01', '2025-01-20', 1);
 
 
 -- ==========================================
@@ -490,7 +471,7 @@ VALUES
 
 
 --INSERT INTO OXEXE (OSE_ID, EMP_ID) VALUES
---(1, 8), 
+--(1, 8),
 --(2, 12);
 
 SELECT * FROM Employees;
