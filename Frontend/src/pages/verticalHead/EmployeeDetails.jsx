@@ -286,97 +286,97 @@ export default function VerticalHeadEmployeeDetails() {
 
         
                 <nav className="po-nav">
-                  <NavLink
-                    to="/vertical-head/dashboard"
-                    className={({ isActive }) =>
-                      `po-nav-item ${isActive ? 'active' : ''}`
-                    }
-                    onClick={closeMobileSidebar}
-                  >
-                    <span className="po-nav-icon">
-                      <Icon name="dashboard" />
-                    </span>
-                    <span className="po-nav-text">Dashboard</span>
-                  </NavLink>
-        
-                  <NavLink
-                    to="/vertical-head/resource-requests"
-                    className={({ isActive }) =>
-                      `po-nav-item ${isActive ? 'active' : ''}`
-                    }
-                    onClick={closeMobileSidebar}
-                  >
-                    <span className="po-nav-icon">
-                      <Icon name="requests" />
-                    </span>
-                    <span className="po-nav-text">Resource Requests</span>
-                  </NavLink>
-        
-                  <NavLink
-                    to="/vertical-head/my-department"
-                    className={({ isActive }) =>
-                      `po-nav-item ${isActive ? 'active' : ''}`
-                    }
-                    onClick={closeMobileSidebar}
-                  >
-                    <span className="po-nav-icon">
-                      <Icon name="employees" />
-                    </span>
-                    <span className="po-nav-text">My Department</span>
-                  </NavLink>
-        
-                  <NavLink
-                    to="/vertical-head/employee-discovery"
-                    className={({ isActive }) =>
-                      `po-nav-item ${isActive ? 'active' : ''}`
-                    }
-                    onClick={closeMobileSidebar}
-                  >
-                    <span className="po-nav-icon">
-                      <Icon name="search" />
-                    </span>
-                    <span className="po-nav-text">Employee Discovery</span>
-                  </NavLink>
-        
-                  <NavLink
-                    to="/vertical-head/projects"
-                    className={({ isActive }) =>
-                      `po-nav-item ${isActive ? 'active' : ''}`
-                    }
-                    onClick={closeMobileSidebar}
-                  >
-                    <span className="po-nav-icon">
-                      <Icon name="projects" />
-                    </span>
-                    <span className="po-nav-text">Projects</span>
-                  </NavLink>
-        
-                  <NavLink
-                    to="/vertical-head/notifications"
-                    className={({ isActive }) =>
-                      `po-nav-item ${isActive ? 'active' : ''}`
-                    }
-                    onClick={closeMobileSidebar}
-                  >
-                    <span className="po-nav-icon">
-                      <Icon name="notifications" />
-                    </span>
-                    <span className="po-nav-text">Notifications</span>
-                  </NavLink>
-        
-                  <NavLink
-                    to="/vertical-head/calendar"
-                    className={({ isActive }) =>
-                      `po-nav-item ${isActive ? 'active' : ''}`
-                    }
-                    onClick={closeMobileSidebar}
-                  >
-                    <span className="po-nav-icon">
-                      <Icon name="calendar" />
-                    </span>
-                    <span className="po-nav-text">Calendar</span>
-                  </NavLink>
-                </nav>
+                          <NavLink
+                            to="/vertical-head/dashboard"
+                            className={({ isActive }) =>
+                              `po-nav-item ${isActive ? 'active' : ''}`
+                            }
+                            onClick={closeMobileSidebar}
+                          >
+                            <span className="po-nav-icon">
+                              <Icon name="dashboard" />
+                            </span>
+                            <span className="po-nav-text">Dashboard</span>
+                          </NavLink>
+                
+                          <NavLink
+                            to="/vertical-head/resource-requests"
+                            className={({ isActive }) =>
+                              `po-nav-item ${isActive ? 'active' : ''}`
+                            }
+                            onClick={closeMobileSidebar}
+                          >
+                            <span className="po-nav-icon">
+                              <Icon name="requests" />
+                            </span>
+                            <span className="po-nav-text">Resource Requests</span>
+                          </NavLink>
+                
+                          <NavLink
+                            to="/vertical-head/my-department"
+                            className={({ isActive }) =>
+                              `po-nav-item ${isActive ? 'active' : ''}`
+                            }
+                            onClick={closeMobileSidebar}
+                          >
+                            <span className="po-nav-icon">
+                              <Icon name="employees" />
+                            </span>
+                            <span className="po-nav-text">My Department</span>
+                          </NavLink>
+                
+                          <NavLink
+                            to="/vertical-head/employee-discovery"
+                            className={({ isActive }) =>
+                              `po-nav-item ${isActive ? 'active' : ''}`
+                            }
+                            onClick={closeMobileSidebar}
+                          >
+                            <span className="po-nav-icon">
+                              <Icon name="search" />
+                            </span>
+                            <span className="po-nav-text">Employee Discovery</span>
+                          </NavLink>
+                
+                          <NavLink
+                            to="/vertical-head/projects"
+                            className={({ isActive }) =>
+                              `po-nav-item ${isActive ? 'active' : ''}`
+                            }
+                            onClick={closeMobileSidebar}
+                          >
+                            <span className="po-nav-icon">
+                              <Icon name="projects" />
+                            </span>
+                            <span className="po-nav-text">Projects</span>
+                          </NavLink>
+                
+                          <NavLink
+                            to="/vertical-head/notifications"
+                            className={({ isActive }) =>
+                              `po-nav-item ${isActive ? 'active' : ''}`
+                            }
+                            onClick={closeMobileSidebar}
+                          >
+                            <span className="po-nav-icon">
+                              <Icon name="notifications" />
+                            </span>
+                            <span className="po-nav-text">Notifications</span>
+                          </NavLink>
+                
+                          <NavLink
+                            to="/vertical-head/calendar"
+                            className={({ isActive }) =>
+                              `po-nav-item ${isActive ? 'active' : ''}`
+                            }
+                            onClick={closeMobileSidebar}
+                          >
+                            <span className="po-nav-icon">
+                              <Icon name="calendar" />
+                            </span>
+                            <span className="po-nav-text">Calendar</span>
+                          </NavLink>
+                        </nav>
         <div className="po-sidebar-bottom">
           <NavLink
             to="/vertical-head/profile"

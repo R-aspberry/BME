@@ -39,6 +39,9 @@ import VHEmployeeDetails from '../pages/verticalHead/EmployeeDetails'
 import VHCalendar from '../pages/verticalHead/Calendar';
 import VHMyDepartment from '../pages/verticalHead/MyDepartment';
 import VHProjects from '../pages/verticalHead/Projects';
+import VHProjectDetails from '../pages/verticalHead/ProjectDetails';
+import VHResourceRequests from '../pages/verticalHead/ResourceRequests'
+import VHProfile from '../pages/verticalHead/Profile';
 
 function NotFound() {
   return (
@@ -286,6 +289,11 @@ export default function AppRoutes() {
 
         <Route element={<RoleRoute roles={['Head']} />}>
         <Route
+  path="/vertical-head/resource-requests"
+  element={<VHResourceRequests />}
+/>
+       
+        <Route
   path="/vertical-head/projects"
   element={<VHProjects />}
 />
@@ -297,6 +305,11 @@ export default function AppRoutes() {
         <Route
     path="/vertical-head/calendar"
     element={<VHCalendar />}
+  />
+
+  <Route
+    path="/vertical-head/profile"
+    element={<VHProfile />}
   />
         <Route
   path="/vertical-head/employees/:id"
@@ -339,7 +352,10 @@ export default function AppRoutes() {
           />
         }
       />
-
+<Route
+  path="/vertical-head/projects/:id"
+  element={<VHProjectDetails />}
+/>
       <Route
         path="*"
         element={

@@ -757,7 +757,9 @@ export default function VHCalendar() {
         <nav className="po-nav">
                   <NavLink
                     to="/vertical-head/dashboard"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
@@ -768,7 +770,9 @@ export default function VHCalendar() {
         
                   <NavLink
                     to="/vertical-head/resource-requests"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
@@ -778,8 +782,36 @@ export default function VHCalendar() {
                   </NavLink>
         
                   <NavLink
+                    to="/vertical-head/my-department"
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="employees" />
+                    </span>
+                    <span className="po-nav-text">My Department</span>
+                  </NavLink>
+        
+                  <NavLink
+                    to="/vertical-head/employee-discovery"
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
+                    onClick={closeMobileSidebar}
+                  >
+                    <span className="po-nav-icon">
+                      <Icon name="search" />
+                    </span>
+                    <span className="po-nav-text">Employee Discovery</span>
+                  </NavLink>
+        
+                  <NavLink
                     to="/vertical-head/projects"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
@@ -789,19 +821,10 @@ export default function VHCalendar() {
                   </NavLink>
         
                   <NavLink
-                    to="/vertical-head/employee-discovery"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
-                    onClick={closeMobileSidebar}
-                  >
-                    <span className="po-nav-icon">
-                      <Icon name="employees" />
-                    </span>
-                    <span className="po-nav-text">Employee Discovery</span>
-                  </NavLink>
-        
-                  <NavLink
                     to="/vertical-head/notifications"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
@@ -812,7 +835,9 @@ export default function VHCalendar() {
         
                   <NavLink
                     to="/vertical-head/calendar"
-                    className={({ isActive }) => `po-nav-item ${isActive ? 'active' : ''}`}
+                    className={({ isActive }) =>
+                      `po-nav-item ${isActive ? 'active' : ''}`
+                    }
                     onClick={closeMobileSidebar}
                   >
                     <span className="po-nav-icon">
@@ -820,19 +845,6 @@ export default function VHCalendar() {
                     </span>
                     <span className="po-nav-text">Calendar</span>
                   </NavLink>
-        
-                  <NavLink
-          to="/vertical-head/resource-requests"
-          className={({ isActive }) =>
-            `po-nav-item ${isActive ? 'active' : ''}`
-          }
-          onClick={closeMobileSidebar}
-        >
-          <span className="po-nav-icon">
-            <Icon name="usersPlus" />
-          </span>
-          <span className="po-nav-text">Resource Requests</span>
-        </NavLink>
                 </nav>
 
         <div className="bo-sidebar-bottom">
